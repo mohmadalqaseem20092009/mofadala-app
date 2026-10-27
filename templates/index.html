@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة فرز مفاضلة الفرع العلمي - سوريا</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 8px solid #2e7d32;
+        }
+        h1 {
+            text-align: center;
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #c8e6c9;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+        }
+        input[type="number"]:focus, select:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: 'Cairo', sans-serif;
+        }
+        button:hover {
+            background-color: #1b5e20;
+        }
+        .results-box {
+            margin-top: 30px;
+            display: none;
+        }
+        .results-title {
+            color: #1b5e20;
+            border-bottom: 2px solid #2e7d32;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .branch-card {
+            background: #e8f5e9;
+            border-right: 5px solid #2e7d32;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+        .branch-name {
+            font-weight: bold;
+            color: #1b5e20;
+            font-size: 1.1em;
+        }
+        .branch-details {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: #888;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>بوابة فرز ومفاضلة الفرع العلمي 🇸🇾</h1>
+    <div class="subtitle">العام الدراسي: 2026 / 2027</div>
+    
+    <form id="analysisForm">
+        <div class="form-group">
+            <label for="score">أدخل مجموعك المئوي الصافي (%):</label>
+            <input type="number" id="score" name="score" step="0.01" min="50" max="100" placeholder="مثال: 94.50" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="type">نوع المفاضلة:</label>
+            <select id="type" name="type">
+                <option value="كل الأنواع">كل الأنواع (عام + موازي)</option>
+                <option value="مفاضلة عامة">مفاضلة عامة حصراً</option>
+                <option value="مفاضلة التعليم Mوازي">مفاضلة التعليم الموازي حصراً</option>
+            </select>
+        </div>
+        
+        <button type="submit">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
+    </form>
+
+    <div class="results-box" id="resultsBox">
+        <h3 class="results-title">الأفرع والكليات المتاحة لمجموعك مجدولة حسب الأفضلية:</h3>
+        <div id="branchesContainer"></div>
+    </div>
+
+    <div class="footer">
+        تصميم وتطوير د. محمد القاسم البرمجي الشامل © 2026<br>
+        جميع الحقوق محفوظة - مستند إلى الحدود الدنيا الرسمية لوزارة التعليم العالي
+    </div>
+</div>
+
+<script>
+    document.getElementById('analysisForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const score = document.getElementById('score').value;
+        const type = document.getElementById('type').value;
+        
+        const formData = new FormData();
+        formData.append('score', score);
+        formData.append('type', type);
+        
+        fetch('/analyze', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            const container = document.getElementById('branchesContainer');
+            const box = document.getElementById('resultsBox');
+            container.innerHTML = '';
+            
+            if(res.status === 'success' && res.data.length > 0) {
+                res.data.forEach(branch => {
+                    const card = document.createElement('div');
+                    card.className = 'branch-card';
+                    card.innerHTML = `
+                        <div class="branch-name">${branch.faculty} - ${branch.university}</div>
+                        <div class="branch-details">
+                            <strong>نوع القبول:</strong> ${branch.type} | 
+                            <strong>الحد الأدنى:</strong> ${branch.min_score}% | 
+                            <strong>ملاحظات وشروط:</strong> ${branch.conditions}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+                box.style.display = 'block';
+                box.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                container.innerHTML = '<div style="color:red; text-align:center; padding:10px;">عذراً، لا توجد أفرع متاحة لهذا المجموع المكتوب، يرجى التأكد من الرقم.</div>';
+                box.style.display = 'block';
+            }
+        })
+        .catch(err => {
+            alert('حدث خطأ في الاتصال بالسيرفر، يرجى المحاولة مجدداً.');
+        });
+    });
+</script>
+
+</body>
+</html>
