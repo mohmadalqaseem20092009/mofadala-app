@@ -31,27 +31,11 @@
         .container { max-width: 800px; margin: 0 auto; position: relative; }
         
         .theme-toggle-btn {
-            position: absolute; 
-            top: 20px; 
-            left: 15px;
-            background: var(--bg-card); 
-            border: 2px solid var(--border-color);
-            color: var(--text-main); 
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            z-index: 10;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        .theme-toggle-btn:hover {
-            transform: scale(1.1);
-            border-color: var(--secondary-color);
+            position: absolute; top: 20px; left: 15px;
+            background: var(--bg-card); border: 2px solid var(--border-color);
+            color: var(--text-main); width: 42px; height: 42px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .main-card { border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: var(--bg-card); padding: 30px; margin-top: 45px; }
@@ -60,37 +44,47 @@
         .mb-3 { margin-bottom: 1rem; }
         .form-label { display: block; margin-bottom: .5rem; font-weight: bold; text-align: right; }
         .form-control, .form-select { display: block; width: 100%; padding: .6rem; font-size: 1.1rem; background-color: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); border-radius: .25rem; text-align: center; outline: none; }
+        
         .btn-analyze { display: block; width: 100%; background-color: var(--primary-color); color: white; border: none; padding: 14px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; }
         .btn-analyze:hover { background-color: #155d27; }
+        
         .faculty-card { background: var(--bg-card); border-right: 5px solid var(--secondary-color); border-left: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* زر الإضافة التفاعلي للأفرع */
+        .btn-add-wish { background-color: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-right: 15px; }
+        .btn-add-wish:hover { background-color: #0056b3; }
+        
         .loader-container { display: none; text-align: center; margin: 20px 0; }
         .spinner { display: inline-block; width: 2rem; height: 2rem; border: .25em solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .75s linear infinite; color: var(--primary-color); }
         @keyframes spin { to { transform: rotate(360deg); } }
         .search-box { display: none; margin-top: 20px; border-top: 2px solid var(--border-color); padding-top: 20px; }
+
+        /* حاوية صندوق رغبات الطالب المختارة */
+        .wishlist-container { display: none; margin-top: 30px; background-color: rgba(0, 123, 255, 0.05); border: 2px dashed #007bff; border-radius: 10px; padding: 20px; text-align: right; }
+        .wish-item { background: var(--bg-card); padding: 10px; border-radius: 5px; margin-bottom: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .btn-remove-wish { background: #dc3545; color: white; border: none; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
+        .btn-submit-excel { background-color: #28a745; color: white; border: none; padding: 12px 25px; font-size: 1.1rem; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; }
+        .btn-submit-excel:hover { background-color: #218838; }
         
-        /* تنسيق مخصص لتكبير اسم المبرمج وإعطائه هيبة بصرية */
-        .engineer-title {
-            color: var(--text-title);
-            font-weight: 800;
-            font-size: 1.5rem; /* تم تكبير الخط ليصبح بارزاً ومميزاً */
-            margin-top: 10px;
-            letter-spacing: 0.5px;
-        }
+        .engineer-title { color: var(--text-title); font-weight: 800; font-size: 1.5rem; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn" title="تبديل المظهر">
-        🌙
-    </button>
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
 
     <div class="main-card">
         <div class="text-center mb-4">
             <h2 style="color: var(--primary-color); padding: 0 10px;" class="mb-2">مفاضلة القبول الجامعي</h2>
             <h6 style="color: #6c757d; margin-bottom: 5px;">العام الدراسي: 2026 / 2027</h6>
-            <!-- تم تطبيق الكلاس الجديد هنا لتكبير الحجم -->
             <div class="engineer-title">المهندس محمد القاسم</div>
+        </div>
+
+        <!-- خانة إدخال اسم الطالب لربطه بملف الإكسل -->
+        <div class="mb-3">
+            <label class="form-label">اسم الطالب الثلاثي (لتثبيت الطلب):</label>
+            <input type="text" id="studentNameInput" class="form-control" placeholder="اكتب اسمك الكامل هنا..." style="text-align: right;">
         </div>
 
         <form onsubmit="processAnalysis(event)">
@@ -102,7 +96,7 @@
             <div class="mb-4">
                 <label class="form-label">نوع المفاضلة:</label>
                 <select id="typeSelect" class="form-select">
-                    <option value="all">كل الأنواع </option>
+                    <option value="all">كل الأنواع (عام + موازي)</option>
                     <option value="عام">مفاضلة عامة</option>
                     <option value="موازي">مفاضلة التعليم الموازي</option>
                 </select>
@@ -116,8 +110,15 @@
             <p style="margin-top: 10px;">جاري فرز النتائج المتوافقة...</p>
         </div>
 
+        <!-- صندوق سلة الرغبات المختارة -->
+        <div class="wishlist-container" id="wishlistContainer">
+            <h3 style="color: #007bff; margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> قائمة رغباتك المختارة للتثبيت:</h3>
+            <div id="wishlistWrapper"></div>
+            <button class="btn-submit-excel" onclick="submitWishesToExcel()">تثبيت الرغبات وإرسال ملف Excel 🚀</button>
+        </div>
+
         <div class="search-box" id="searchBoxContainer">
-            <input type="text" id="innerSearch" class="form-control" placeholder="البحث عن الفرع" onkeyup="filterResults()" style="margin-bottom: 15px; text-align: right; padding: 10px;">
+            <input type="text" id="innerSearch" class="form-control" placeholder="تصفية فورية بالجامعة أو الكلية..." onkeyup="filterResults()" style="margin-bottom: 15px; text-align: right; padding: 10px;">
             <div id="resultsCount" style="font-weight: bold; margin-bottom: 15px; color: var(--primary-color); text-align: right;"></div>
             <div id="resultsWrapper"></div>
         </div>
@@ -126,28 +127,22 @@
 
 <script>
     let rawData = [];
+    let selectedWishes = []; // مصفوفة لتخزين الرغبات المضافة
 
     window.addEventListener('DOMContentLoaded', () => {
         const body = document.documentElement;
         const btn = document.getElementById('themeBtn');
         const currentTheme = localStorage.getItem('theme') || 'light';
-        if (currentTheme === 'dark') {
-            body.setAttribute('data-theme', 'dark');
-            btn.innerText = '☀️';
-        }
+        if (currentTheme === 'dark') { body.setAttribute('data-theme', 'dark'); btn.innerText = '☀️'; }
     });
 
     function toggleTheme() {
         const body = document.documentElement;
         const btn = document.getElementById('themeBtn');
         if (body.getAttribute('data-theme') === 'dark') {
-            body.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            btn.innerText = '🌙';
+            body.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); btn.innerText = '🌙';
         } else {
-            body.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            btn.innerText = '☀️';
+            body.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); btn.innerText = '☀️';
         }
     }
 
@@ -159,27 +154,18 @@
         const searchBox = document.getElementById('searchBoxContainer');
         const wrapper = document.getElementById('resultsWrapper');
         
-        loader.style.display = 'block';
-        searchBox.style.display = 'none';
-        wrapper.innerHTML = '';
+        loader.style.display = 'block'; searchBox.style.display = 'none'; wrapper.innerHTML = '';
 
         fetch(`/api/search?score=${score}&type=${type}`)
             .then(res => res.json())
             .then(response => {
-                loader.style.display = 'none';
-                searchBox.style.display = 'block';
-                
+                loader.style.display = 'none'; searchBox.style.display = 'block';
                 if (response.status === 'success' && response.data.length > 0) {
-                    rawData = response.data;
-                    renderCards(rawData);
+                    rawData = response.data; renderCards(rawData);
                 } else {
                     document.getElementById('resultsCount').innerText = '';
-                    wrapper.innerHTML = `<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة مع هذا المجموع.</div>`;
+                    wrapper.innerHTML = `<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة.</div>`;
                 }
-            })
-            .catch(err => {
-                loader.style.display = 'none';
-                alert('حدث خطأ أثناء جلب البيانات من السيرفر.');
             });
     }
 
@@ -188,28 +174,9 @@
         wrapper.innerHTML = '';
         document.getElementById('resultsCount').innerText = `عدد الأفرع المتاحة لك: ${data.length}`;
         
-        data.forEach(item => {
+        data.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = 'faculty-card';
             card.innerHTML = `
-                <div style="text-align: right;">
+                <div style="text-align: right; flex: 1;">
                     <h3 style="color:var(--text-title); font-size:1.1rem; font-weight: bold; margin-bottom: 5px;">${item.faculty}</h3>
-                    <small style="color:#6c757d;">🏢 ${item.university} | 📋 ${item.type}</small>
-                </div>
-                <div style="font-weight:bold; color:var(--primary-color); font-size:1.3rem;">%${item.min_score}</div>
-            `;
-            wrapper.appendChild(card);
-        });
-    }
-
-    function filterResults() {
-        const query = document.getElementById('innerSearch').value.toLowerCase().trim();
-        const filtered = rawData.filter(item => 
-            item.faculty.toLowerCase().includes(query) || 
-            item.university.toLowerCase().includes(query)
-        );
-        renderCards(filtered);
-    }
-</script>
-</body>
-</html>
