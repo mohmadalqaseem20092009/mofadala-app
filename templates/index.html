@@ -95,20 +95,20 @@
 
         <form onsubmit="processAnalysis(event)">
             <div class="mb-3">
-                <label class="form-label">أدخل مجموعك المئوي الصافي (%):</label>
-                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="أدخل المجموع هنا..." required>
+                <label class="form-label">أدخل معدلك (%):</label>
+                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="أدخل المعدل هنا..." required>
             </div>
 
             <div class="mb-4">
                 <label class="form-label">نوع المفاضلة:</label>
                 <select id="typeSelect" class="form-select">
-                    <option value="all">كل الأنواع (عام + موازي)</option>
+                    <option value="all">كل الأنواع </option>
                     <option value="عام">مفاضلة عامة</option>
                     <option value="موازي">مفاضلة التعليم الموازي</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn-analyze">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
+            <button type="submit" class="btn-analyze">تحليل الدرجات وعرض الأفرع المتاحة ✨</button>
         </form>
 
         <div class="loader-container" id="loader">
@@ -117,7 +117,7 @@
         </div>
 
         <div class="search-box" id="searchBoxContainer">
-            <input type="text" id="innerSearch" class="form-control" placeholder="تصفية فورية بالجامعة أو الكلية (مثال: دمشق، معلوماتية)..." onkeyup="filterResults()" style="margin-bottom: 15px; text-align: right; padding: 10px;">
+            <input type="text" id="innerSearch" class="form-control" placeholder="البحث عن الفرع" onkeyup="filterResults()" style="margin-bottom: 15px; text-align: right; padding: 10px;">
             <div id="resultsCount" style="font-weight: bold; margin-bottom: 15px; color: var(--primary-color); text-align: right;"></div>
             <div id="resultsWrapper"></div>
         </div>
