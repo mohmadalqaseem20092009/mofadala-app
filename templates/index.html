@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاضلة القبول الجامعي</title>
-    <!-- استدعاء مكتبة الأيقونات الشهيرة FontAwesome لتشغيل الشمس والقمر -->
-    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root {
             --primary-color: #1e7e34;
@@ -32,7 +30,6 @@
         }
         .container { max-width: 800px; margin: 0 auto; position: relative; }
         
-        /* تنسيق محسّن ودائري لزر الشمس والقمر التفاعلي */
         .theme-toggle-btn {
             position: absolute; 
             top: 40px; 
@@ -47,7 +44,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             z-index: 10;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
@@ -75,27 +72,28 @@
 <body>
 
 <div class="container">
-    <!-- الزر المحدث بأيقونة القمر الافتراضية للوضع المشرق -->
     <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn" title="تبديل المظهر">
-        <i class="fa-solid fa-moon"></i>
+        🌙
     </button>
 
     <div class="main-card">
         <div class="text-center mb-4">
             <h2 style="color: var(--primary-color);" class="mb-2">مفاضلة القبول الجامعي</h2>
-            <h6 style="color: #6c757d;">العام الدراسي: 2026 / 2027</h6>
+            <h6 style="color: #6c757d; margin-bottom: 5px;">العام الدراسي: 2026 / 2027</h6>
+            <!-- إضافة اسمك بخط عريض تحت العام الدراسي مباشرة -->
+            <h5 style="color: var(--text-main); font-weight: bold; margin-top: 5px;">المهندس محمد القاسم</h5>
         </div>
 
         <form onsubmit="processAnalysis(event)">
             <div class="mb-3">
-                <label class="form-label">أدخل معدلك (%):</label>
-                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="المعدل...." required>
+                <label class="form-label">أدخل مجموعك المئوي الصافي (%):</label>
+                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="أدخل المجموع هنا..." required>
             </div>
 
             <div class="mb-4">
                 <label class="form-label">نوع المفاضلة:</label>
                 <select id="typeSelect" class="form-select">
-                    <option value="all">كل الأنواع </option>
+                    <option value="all">كل الأنواع (عام + موازي)</option>
                     <option value="عام">مفاضلة عامة</option>
                     <option value="موازي">مفاضلة التعليم الموازي</option>
                 </select>
@@ -120,14 +118,13 @@
 <script>
     let rawData = [];
 
-    // فحص الثيم عند تحميل الصفحة لضبط الأيقونة الصحيحة فوراً
     window.addEventListener('DOMContentLoaded', () => {
         const body = document.documentElement;
         const btn = document.getElementById('themeBtn');
         const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
             body.setAttribute('data-theme', 'dark');
-            btn.innerHTML = '<i class="fa-solid fa-sun" style="color: #ffc107;"></i>'; // أيقونة شمس صفراء للمظهر المظلم
+            btn.innerText = '☀️';
         }
     });
 
@@ -137,11 +134,11 @@
         if (body.getAttribute('data-theme') === 'dark') {
             body.removeAttribute('data-theme');
             localStorage.setItem('theme', 'light');
-            btn.innerHTML = '<i class="fa-solid fa-moon"></i>'; // قمر للمظهر المشرق
+            btn.innerText = '🌙';
         } else {
             body.setAttribute('data-theme', 'dark');
             localStorage.setItem('theme', 'dark');
-            btn.innerHTML = '<i class="fa-solid fa-sun" style="color: #ffc107;"></i>'; // شمس للمظهر المظلم
+            btn.innerText = '☀️';
         }
     }
 
