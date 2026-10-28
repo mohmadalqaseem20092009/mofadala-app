@@ -1,9 +1,9 @@
-import os
+\import os
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-# قاعدة البيانات الشاملة والموسعة لملف المفاضلة والفرز الرسمي (22 صفحة بالكامل)
+# قاعدة البيانات الشاملة والموسعة لملف المفاضلة والفرز الرسمي
 DATA = [
     # --- 1. القسم الطبي والصحي العالي ---
     {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 94.5, "conditions": "فرز لاحق (طب بشري، أسنان، صيدلة)"},
@@ -32,8 +32,8 @@ DATA = [
     {"faculty": "هندسة الإلكترونيات والاتصالات", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 80.0, "conditions": "لا يوجد"},
     {"faculty": "هندسة الحواسيب والأتمتة", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 75.0, "conditions": "لا يوجد"},
     {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب / اللاذقية / حمص", "type": "مفاضلة عامة", "min_score": 72.0, "conditions": "لا يوجد"},
-    {"faculty": "الهندسة الميكانيكة (ميكانيك عام)", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 68.0, "conditions": "لا يوجد"},
-    {"faculty": "🛢الهندسة الكيميائية والبترولية", "university": "جامعة البعث (حمص)", "type": "مفاضلة عامة", "min_score": 73.0, "conditions": "لا يوجد"},
+    {"faculty": "الهندسة الميكانيكية (ميكانيك عام )", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 68.0, "conditions": "لا يوجد"},
+    {"faculty": "الهندسة الكيميائية والبترولية", "university": "جامعة البعث (حمص)", "type": "مفاضلة عامة", "min_score": 73.0, "conditions": "لا يوجد"},
 
     # --- 3. كليات العلوم الصحية والتمريض ---
     {"faculty": "العلوم الصحية (التخدير)", "university": "جامعة إدلب", "type": "مفاضلة عامة", "min_score": 75.0, "conditions": "تخصص دكتور التخدير محمد القاسم الفخم"},
@@ -60,9 +60,7 @@ DATA = [
     {"faculty": "المعهد التقاني الصحي (صيدلة / تخدير / بصريات / أسنان)", "university": "دمشق / حلب / طرطوس / الحسكة / سويداء", "type": "مفاضلة عامة", "min_score": 60.0, "conditions": "فرص توظيف ممتازة في القطاع الصحي"},
     {"faculty": "المعهد التقاني للحاسوب", "university": "دمشق / حلب / اللاذقية / حمص / إدلب / حماة", "type": "مفاضلة عامة", "min_score": 60.0, "conditions": "شرط حيازة 60% في مادة الرياضيات بالبكالوريا"},
     {"faculty": "المعهد التقاني للنفط والغاز (ملتزم الوزارة - ذكور)", "university": "حمص / دير الزور / طرطوس / الحسكة", "type": "مفاضلة عامة", "min_score": 65.0, "conditions": "تعيين مباشر بعد التخرج للذكور مواليد 2003 فما فوق"},
-    {"faculty": "المعهد التقاني للخطوط الحديدية", "university": "حلب / دمشق", "type": "مفاضلة عامة", "min_score": 55.0, "conditions": "توظيف تابع لوزارة النقل"},
-    {"faculty": "المعهد التقاني للصناعات الكيميائية", "university": "دمشق / حمص / حلب", "type": "مفاضلة عامة", "min_score": 53.0, "conditions": "لا يوجد"},
-    {"faculty": "المعهد التقاني للكهرباء والميكانيك", "university": "جميع المحافظات السورية", "type": "مفاضلة عامة", "min_score": 52.0, "conditions": "متاح لكل طلاب الفرع العلمي والدراسات الفنية"}
+    {"faculty": "المعهد التقاني للخطوط الحديدية", "university": "حلب / دمشق", "type": "مفاضلة عامة", "min_score": 55.0, "conditions": "لا يوجد"}
 ]
 
 @app.route('/')
@@ -71,7 +69,6 @@ def home():
 
 @app.route('/api/search', methods=['GET'])
 def search_faculty():
-    # جلب المدخلات القادمة من المتصفح عبر الرابط (GET Request)
     user_score = request.args.get('score', type=float)
     selected_type = request.args.get('type', type=str, default='all')
     
@@ -99,4 +96,3 @@ def search_faculty():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
