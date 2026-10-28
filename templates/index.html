@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاضلة القبول الجامعي</title>
+    <!-- استدعاء مكتبة الأيقونات الشهيرة FontAwesome لتشغيل الشمس والقمر -->
+    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root {
             --primary-color: #1e7e34;
@@ -29,12 +31,32 @@
             padding: 20px;
         }
         .container { max-width: 800px; margin: 0 auto; position: relative; }
+        
+        /* تنسيق محسّن ودائري لزر الشمس والقمر التفاعلي */
         .theme-toggle-btn {
-            position: absolute; top: 40px; left: 30px;
-            background: var(--bg-card); border: 2px solid var(--border-color);
-            color: var(--text-main); padding: 8px 12px; border-radius: 20px;
-            cursor: pointer; font-weight: bold; z-index: 10;
+            position: absolute; 
+            top: 40px; 
+            left: 30px;
+            background: var(--bg-card); 
+            border: 2px solid var(--border-color);
+            color: var(--text-main); 
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--secondary-color);
+        }
+
         .main-card { border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: var(--bg-card); padding: 30px; margin-top: 30px; }
         .text-center { text-align: center; }
         .mb-4 { margin-bottom: 1.5rem; }
@@ -53,17 +75,20 @@
 <body>
 
 <div class="container">
-    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">مظلم</button>
+    <!-- الزر المحدث بأيقونة القمر الافتراضية للوضع المشرق -->
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn" title="تبديل المظهر">
+        <i class="fa-solid fa-moon"></i>
+    </button>
 
     <div class="main-card">
         <div class="text-center mb-4">
             <h2 style="color: var(--primary-color);" class="mb-2">مفاضلة القبول الجامعي</h2>
-            <h6 style="color: #6c757d;"> االعام الدراسي: 2026 / 2027 </h6>
+            <h6 style="color: #6c757d;">العام الدراسي: 2026 / 2027</h6>
         </div>
 
         <form onsubmit="processAnalysis(event)">
             <div class="mb-3">
-                <label class="form-label"> أدخل معدلك (%):</label>
+                <label class="form-label">أدخل معدلك (%):</label>
                 <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="المعدل...." required>
             </div>
 
@@ -76,7 +101,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn-analyze">تحليل الدرجات وعرض الأفرع المتاحة ✨</button>
+            <button type="submit" class="btn-analyze">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
         </form>
 
         <div class="loader-container" id="loader">
@@ -95,15 +120,28 @@
 <script>
     let rawData = [];
 
+    // فحص الثيم عند تحميل الصفحة لضبط الأيقونة الصحيحة فوراً
+    window.addEventListener('DOMContentLoaded', () => {
+        const body = document.documentElement;
+        const btn = document.getElementById('themeBtn');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerHTML = '<i class="fa-solid fa-sun" style="color: #ffc107;"></i>'; // أيقونة شمس صفراء للمظهر المظلم
+        }
+    });
+
     function toggleTheme() {
         const body = document.documentElement;
         const btn = document.getElementById('themeBtn');
         if (body.getAttribute('data-theme') === 'dark') {
             body.removeAttribute('data-theme');
-            btn.innerText = 'مظلم';
+            localStorage.setItem('theme', 'light');
+            btn.innerHTML = '<i class="fa-solid fa-moon"></i>'; // قمر للمظهر المشرق
         } else {
             body.setAttribute('data-theme', 'dark');
-            btn.innerText = 'مشرق';
+            localStorage.setItem('theme', 'dark');
+            btn.innerHTML = '<i class="fa-solid fa-sun" style="color: #ffc107;"></i>'; // شمس للمظهر المظلم
         }
     }
 
