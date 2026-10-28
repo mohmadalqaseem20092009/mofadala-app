@@ -3,233 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة الفرز والمفاضلة الإلكترونية</title>
-    <!-- تضمين أيقونات FontAwesome لمطابقة التصميم الوزاري -->
+    <title>بوابة فرز ومفاضلة الفرع العلمي SY</title>
+    <!-- تضمين أيقونات FontAwesome للزر التفاعلي -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        /* الألوان الرسمية للموقع الحكومي */
+        /* تعريف متغيرات الألوان للوضعين المشرق والمظلم */
         :root {
-            --bg-dark: #121212;
-            --card-bg: #1c1c1e;
-            --primary-green: #0a4d34;
-            --accent-green: #11704b;
-            --text-main: #ffffff;
-            --text-muted: #aaaaaa;
-            --border-color: #2c2c2e;
-            --badge-bg: #2d1c1c;
-            --badge-text: #f8d7da;
+            --primary-color: #1e7e34;
+            --secondary-color: #28a745;
+            --bg-body: #e9ecef;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --text-title: #111111;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --modal-footer-bg: #f8f9fa;
+            --alert-bg: #fff3cd;
+            --alert-border: #ffeeba;
+            --alert-text: #856404;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        [data-theme="dark"] {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #dddddd;
+            --text-title: #ffffff;
+            --text-muted: #a0a0a0;
+            --border-color: #333333;
+            --modal-footer-bg: #252525;
+            --alert-bg: #2d2212;
+            --alert-border: #44331b;
+            --alert-text: #ffb020;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-body);
             color: var(--text-main);
             direction: rtl;
             padding: 20px;
         }
-
-        .container { max-width: 1000px; margin: 0 auto; }
-
-        /* شريط التحكم العلوي المتطابق مع الصورة */
-        .top-filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            background-color: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .search-wrapper { position: relative; flex: 1; }
-        .search-wrapper i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
         
-        .form-control, .form-select {
-            width: 100%; padding: 10px 40px 10px 15px;
-            font-size: 0.95rem; color: var(--text-main);
-            background-color: #2c2c2e; border: 1px solid var(--border-color);
-            border-radius: 6px; outline: none;
-        }
-        .form-select { padding: 10px 15px; text-align: right; }
-
-        .btn-analyze {
-            background-color: var(--primary-green); color: white; border: none;
-            padding: 10px 25px; border-radius: 6px; cursor: pointer;
-            font-weight: bold; transition: background 0.2s;
-        }
-        .btn-analyze:hover { background-color: var(--accent-green); }
-
-        /* التبويب الملون الرئيسي (علمي عام - العام الحالي) */
-        .category-header {
-            background-color: var(--primary-green);
-            padding: 12px 20px;
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .category-count { background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 12px; font-size: 0.85rem; }
-
-        /* حاوية البطاقات الكبيرة */
-        .results-panel {
-            background-color: #171719;
-            padding: 15px;
-            border-radius: 0 0 8px 8px;
-            border: 1px solid var(--border-color);
-            border-top: none;
-        }
-
-        /* تصميم كرت الرغبة مطابق تماماً للصورة */
-        .faculty-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
+        .container { max-width: 800px; margin: 0 auto; position: relative; }
+        
+        /* زر تبديل المظهر التفاعلي */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 40px;
+            left: 30px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .faculty-card:hover { transform: translateY(-2px); border-color: var(--accent-green); }
-
-        .card-right { display: flex; align-items: center; gap: 20px; }
-        .plus-icon { color: var(--accent-green); font-size: 1.2rem; cursor: pointer; }
-        
-        .faculty-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; color: #ffffff; }
-        .location-info { color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
-
-        .card-left { text-align: left; }
-        .score-badge {
-            background-color: var(--badge-bg);
-            color: #ff8585;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.9rem;
             font-weight: bold;
-            display: inline-block;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        .theme-toggle-btn:hover {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
         }
 
-        /* شريط التحميل الدوار */
-        .loader {
-            display: none; text-align: center; padding: 30px;
+        .main-card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: var(--bg-card);
+            padding: 30px;
+            margin-top: 30px;
         }
+        
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .mb-3 { margin-bottom: 1rem; }
+        .mt-3 { margin-top: 1rem; }
+        .mt-4 { margin-top: 1.5rem; }
+        .fw-bold { font-weight: bold; }
+        .text-success { color: var(--primary-color); }
+        .text-muted { color: var(--text-muted); }
+        
+        .form-label { display: block; margin-bottom: .5rem; font-weight: bold; color: var(--text-main); }
+        .form-control, .form-select {
+            display: block; width: 100%; padding: .375rem .75rem;
+            font-size: 1rem; line-height: 1.5; color: var(--text-main);
+            background-color: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: .25rem; outline: none;
+        }
+        .form-control:focus, .form-select:focus { border-color: var(--secondary-color); }
+        .form-control-lg, .form-select-lg { padding: .5rem 1rem; font-size: 1.25rem; border-radius: .3rem; text-align: center; }
+        
+        .btn-analyze {
+            display: block; width: 100%; background-color: var(--primary-color);
+            color: white; border: none; padding: 14px; font-size: 1.1rem;
+            border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease;
+        }
+        .btn-analyze:hover { background-color: #155d27; transform: translateY(-2px); }
+        
+        .faculty-card {
+            background: var(--bg-card); border-right: 5px solid var(--secondary-color);
+            border-left: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
+            border-radius: 8px; padding: 18px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .faculty-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); background-color: rgba(40, 167, 69, 0.08); }
+        
+        .badge { display: inline-block; padding: .4em .75em; font-size: .75em; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem; color: #fff; background-color: #6c757d; }
+        .bg-success { background-color: var(--secondary-color); }
+        .bg-warning { background-color: #ffc107; color: #212529; }
+        
+        .loader-container { display: none; text-align: center; margin: 20px 0; }
         .spinner {
-            width: 40px; height: 40px; border: 4px solid #2c2c2e;
-            border-top-color: var(--accent-green); border-radius: 50%;
-            animation: spin 0.8s linear infinite; margin: 0 auto 10px;
+            display: inline-block; width: 2.5rem; height: 2.5rem;
+            vertical-align: -.125em; border: .28em solid currentColor;
+            border-right-color: transparent; border-radius: 50%;
+            animation: spin .75s linear infinite; color: var(--primary-color);
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* النافذة المنبثقة للشروط */
+        
+        .search-box { display: none; margin-bottom: 20px; border-top: 2px solid var(--border-color); padding-top: 20px; }
+        .export-btn {
+            display: none; background-color: #007bff; color: white;
+            padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem;
+        }
+        .export-btn:hover { background-color: #0056b3; }
+        
         .custom-modal {
-            display: none; position: fixed; z-index: 2000;
+            display: none; position: fixed; z-index: 1050;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7); align-items: center; justify-content: center;
+            background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center;
         }
         .modal-content {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 10px; max-width: 500px; width: 90%; overflow: hidden;
+            background: var(--bg-card); border-radius: 10px; max-width: 500px; width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); overflow: hidden; animation: fadeIn 0.3s ease;
+            border: 1px solid var(--border-color);
         }
-        .modal-header { background: var(--primary-green); color: white; padding: 15px; position: relative; font-weight: bold; }
-        .modal-body { padding: 20px; line-height: 1.6; color: #dddddd; }
-        .modal-footer { padding: 15px; background: #171719; display: flex; justify-content: flex-end; border-top: 1px solid var(--border-color); }
-        .btn-close { position: absolute; left: 15px; top: 15px; background: transparent; border: none; color: white; font-size: 22px; cursor: pointer; }
-        .btn-secondary { background: #48484a; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .conditions-box { background: #2d2212; border: 1px solid #ff9f0a; color: #ff9f0a; padding: 12px; border-radius: 6px; margin-top: 15px; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-header { background: var(--primary-color); color: white; padding: 15px; position: relative; font-weight: bold; font-size: 1.1rem; }
+        .modal-body { padding: 20px; line-height: 1.6; text-align: right; color: var(--text-main); }
+        .modal-footer { padding: 12px; text-align: left; background: var(--modal-footer-bg); display: flex; justify-content: flex-end; border-top: 1px solid var(--border-color); }
+        .btn-close { position: absolute; left: 15px; top: 15px; background: transparent; border: none; color: white; font-size: 24px; cursor: pointer; line-height: 1; }
+        .btn-secondary { background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .alert-box { background: var(--alert-bg); border: 1px solid var(--alert-border); color: var(--alert-text); padding: 12px; border-radius: 6px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     
-    <!-- شريط التحكم والإدخال العلوي الموحد -->
-    <form id="analyzeForm" onsubmit="processAnalysis(event)" class="top-filter-bar">
-        <div style="width: 180px;">
-            <input type="number" step="0.01" min="50" max="100" class="form-control" id="scoreInput" placeholder="أدخل النسبة المئوية..." required style="padding-right:15px; text-align:center;">
-        </div>
-        <div style="width: 200px;">
-            <select class="form-select" id="typeSelect">
-                <option value="all">جميع الأنواع</option>
-                <option value="عام">مفاضلة عامة</option>
-                <option value="موازي">مفاضلة موازي</option>
-            </select>
-        </div>
-        <div class="search-wrapper">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="innerSearch" class="form-control" placeholder="ابحث باسم الرغبة أو الجامعة..." onkeyup="filterResults()">
-        </div>
-        <button type="submit" class="btn-analyze">تحديث النتائج</button>
-    </form>
+    <!-- زر التحكم بالوضع المشرق والمظلم -->
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">
+        <i class="fa-solid fa-moon"></i> <span>مظلم</span>
+    </button>
 
-    <!-- شريط التحميل الاستباقي -->
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-        <p style="color: var(--text-muted);">جاري تصفية وفرز الرغبات المتاحة لدرجاتك...</p>
-    </div>
+    <div class="main-card">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-success mb-2">بوابة فرز ومفاضلة الفرع العلمي SY</h2>
+            <h6 class="text-muted">العام الدراسي: 2026 / 2027</h6>
+        </div>
 
-    <!-- التبويب الملون والنتائج -->
-    <div id="mainResultsContainer" style="display: none;">
-        <div class="category-header">
-            <div>
-                <i class="fa-solid fa-chevron-down me-2" style="font-size: 0.85rem;"></i>
-                علمي عام - العام الحالي شهادات سورية
+        <form id="analyzeForm" onsubmit="processAnalysis(event)">
+            <div class="mb-3">
+                <label for="scoreInput" class="form-label">أدخل مجموعك المئوي الصافي (%):</label>
+                <input type="number" step="0.01" min="50" max="100" class="form-control form-control-lg" id="scoreInput" placeholder="مثال: 94.50" required>
             </div>
-            <span class="category-count" id="resultsCount">0</span>
-        </div>
 
-        <div class="results-panel" id="resultsWrapper">
-            <!-- سيتم حقن كروت الرغبات هنا ديناميكياً -->
-        </div>
-    </div>
-
-</div>
-
-<!-- النافذة المنبثقة للتفاصيل والشروط الإضافية الوزارية -->
-<div class="custom-modal" id="infoModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span id="modalFacultyTitle">تفاصيل الرغبة</span>
-            <button class="btn-close" onclick="closeModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p class="mb-3"><i class="fa-solid fa-building-columns text-muted me-2"></i> <strong>الجامعة / فرع:</strong> <span id="modalUniversity"></span></p>
-            <p class="mb-3"><i class="fa-solid fa-id-card text-muted me-2"></i> <strong>نوع المفاضلة:</strong> <span id="modalType"></span></p>
-            <p class="mb-3"><i class="fa-solid fa-chart-simple text-muted me-2"></i> <strong>الحد الأدنى المطلوب:</strong> <span id="modalMinScore"></span></p>
-            <div class="conditions-box">
-                <h5 style="font-size: 0.95rem; margin-bottom: 6px;"><i class="fa-solid fa-circle-exclamation me-1"></i> الشروط والملاحظات الخاصة بوزارة التعليم العالي:</h5>
-                <p id="modalConditions" style="margin: 0; font-size: 0.88rem; line-height:1.4;"></p>
+            <div class="mb-4">
+                <label for="typeSelect" class="form-label">نوع المفاضلة:</label>
+                <select class="form-select form-select-lg" id="typeSelect">
+                    <option value="all">كل الأنواع (عام + موازي)</option>
+                    <option value="عام">مفاضلة عامة</option>
+                    <option value="موازي">مفاضلة التعليم الموازي</option>
+                </select>
             </div>
+
+            <button type="submit" class="btn-analyze">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
+        </form>
+
+        <div class="loader-container" id="loader">
+            <div class="spinner"></div>
+            <p class="mt-3 text-muted fw-bold" style="margin-top: 10px;">جاري مطابقة درجاتك مع الحدود الدنيا الرسمية لـ 22 صفحة...</p>
         </div>
-        <div class="modal-footer">
-            <button class="btn-secondary" onclick="closeModal()">إغلاق النافذة</button>
+
+        <div class="mt-4">
+            <div class="search-box" id="searchBoxContainer">
+                <input type="text" id="innerSearch" class="form-control" placeholder="تصفية سريعة للنتائج (اكتب مثلاً: دمشق، معلوماتية، معهد)..." onkeyup="filterResults()" style="margin-bottom: 15px; padding: 10px; text-align: right;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="resultsCount" class="badge bg-success" style="padding: 8px 12px; font-size: 0.85rem;"></span>
+                    <button class="export-btn" id="pdfBtn" onclick="exportToPDF()">حفظ قائمة الرغبات المتاحة (PDF)</button>
+                </div>
+            </div>
+
+            <div id="resultsWrapper" class="mt-3"></div>
         </div>
-    </div>
-</div>
 
-<script>
-    let rawData = [];
-
-    function processAnalysis(e) {
-        e.preventDefault();
-        const score = document.getElementById('scoreInput').value;
-        const type = document.getElementById('typeSelect').value;
-        const loader = document.getElementById('loader');
-        const mainContainer = document.getElementById('mainResultsContainer');
-        const resultsWrapper = document.getElementById('resultsWrapper');
-        
-        mainContainer.style.display = 'none';
-        loader.style.display = 'block';
-
-        let url = `/api/search?score=${score}`;
-        if(type !== 'all') {
-            url += `&type=${type === 'عام' ? 'مفاضلة عامة' : 'مفاضلة التعليم الموازي'}`;
-        }
-
-        fetch(url)
