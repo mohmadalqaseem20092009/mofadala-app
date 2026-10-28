@@ -69,23 +69,34 @@ DATA = [
 def home():
     return render_template('index.html')
 
-@app.route('/analyze', methods=['POST'])
-def analyze():
-    try:
-        user_score = float(request.form.get('score', 0))
-        selected_type = request.form.get('type', 'كل الأنواع')
+@app.route('/api/search', methods=['GET'])
+def search_faculty():
+    # جلب المدخلات القادمة من المتصفح عبر الرابط (GET Request)
+    user_score = request.args.get('score', type=float)
+    selected_type = request.args.get('type', type=str, default='all')
+    
+    accepted_branches = []
+    
+    for branch in DATA:
+        # 1. فحص شرط المعدل
+        if user_score is not None and user_score < branch['min_score']:
+            continue
+            
+        # 2. فحص شرط نوع المفاضلة (عام / موازي) بشكل مرن
+        if selected_type and selected_type != 'all':
+            if selected_type == 'موازي' and 'موازي' not in branch['type']:
+                continue
+            if selected_type == 'عام' and 'عام' not in branch['type']:
+                continue
+                
+        accepted_branches.append(branch)
         
-        accepted_branches = []
-        for branch in DATA:
-            if user_score >= branch['min_score']:
-                if selected_type == 'كل الأنواع' or branch['type'] == selected_type:
-                    accepted_branches.append(branch)
-                    
-        accepted_branches = sorted(accepted_branches, key=lambda x: x['min_score'], reverse=True)
-        return jsonify({'status': 'success', 'data': accepted_branches})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)})
+    # ترتيب النتائج من الأعلى للأقل بناءً على الحد الأدنى
+    accepted_branches = sorted(accepted_branches, key=lambda x: x['min_score'], reverse=True)
+    
+    return jsonify({"status": "success", "data": accepted_branches})
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
