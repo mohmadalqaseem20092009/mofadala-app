@@ -13,21 +13,27 @@
             --text-main: #333333;
             --text-title: #111111;
             --border-color: #dee2e6;
+            --input-bg: #ffffff;
         }
+
         [data-theme="dark"] {
             --bg-body: #121212;
             --bg-card: #1e1e1e;
             --text-main: #dddddd;
             --text-title: #ffffff;
             --border-color: #333333;
+            --input-bg: #2a2a2a;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s ease, color 0.2s ease; }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             padding: 20px;
         }
+        
         .container { max-width: 800px; margin: 0 auto; position: relative; }
         
         .theme-toggle-btn {
@@ -43,7 +49,8 @@
         .mb-4 { margin-bottom: 1.5rem; }
         .mb-3 { margin-bottom: 1rem; }
         .form-label { display: block; margin-bottom: .5rem; font-weight: bold; text-align: right; }
-        .form-control, .form-select { display: block; width: 100%; padding: .6rem; font-size: 1.1rem; background-color: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); border-radius: .25rem; text-align: center; outline: none; }
+        .form-control, .form-select { display: block; width: 100%; padding: .6rem; font-size: 1.1rem; background-color: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color); border-radius: .25rem; text-align: center; outline: none; }
+        .form-control:focus, .form-select:focus { border-color: var(--secondary-color); }
         
         .btn-analyze { display: block; width: 100%; background-color: var(--primary-color); color: white; border: none; padding: 14px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; }
         .btn-analyze:hover { background-color: #155d27; }
@@ -51,7 +58,7 @@
         .faculty-card { background: var(--bg-card); border-right: 5px solid var(--secondary-color); border-left: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         
         /* زر الإضافة التفاعلي للأفرع */
-        .btn-add-wish { background-color: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-right: 15px; }
+        .btn-add-wish { background-color: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         .btn-add-wish:hover { background-color: #0056b3; }
         
         .loader-container { display: none; text-align: center; margin: 20px 0; }
@@ -60,7 +67,7 @@
         .search-box { display: none; margin-top: 20px; border-top: 2px solid var(--border-color); padding-top: 20px; }
 
         /* حاوية صندوق رغبات الطالب المختارة */
-        .wishlist-container { display: none; margin-top: 30px; background-color: rgba(0, 123, 255, 0.05); border: 2px dashed #007bff; border-radius: 10px; padding: 20px; text-align: right; }
+        .wishlist-container { display: none; margin-top: 30px; margin-bottom: 20px; background-color: rgba(0, 123, 255, 0.05); border: 2px dashed #007bff; border-radius: 10px; padding: 20px; text-align: right; }
         .wish-item { background: var(--bg-card); padding: 10px; border-radius: 5px; margin-bottom: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .btn-remove-wish { background: #dc3545; color: white; border: none; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
         .btn-submit-excel { background-color: #28a745; color: white; border: none; padding: 12px 25px; font-size: 1.1rem; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; }
@@ -76,15 +83,15 @@
 
     <div class="main-card">
         <div class="text-center mb-4">
-            <h2 style="color: var(--primary-color); padding: 0 10px;" class="mb-2">مفاضلة القبول الجامعي</h2>
+            <h2 style="color: var(--primary-color); padding: 0 10px;" class="mb-2">مفاضلة القلوب الجامعي</h2>
             <h6 style="color: #6c757d; margin-bottom: 5px;">العام الدراسي: 2026 / 2027</h6>
             <div class="engineer-title">المهندس محمد القاسم</div>
         </div>
 
         <!-- خانة إدخال اسم الطالب لربطه بملف الإكسل -->
-        <div class="mb-3">
-            <label class="form-label">اسم الطالب الثلاثي (لتثبيت الطلب):</label>
-            <input type="text" id="studentNameInput" class="form-control" placeholder="اكتب اسمك الكامل هنا..." style="text-align: right;">
+        <div class="mb-3" style="border-bottom: 2px solid var(--border-color); padding-bottom: 20px;">
+            <label class="form-label">اسم الطالب الثلاثي (لتثبيت الطلب وتسجيل الرغبات):</label>
+            <input type="text" id="studentNameInput" class="form-control" placeholder="اكتب اسمك الكامل هنا لتفعيل ميزة السلة..." style="text-align: right;">
         </div>
 
         <form onsubmit="processAnalysis(event)">
@@ -96,7 +103,7 @@
             <div class="mb-4">
                 <label class="form-label">نوع المفاضلة:</label>
                 <select id="typeSelect" class="form-select">
-                    <option value="all">كل الأنواع (عام + موازي)</option>
+                    <option value="all">كل الأنواع </option>
                     <option value="عام">مفاضلة عامة</option>
                     <option value="موازي">مفاضلة التعليم الموازي</option>
                 </select>
@@ -112,13 +119,13 @@
 
         <!-- صندوق سلة الرغبات المختارة -->
         <div class="wishlist-container" id="wishlistContainer">
-            <h3 style="color: #007bff; margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> قائمة رغباتك المختارة للتثبيت:</h3>
+            <h3 style="color: #007bff; margin-bottom: 15px;">📋 قائمة رغباتك المختارة للتثبيت:</h3>
             <div id="wishlistWrapper"></div>
             <button class="btn-submit-excel" onclick="submitWishesToExcel()">تثبيت الرغبات وإرسال ملف Excel 🚀</button>
         </div>
 
         <div class="search-box" id="searchBoxContainer">
-            <input type="text" id="innerSearch" class="form-control" placeholder="تصفية فورية بالجامعة أو الكلية..." onkeyup="filterResults()" style="margin-bottom: 15px; text-align: right; padding: 10px;">
+            <input type="text" id="innerSearch" class="form-control" placeholder="تصفية فورية بالجامعة أو الكلية (مثال: دمشق، معلوماتية)..." onkeyup="filterResults()" style="margin-bottom: 15px; text-align: right; padding: 10px;">
             <div id="resultsCount" style="font-weight: bold; margin-bottom: 15px; color: var(--primary-color); text-align: right;"></div>
             <div id="resultsWrapper"></div>
         </div>
@@ -127,7 +134,7 @@
 
 <script>
     let rawData = [];
-    let selectedWishes = []; // مصفوفة لتخزين الرغبات المضافة
+    let selectedWishes = []; 
 
     window.addEventListener('DOMContentLoaded', () => {
         const body = document.documentElement;
@@ -164,19 +171,15 @@
                     rawData = response.data; renderCards(rawData);
                 } else {
                     document.getElementById('resultsCount').innerText = '';
-                    wrapper.innerHTML = `<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة.</div>`;
+                    wrapper.innerHTML = `<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة مع هذا المجموع.</div>`;
                 }
+            })
+            .catch(err => {
+                loader.style.display = 'none';
+                alert('حدث خطأ في جلب البيانات.');
             });
     }
 
     function renderCards(data) {
         const wrapper = document.getElementById('resultsWrapper');
         wrapper.innerHTML = '';
-        document.getElementById('resultsCount').innerText = `عدد الأفرع المتاحة لك: ${data.length}`;
-        
-        data.forEach((item, index) => {
-            const card = document.createElement('div');
-            card.className = 'faculty-card';
-            card.innerHTML = `
-                <div style="text-align: right; flex: 1;">
-                    <h3 style="color:var(--text-title); font-size:1.1rem; font-weight: bold; margin-bottom: 5px;">${item.faculty}</h3>
