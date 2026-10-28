@@ -58,25 +58,25 @@
     <div class="main-card">
         <div class="text-center mb-4">
             <h2 style="color: var(--primary-color);" class="mb-2">مفاضلة القبول الجامعي</h2>
-            <h6 style="color: #6c757d;">العام الدراسي: 2026 / 2027</h6>
+            <h6 style="color: #6c757d;"> المهندس محمد اقاسم العام الدراسي: 2026 / 2027 </h6>
         </div>
 
         <form onsubmit="processAnalysis(event)">
             <div class="mb-3">
-                <label class="form-label">أدخل مجموعك المئوي الصافي (%):</label>
-                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="مثال: 90" required>
+                <label class="form-label"> أدخل معدلك (%):</label>
+                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="....المعدل" required>
             </div>
 
             <div class="mb-4">
                 <label class="form-label">نوع المفاضلة:</label>
                 <select id="typeSelect" class="form-select">
-                    <option value="all">كل الأنواع (عام + موازي)</option>
+                    <option value="all">كل الأنواع </option>
                     <option value="عام">مفاضلة عامة</option>
                     <option value="موازي">مفاضلة التعليم الموازي</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn-analyze">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
+            <button type="submit" class="btn-analyze">تحليل الدرجات وعرض الأفرع المتاحة ✨</button>
         </form>
 
         <div class="loader-container" id="loader">
