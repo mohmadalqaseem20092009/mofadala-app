@@ -3,171 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مفاضلة الفرع العلمي SY</title>
-    <!-- روابط Bootstrap مدمجة وموثوقة -->
-    <link rel="stylesheet" href="https://jsdelivr.net">
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <script src="https://cloudflare.com"></script>
+    <title>مفاضلة الفرع العلمي</title>
     <style>
+        /* إعادة ضبط وتنسيقات الـ Bootstrap الأساسية مدمجة محلياً لضمان الاستقرار */
         :root {
             --primary-color: #1e7e34;
             --secondary-color: #28a745;
             --bg-light: #f8f9fa;
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #e9ecef;
             color: #333;
+            direction: rtl;
+            padding: 20px;
         }
+        .container { max-width: 800px; margin: 0 auto; }
         .main-card {
-            border: none;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             background: #fff;
             padding: 30px;
             margin-top: 30px;
         }
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .mb-3 { margin-bottom: 1rem; }
+        .mt-3 { margin-top: 1rem; }
+        .mt-4 { margin-top: 1.5rem; }
+        .fw-bold { font-weight: bold; }
+        .text-success { color: var(--primary-color); }
+        .text-muted { color: #6c757d; }
+        
+        .form-label { display: block; margin-bottom: .5rem; font-weight: bold; }
+        .form-control, .form-select {
+            display: block; width: 100%; padding: .375rem .75rem;
+            font-size: 1rem; line-height: 1.5; color: #495057;
+            background-color: #fff; border: 1px solid #ced4da;
+            border-radius: .25rem; transition: border-color .15s ease-in-out;
+        }
+        .form-control-lg, .form-select-lg { padding: .5rem 1rem; font-size: 1.25rem; border-radius: .3rem; text-align: center; }
+        
         .btn-analyze {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            display: block; width: 100%; background-color: var(--primary-color);
+            color: white; border: none; padding: 12px; font-size: 1.1rem;
+            border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease;
         }
-        .btn-analyze:hover {
-            background-color: #155d27;
-            transform: translateY(-2px);
-            color: white;
-        }
+        .btn-analyze:hover { background-color: #155d27; transform: translateY(-2px); }
+        
         .faculty-card {
-            background: #ffffff;
-            border-right: 5px solid var(--secondary-color);
-            border-left: 1px solid #dee2e6;
-            border-top: 1px solid #dee2e6;
-            border-bottom: 1px solid #dee2e6;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            background: #ffffff; border-right: 5px solid var(--secondary-color);
+            border-left: 1px solid #dee2e6; border-top: 1px solid #dee2e6; border-bottom: 1px solid #dee2e6;
+            border-radius: 8px; padding: 15px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: all 0.3s ease;
         }
-        .faculty-card:hover {
-            transform: scale(1.01) translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            background-color: #f1f9f3;
+        .faculty-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); background-color: #f1f9f3; }
+        
+        .badge { display: inline-block; padding: .35em .65em; font-size: .75em; font-weight: 700; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: .25rem; color: #fff; background-color: #6c757d; }
+        .bg-success { background-color: var(--secondary-color); }
+        .bg-warning { background-color: #ffc107; color: #212529; }
+        
+        .loader-container { display: none; text-align: center; margin: 20px 0; }
+        .spinner {
+            display: inline-block; width: 2rem; height: 2rem;
+            vertical-align: -.125em; border: .25em solid currentColor;
+            border-right-color: transparent; border-radius: 50%;
+            animation: spin .75s linear infinite; color: var(--primary-color);
         }
-        .loader-container {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .custom-spinner {
-            width: 3rem;
-            height: 3rem;
-            color: var(--primary-color);
-        }
-        .search-box {
-            display: none;
-            margin-bottom: 20px;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .search-box { display: none; margin-bottom: 20px; }
         .export-btn {
-            display: none;
-            background-color: #007bff;
-            color: white;
+            display: none; background-color: #007bff; color: white;
+            padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;
         }
+        
+        /* تصميم مخصص وثابت للنافذة المنبثقة لمنع ظهورها أسفل الصفحة */
+        .custom-modal {
+            display: none; position: fixed; z-index: 1050;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: white; border-radius: 10px; max-width: 500px; width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        .modal-header { background: var(--primary-color); color: white; padding: 15px; position: relative; font-weight: bold; }
+        .modal-body { padding: 20px; line-height: 1.6; }
+        .modal-footer { padding: 10px; text-align: left; background: #f1f1f1; display: flex; justify-content: flex-end; }
+        .btn-close { position: absolute; left: 15px; top: 15px; background: transparent; border: none; color: white; font-size: 20px; cursor: pointer; }
+        .btn-secondary { background: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        .alert-box { background: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 10px; border-radius: 5px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="container pb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-9 col-lg-8">
-            
-            <div class="main-card">
-                <div class="text-center mb-4">
-                    <h2 class="fw-bold text-success mb-2">مفاضلة الفرع العلمي SY</h2>
-                    <h6 class="text-muted">العام الدراسي: 2026 / 2027</h6>
-                </div>
+<div class="container">
+    <div class="main-card">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-success mb-2">مفاضلة الفرع العلمي </h2>
+            <h6 class="text-muted">العام الدراسي: 2026 / 2027</h6>
+        </div>
 
-                <form id="analyzeForm" onsubmit="processAnalysis(event)">
-                    <div class="mb-3">
-                        <label for="scoreInput" class="form-label fw-bold"> أدخل معدلك (%):</label>
-                        <input type="number" step="0.01" min="50" max="100" class="form-control form-control-lg text-center" id="scoreInput" placeholder="مثال: 94.50" required>
-                    </div>
+        <form id="analyzeForm" onsubmit="processAnalysis(event)">
+            <div class="mb-3">
+                <label for="scoreInput" class="form-label">أدخل معدلك (%):</label>
+                <input type="number" step="0.01" min="50" max="100" class="form-control form-control-lg" id="scoreInput" placeholder="مثال: 94.50" required>
+            </div>
 
-                    <div class="mb-4">
-                        <label for="typeSelect" class="form-label fw-bold">نوع المفاضلة:</label>
-                        <select class="form-select form-select-lg" id="typeSelect">
-                            <option value="all">كل الأنواع (عام + موازي)</option>
-                            <option value="عام">مفاضلة عامة</option>
-                            <option value="موازي">مفاضلة التعليم الموازي</option>
-                        </select>
-                    </div>
+            <div class="mb-4">
+                <label for="typeSelect" class="form-label">نوع المفاضلة:</label>
+                <select class="form-select form-select-lg" id="typeSelect">
+                    <option value="all">كل الأنواع (عام + موازي)</option>
+                    <option value="عام">مفاضلة عامة</option>
+                    <option value="موازي">مفاضلة التعليم الموازي</option>
+                </select>
+            </div>
 
-                    <button type="submit" class="btn btn-analyze w-100 fw-bold">
-                        <i class="fa-solid fa-wand-magic-sparkles me-2"></i> تحليل درجاتي وعرض الأفرع المتاحة ✨
-                    </button>
-                </form>
+            <button type="submit" class="btn-analyze">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
+        </form>
 
-                <div class="loader-container" id="loader">
-                    <div class="spinner-border custom-spinner" role="status"></div>
-                    <p class="mt-2 text-muted fw-bold">جاري مطابقة درجاتك مع الحدود الدنيا الرسمية...</p>
-                </div>
+        <div class="loader-container" id="loader">
+            <div class="spinner"></div>
+            <p class="mt-3 text-muted fw-bold">جاري مطابقة درجاتك وحساب النتائج...</p>
+        </div>
 
-                <div class="mt-4">
-                    <div class="search-box" id="searchBoxContainer">
-                        <div class="input-group">
-                            <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                            <input type="text" id="innerSearch" class="form-control" placeholder="تصفية سريعة للنتائج..." onkeyup="filterResults()">
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="badge bg-secondary p-2" id="resultsCount"></span>
-                            <button class="btn export-btn btn-sm fw-bold" id="pdfBtn" onclick="exportToPDF()">
-                                <i class="fa-solid fa-file-pdf me-1"></i> حفظ قائمة الرغبات المتاحة (PDF)
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="resultsWrapper" class="mt-3"></div>
-                </div>
-
-                <div class="text-center mt-5 pt-3 border-top text-muted" style="font-size: 0.85rem;">
-                    تصميم وتطوير: المهندس محمد القاسم البرمجي الشامل © 2026<br>
-                    جميع الحقوق محفوظة - مستند إلى الحدود الدنيا الرسمية لوزارة التعليم العالي
+        <div class="mt-4">
+            <div class="search-box" id="searchBoxContainer">
+                <input type="text" id="innerSearch" class="form-control" placeholder="تصفية سريعة للنتائج..." onkeyup="filterResults()" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="resultsCount" class="badge bg-success" style="padding: 8px;"></span>
+                    <button class="export-btn" id="pdfBtn" onclick="exportToPDF()">حفظ القائمة (PDF)</button>
                 </div>
             </div>
 
+            <div id="resultsWrapper" class="mt-3"></div>
+        </div>
+
+        <div class="text-center mt-4 text-muted" style="font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 15px;">
+            تصميم وتطوير: المهندس محمد القاسم البرمجي الشامل © 2026<br>
+            جميع الحقوق محفوظة - مستند إلى الحدود الدنيا الرسمية لوزارة التعليم العالي
         </div>
     </div>
 </div>
 
-<!-- النافذة المنبثقة (Modal) -->
-<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold" id="modalFacultyTitle">تفاصيل الفرع</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- النافذة المنبثقة المستقلة -->
+<div class="custom-modal" id="infoModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span id="modalFacultyTitle">تفاصيل الفرع</span>
+            <button class="btn-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="mb-3"><strong>🏛️ الجامعة/الجهة:</strong> <span id="modalUniversity"></span></p>
+            <p class="mb-3"><strong>📋 نوع القبول:</strong> <span id="modalType"></span></p>
+            <p class="mb-3"><strong>📊 الحد الأدنى المطلوب:</strong> %<span id="modalMinScore"></span></p>
+            <div class="alert-box">
+                <h5 class="fw-bold" style="font-size: 0.9rem; margin-bottom: 5px;">⚠️ الشروط والملاحظات الخاصة:</h5>
+                <p id="modalConditions" style="margin: 0; font-size: 0.85rem;"></p>
             </div>
-            <div class="modal-body text-start" dir="rtl">
-                <p class="mb-2"><strong>🏛️ الجامعة/الجهة:</strong> <span id="modalUniversity"></span></p>
-                <p class="mb-2"><strong>📋 نوع القبول:</strong> <span id="modalType"></span></p>
-                <p class="mb-2"><strong>📊 الحد الأدنى المطلوب:</strong> %<span id="modalMinScore"></span></p>
-                <hr>
-                <div class="p-3 bg-light rounded border border-warning">
-                    <h6 class="fw-bold text-dark"><i class="fa-solid fa-circle-exclamation me-1 text-warning"></i> الشروط والملاحظات الخاصة:</h6>
-                    <p id="modalConditions" class="mb-0 text-muted fw-semibold"></p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">إغلاق</button>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal()">إغلاق</button>
         </div>
     </div>
 </div>
-
-<!-- جلب ملفات السكريبت الخاصة بـ Bootstrap لتفعيل الحركات وإخفاء الـ Modal تلقائياً -->
-<script src="https://jsdelivr.net"></script>
 
 <script>
     let rawData = [];
@@ -189,36 +191,14 @@
             url += `&type=${type === 'عام' ? 'مفاضلة عامة' : 'مفاضلة التعليم الموازي'}`;
         }
 
-        setTimeout(() => {
-            fetch(url)
-                .then(res => res.json())
-                .then(response => {
-                    loader.style.display = 'none';
-                    if (response.status === 'success' && response.data.length > 0) {
-                        rawData = response.data;
-                        searchBoxContainer.style.display = 'block';
-                        renderCards(rawData);
-                    } else {
-                        resultsWrapper.innerHTML = `<div class="alert alert-warning text-center fw-bold">عذراً، مجموعك الحالي لا يؤهلك لأي من الأفرع. حاول تعديل النسبة.</div>`;
-                    }
-                })
-                .catch(err => {
-                    loader.style.display = 'none';
-                    resultsWrapper.innerHTML = `<div class="alert alert-danger text-center">حدث خطأ أثناء الاتصال بالسيرفر.</div>`;
-                });
-        }, 800);
-    }
-
-    function renderCards(data) {
-        const wrapper = document.getElementById('resultsWrapper');
-        wrapper.innerHTML = '';
-        document.getElementById('resultsCount').innerText = `عدد الأفرع المتاحة لك: ${data.length}`;
-        document.getElementById('pdfBtn').style.display = data.length > 0 ? 'block' : 'none';
-
-        data.forEach((item, index) => {
-            const card = document.createElement('div');
-            card.className = 'faculty-card p-3 mb-3 d-flex justify-content-between align-items-center';
-            card.setAttribute('onclick', `showModalDetails(${index})`);
-            card.innerHTML = `
-                <div>
-                    <h5 class="fw-bold text-dark mb-1">${item.faculty}</h5>
+        fetch(url)
+            .then(res => res.json())
+            .then(response => {
+                loader.style.display = 'none';
+                if (response.status === 'success' && response.data.length > 0) {
+                    rawData = response.data;
+                    searchBoxContainer.style.display = 'block';
+                    renderCards(rawData);
+                } else {
+                    resultsWrapper.innerHTML = `<div style="padding:15px; color:#856404; background:#fff3cd; border-radius:5px; text-align:center;" class="fw-bold">مجموعك الحالي أقل من الحدود الدنيا في قاعدة البيانات.</div>`;
+                }
