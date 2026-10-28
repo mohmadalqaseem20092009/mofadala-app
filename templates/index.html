@@ -77,8 +77,8 @@
 
         <form onsubmit="processAnalysis(event)">
             <div class="mb-3">
-                <label class="form-label">أدخل معدلك   (%):</label>
-                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="ادخل المعدل هنا...." required>
+                <label class="form-label">أدخل مجموعك المئوي الصافي (%):</label>
+                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="مثال: 80" required>
             </div>
 
             <div class="mb-4">
@@ -90,7 +90,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn-analyze">تحليل الدرجات وعرض الأفرع المتاحة ✨</button>
+            <button type="submit" class="btn-analyze">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
         </form>
 
         <div class="loader-container" id="loader">
@@ -140,9 +140,9 @@
         searchBox.style.display = 'none';
         wrapper.innerHTML = '';
 
-        fetch(`/api/search?score=${score}&type=${type}`)
-            .then(res => res.json())
-            .then(response => {
+        fetch('/api/search?score=' + score + '&type=' + type)
+            .then(function(res) { return res.json(); })
+            .then(function(response) {
                 loader.style.display = 'none';
                 searchBox.style.display = 'block';
                 if (response.status === 'success' && response.data.length > 0) {
@@ -150,10 +150,10 @@
                     renderCards(rawData);
                 } else {
                     document.getElementById('resultsCount').innerText = '';
-                    wrapper.innerHTML = `<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة مع هذا المجموع.</div>`;
+                    wrapper.innerHTML = '<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة مع هذا المجموع.</div>';
                 }
             })
-            .catch(err => {
+            .catch(function(err) {
                 loader.style.display = 'none';
                 alert('حدث خطأ في الاتصال بالخادم.');
             });
@@ -162,20 +162,17 @@
     function renderCards(data) {
         const wrapper = document.getElementById('resultsWrapper');
         wrapper.innerHTML = '';
-        document.getElementById('resultsCount').innerText = `عدد الأفرع المتاحة لك: ${data.length}`;
+        document.getElementById('resultsCount').innerText = 'عدد الأفرع المتاحة لك: ' + data.length;
         
-        data.forEach((item, index) => {
+        data.forEach(function(item, index) {
             const card = document.createElement('div');
             card.className = 'faculty-card';
             
-            // تهيئة النصوص بشكل آمن لمنع تعليق الكود
-            const fac = item.faculty.replace(/"/g, '&quot;');
-            const uni = item.university.replace(/"/g, '&quot;');
-            const typ = item.type.replace(/"/g, '&quot;');
-
             card.innerHTML = `
                 <div style="text-align: right; flex: 1;">
                     <h3 style="color:var(--text-title); font-size:1.1rem; font-weight: bold; margin-bottom: 5px;">${item.faculty}</h3>
                     <small style="color:#6c757d;">🏢 ${item.university} | 📋 ${item.type}</small>
                 </div>
                 <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="font-weight:bold; color:var(--primary-color); font-size:1.3rem;">%${item.min_score}</div>
+                    <button class="btn-add-wish" onclick="addToWishlist(${index})"> + إضافة </button>
