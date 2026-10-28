@@ -94,6 +94,32 @@ def search_faculty():
         
     accepted_branches = sorted(accepted_branches, key=lambda x: x['min_score'], reverse=True)
     return jsonify({"status": "success", "data": accepted_branches})
+# واجهة برمجية لاستقبال الرغبات وحفظها كملف Excel فوراً على السيرفر
+@app.route('/api/submit_wishes', methods=['POST'])
+def submit_wishes():
+    post_data = request.get_json()
+    student_name = post_data.get('student_name', 'طالب مجهول')
+    wishes_list = post_data.get('wishes', [])
+    
+    # تحويل الرغبات إلى مصفوفة منظمة لملف الإكسل
+    excel_data = []
+    for index, wish in enumerate(wishes_list):
+        excel_data.append({
+            "رقم الرغبة": index + 1,
+            "اسم الطالب": student_name,
+            "الكلية / المعهد": wish['faculty'],
+            "الجامعة": wish['university'],
+            "نوع القبول": wish['type']
+        })
+    
+    # استخدام مكتبة pandas لتوليد ملف الـ Excel وحفظه باسم الطالب
+    df = pd.DataFrame(excel_data)
+    file_name = f"wishes_{student_name.replace(' ', '_')}.xlsx"
+    df.to_excel(file_name, index=False)
+    
+    print(f"✨ تم بنجاح اصطياد الطلب وحفظ ملف إكسل جديد بالسيرفر باسم: {file_name}")
+    
+    return jsonify({"status": "success", "file_created": file_name})
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
