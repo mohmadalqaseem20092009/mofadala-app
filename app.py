@@ -1,4 +1,4 @@
-\import os
+import os
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
@@ -32,7 +32,7 @@ DATA = [
     {"faculty": "هندسة الإلكترونيات والاتصالات", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 80.0, "conditions": "لا يوجد"},
     {"faculty": "هندسة الحواسيب والأتمتة", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 75.0, "conditions": "لا يوجد"},
     {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب / اللاذقية / حمص", "type": "مفاضلة عامة", "min_score": 72.0, "conditions": "لا يوجد"},
-    {"faculty": "الهندسة الميكانيكية (ميكانيك عام )", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 68.0, "conditions": "لا يوجد"},
+    {"faculty": "الهندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 68.0, "conditions": "لا يوجد"},
     {"faculty": "الهندسة الكيميائية والبترولية", "university": "جامعة البعث (حمص)", "type": "مفاضلة عامة", "min_score": 73.0, "conditions": "لا يوجد"},
 
     # --- 3. كليات العلوم الصحية والتمريض ---
@@ -75,11 +75,9 @@ def search_faculty():
     accepted_branches = []
     
     for branch in DATA:
-        # 1. فحص شرط المعدل
         if user_score is not None and user_score < branch['min_score']:
             continue
             
-        # 2. فحص شرط نوع المفاضلة (عام / موازي) بشكل مرن
         if selected_type and selected_type != 'all':
             if selected_type == 'موازي' and 'موازي' not in branch['type']:
                 continue
@@ -88,9 +86,7 @@ def search_faculty():
                 
         accepted_branches.append(branch)
         
-    # ترتيب النتائج من الأعلى للأقل بناءً على الحد الأدنى
     accepted_branches = sorted(accepted_branches, key=lambda x: x['min_score'], reverse=True)
-    
     return jsonify({"status": "success", "data": accepted_branches})
 
 if __name__ == '__main__':
