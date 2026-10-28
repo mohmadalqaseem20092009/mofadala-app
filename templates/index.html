@@ -30,7 +30,6 @@
         }
         .container { max-width: 800px; margin: 0 auto; position: relative; }
         
-        /* تعديل التموضع ليصبح في أقصى اليسار لمنع التداخل على الهواتف */
         .theme-toggle-btn {
             position: absolute; 
             top: 20px; 
@@ -55,7 +54,6 @@
             border-color: var(--secondary-color);
         }
 
-        /* إضافة مسافة علوية مناسبة للكرت لمنع تداخل الأزرار مع الترويسة */
         .main-card { border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: var(--bg-card); padding: 30px; margin-top: 45px; }
         .text-center { text-align: center; }
         .mb-4 { margin-bottom: 1.5rem; }
@@ -69,6 +67,15 @@
         .spinner { display: inline-block; width: 2rem; height: 2rem; border: .25em solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .75s linear infinite; color: var(--primary-color); }
         @keyframes spin { to { transform: rotate(360deg); } }
         .search-box { display: none; margin-top: 20px; border-top: 2px solid var(--border-color); padding-top: 20px; }
+        
+        /* تنسيق مخصص لتكبير اسم المبرمج وإعطائه هيبة بصرية */
+        .engineer-title {
+            color: var(--text-title);
+            font-weight: 800;
+            font-size: 1.5rem; /* تم تكبير الخط ليصبح بارزاً ومميزاً */
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -82,7 +89,8 @@
         <div class="text-center mb-4">
             <h2 style="color: var(--primary-color); padding: 0 10px;" class="mb-2">مفاضلة القبول الجامعي</h2>
             <h6 style="color: #6c757d; margin-bottom: 5px;">العام الدراسي: 2026 / 2027</h6>
-            <h5 style="color: var(--text-main); font-weight: bold; margin-top: 5px;">المهندس محمد القاسم</h5>
+            <!-- تم تطبيق الكلاس الجديد هنا لتكبير الحجم -->
+            <div class="engineer-title">المهندس محمد القاسم</div>
         </div>
 
         <form onsubmit="processAnalysis(event)">
