@@ -1,9 +1,9 @@
 import os
-from flask import Flask, render_template, request, jsonify
-import pandas as pd
+from flask import Flask, render_template, request, jsonify, send_file
 
 app = Flask(__name__)
 
+# قاعدة البيانات المدمجة السريعة
 DATA = [
     {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 94.5},
     {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "مفاضلة التعليم الموازي", "min_score": 92.0},
@@ -54,33 +54,25 @@ def submit_wishes():
     student_name = post_data.get('student_name', 'طالب مجهول')
     wishes_list = post_data.get('wishes', [])
     
-    excel_data = []
-    for index, wish in enumerate(wishes_list):
-        excel_data.append({
-            "رقم الرغبة": index + 1,
-            "اسم الطالب": student_name,
-            "الكلية / المعهد": wish.get('faculty', ''),
-            "الجامعة": wish.get('university', ''),
-            "نوع القبول": wish.get('type', '')
-        })
+    file_name = f"wishes_{student_name.replace(' ', '_')}.csv"
     
-    if excel_data:
-        df = pd.DataFrame(excel_data)
-        file_name = f"wishes_{student_name.replace(' ', '_')}.xlsx"
-        df.to_excel(file_name, index=False)
+    try:
+        # الكتابة البرمجية المباشرة النظيفة دون الحاجة لأي مكتبات خارجية
+        with open(file_name, 'w', encoding='utf-8-sig') as f:
+            f.write("رقم الرغبة,اسم الطالب,الكلية / المعهد,الجامعة,نوع القبول\n")
+            for index, wish in enumerate(wishes_list):
+                f.write(f"{index + 1},{student_name},{wish.get('faculty','')},{wish.get('university','')},{wish.get('type','')}\n")
+        
         return jsonify({"status": "success", "file_created": file_name})
-    
-       return jsonify({"status": "error", "message": "No data"})
-
-# 📥 ميزة التحميل المباشر لملفات الإكسل عبر رابط المتصفح
-from flask import send_file
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
 
 @app.route('/download/<filename>')
 def download_file(filename):
     try:
         return send_file(filename, as_attachment=True)
     except Exception as e:
-               return f"<h3>File not found! Check the filename.</h3>", 404
+        return f"<h3>File not found! Check the filename.</h3>", 404
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
