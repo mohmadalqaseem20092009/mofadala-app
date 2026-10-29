@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدارة الرغبات - مفاضلة القبول</title>
     <style>
-        /* التنسيقات الأساسية للوضع الداكن المماثل لموقع الوزارة */
         body {
             background-color: #121212;
             color: #e0e0e0;
@@ -15,7 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: start;
-            min-height: screen;
+            min-height: 100vh;
         }
         .container {
             width: 100%;
@@ -74,6 +73,7 @@
         .form-group label {
             font-size: 12px;
             color: #a0a0a0;
+            text-align: right;
         }
         .form-group input, .form-group select {
             background-color: #1e1e1e;
@@ -125,6 +125,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            text-align: right;
         }
         .branch-info {
             display: flex;
@@ -173,6 +174,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            text-align: right;
         }
         .wish-left {
             display: flex;
@@ -241,13 +243,13 @@
         <div class="filter-box">
             <div class="form-group">
                 <label>أدخل مجموعك المئوي (%):</label>
-                <input type="number" id="studentScore" value="73" step="0.1" oninput="searchBranches()">
+                <input type="number" id="studentScore" value="80" step="0.1" oninput="searchBranches()">
             </div>
             <div class="form-group">
                 <label>تحديد نوع المفاضلة:</label>
                 <select id="competitionType" onchange="searchBranches()">
                     <option value="all">كل المفاضلات (عام وموازي)</option>
-                    <option value="عام">علمي عام</option>
+                    <option value="عام" selected>علمي عام</option>
                     <option value="موازي">علمي موازي</option>
                 </select>
             </div>
@@ -312,4 +314,3 @@
                 if (result.status === 'success') {
                     renderAvailableBranches(result.data);
                 }
-            } catch (error) {
