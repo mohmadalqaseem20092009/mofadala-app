@@ -70,7 +70,17 @@ def submit_wishes():
         df.to_excel(file_name, index=False)
         return jsonify({"status": "success", "file_created": file_name})
     
-    return jsonify({"status": "error", "message": "No data"})
+       return jsonify({"status": "error", "message": "No data"})
+
+# 📥 ميزة التحميل المباشر لملفات الإكسل عبر رابط المتصفح
+from flask import send_file
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    try:
+        return send_file(filename, as_attachment=True)
+    except Exception as e:
+               return f"<h3>File not found! Check the filename.</h3>", 404
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
