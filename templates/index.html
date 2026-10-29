@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة الرغبات - مفاضلة القبول</title>
+    <title>مفاضلة القبول الجامعي</title>
     <style>
         body {
             background-color: #121212;
@@ -18,190 +18,99 @@
         }
         .container {
             width: 100%;
-            max-width: 650px;
+            max-width: 500px;
             background-color: #1e1e1e;
             border: 1px solid #2d2d2d;
             border-radius: 12px;
             padding: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #2d2d2d;
-            padding-bottom: 16px;
-            margin-bottom: 20px;
+        .header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 24px;
         }
-        .header-title h1 {
+        .badge-top {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        .header h1 {
+            color: #10b981;
+            font-size: 20px;
             margin: 0;
-            font-size: 22px;
-            color: #ffffff;
         }
-        .header-title p {
-            margin: 4px 0 0 0;
-            font-size: 12px;
+        .header p {
             color: #a0a0a0;
-        }
-        .cancel-btn {
-            background-color: rgba(127, 29, 29, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #f87171;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .filter-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            background-color: #151515;
-            padding: 16px;
-            border-radius: 8px;
-            border: 1px solid #2d2d2d;
-            margin-bottom: 20px;
-        }
-        @media (max-width: 480px) {
-            .filter-box { grid-template-columns: 1fr; }
+            font-size: 13px;
+            margin: 4px 0 0 0;
         }
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            margin-bottom: 20px;
         }
         .form-group label {
-            font-size: 12px;
-            color: #a0a0a0;
-            text-align: right;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
         }
         .form-group input, .form-group select {
-            background-color: #1e1e1e;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #121212;
             border: 1px solid #404040;
             border-radius: 8px;
-            padding: 10px;
+            padding: 12px;
             color: #ffffff;
-            font-size: 15px;
+            font-size: 16px;
             text-align: center;
             outline: none;
         }
         .form-group input:focus, .form-group select:focus {
-            border-color: #06b6d4;
+            border-color: #10b981;
         }
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #2d2d2d;
+        .wishes-container {
+            border: 1px dashed #0284c7;
+            background-color: rgba(2, 132, 199, 0.05);
+            border-radius: 8px;
+            padding: 16px;
             margin-bottom: 20px;
         }
-        .tab-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            color: #a0a0a0;
-            padding: 12px 0;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-        }
-        .tab-btn.active {
-            border-bottom: 3px solid #06b6d4;
-            color: #06b6d4;
-        }
-        .badge {
-            background-color: #2d2d2d;
-            color: #e0e0e0;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-right: 6px;
-        }
-        .branch-card {
-            background-color: #1a1a1a;
-            border: 1px solid #2d2d2d;
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .wishes-header {
+            color: #38bdf8;
+            font-size: 13px;
+            font-weight: 500;
             margin-bottom: 12px;
             text-align: right;
         }
-        .branch-info {
+        .wish-row {
+            background-color: #121212;
+            padding: 12px;
+            border-radius: 6px;
             display: flex;
-            flex-direction: column;
-            gap: 4px;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 12px;
         }
-        .branch-title {
-            font-weight: bold;
-            color: #ffffff;
-            font-size: 14px;
-        }
-        .branch-meta {
-            font-size: 12px;
-            color: #a0a0a0;
-        }
-        .branch-score {
-            font-size: 12px;
-            color: #f59e0b;
-            font-weight: 500;
-        }
-        .add-btn {
-            background-color: #0e7490;
+        .delete-btn {
+            background-color: #dc2626;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
             cursor: pointer;
-            transition: 0.2s;
         }
-        .add-btn:hover { background-color: #0891b2; }
-        .remove-btn {
-            background: none;
-            border: none;
-            color: #f87171;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .wish-item {
-            background-color: #1a1a1a;
-            border: 1px solid #1e293b;
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            text-align: right;
-        }
-        .wish-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .wish-number {
-            background-color: #0f172a;
-            color: #38bdf8;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 13px;
-            border: 1px solid #1e3a8a;
-        }
-        .submit-section {
-            border-top: 1px solid #2d2d2d;
-            padding-top: 16px;
-            margin-top: 20px;
-        }
-        .submit-btn {
+        .action-btn {
             width: 100%;
-            background-color: #b91c1c;
+            background-color: #10b981;
             color: white;
             border: none;
             padding: 12px;
@@ -209,20 +118,77 @@
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: background 0.2s;
         }
-        .submit-btn:hover { background-color: #dc2626; }
-        .hidden { display: none !important; }
-        .scroll-container { max-height: 380px; overflow-y: auto; padding-right: 4px; }
-        .download-link {
-            display: inline-block;
+        .action-btn:hover {
             background-color: #059669;
-            color: white;
-            padding: 10px 20px;
+        }
+        .available-title {
+            font-size: 13px;
+            color: #888;
+            margin: 20px 0 10px 0;
+            text-align: right;
+        }
+        .branch-list {
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        .branch-item {
+            background-color: #121212;
+            border: 1px solid #2d2d2d;
             border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .branch-details {
+            text-align: right;
+        }
+        .branch-name {
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+        .branch-sub {
+            color: #888;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        .branch-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .min-score {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .add-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .add-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .download-btn {
+            display: inline-block;
+            background-color: #0284c7;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
             text-decoration: none;
             font-size: 13px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -230,54 +196,37 @@
 
     <div class="container">
         
-        <!-- الهيدر العلوي -->
-        <div class="header-section">
-            <div class="header-title">
-                <h1>إدارة الرغبات</h1>
-                <p>أضف رغباتك، رتّبها حسب أولويتك، ثم ثبّتها عند الانتهاء.</p>
-            </div>
-            <button class="cancel-btn">🔓 طلب إلغاء التثبيت</button>
+        <div class="header">
+            <div class="badge-top">☀️ مشرق</div>
+            <h1>مفاضلة القبول الجامعي</h1>
+            <p>المهندس محمد القاسم</p>
         </div>
 
-        <!-- حقول الاختيارات والتصفية -->
-        <div class="filter-box">
-            <div class="form-group">
-                <label>أدخل مجموعك المئوي (%):</label>
-                <input type="number" id="studentScore" value="85" step="0.1" oninput="searchBranches()">
-            </div>
-            <div class="form-group">
-                <label>تحديد نوع المفاضلة:</label>
-                <select id="competitionType" onchange="searchBranches()">
-                    <option value="all">كل المفاضلات (عام وموازي)</option>
-                    <option value="عام" selected>علمي عام</option>
-                    <option value="موازي">علمي موازي</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label>أدخل مجموعك المئوي (%):</label>
+            <input type="number" id="studentScore" value="73" step="0.1" oninput="searchBranches()">
         </div>
 
-        <!-- أزرار التنقل -->
-        <div class="tabs">
-            <button onclick="switchTab('search')" id="tabSearch" class="tab-btn active">➕ إضافة رغبة</button>
-            <button onclick="switchTab('wishes')" id="tabWishes" class="tab-btn">📋 رغباتي <span id="wishesBadge" class="badge">0</span></button>
+        <div class="form-group">
+            <label>نوع المفاضلة:</label>
+            <select id="competitionType" onchange="searchBranches()">
+                <option value="all">كل المفاضلات (عام وموازي)</option>
+                <option value="عام">عام</option>
+                <option value="موازي" selected>موازي</option>
+            </select>
         </div>
 
-        <!-- صفحة 1: إضافة رغبة -->
-        <div id="pageSearch">
-            <div id="availableBranches" class="scroll-container"></div>
-        </div>
-
-        <!-- صفحة 2: رغباتي -->
-        <div id="pageWishes" class="hidden">
+        <!-- صندوق الرغبات المختارة -->
+        <div id="wishesBox" class="wishes-container hidden">
+            <div class="wishes-header">📋 رغباتك المختارة:</div>
             <div id="selectedWishesList"></div>
-
-            <div class="submit-section">
-                <button onclick="submitWishes()" id="submitBtn" class="submit-btn">
-                    🔒 تثبيت الرغبات (إرسال إكسل)
-                </button>
-            </div>
-            
+            <button onclick="submitWishes()" class="action-btn">تثبيت</button>
             <div id="downloadArea" class="hidden" style="text-align: center;"></div>
         </div>
+
+        <!-- الأفرع المتاحة -->
+        <div class="available-title">الأفرع المتاحة لمجموعك:</div>
+        <div id="availableBranches" class="branch-list"></div>
 
     </div>
 
@@ -295,3 +244,36 @@
             {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "موازي", "min_score": 72.0},
             {"faculty": "الهندسة المدنية", "university": "جامعة إدلب", "type": "عام", "min_score": 72.0},
             {"faculty": "الهندسة المدنية", "university": "جامعة حلب", "type": "موازي", "min_score": 67.0},
+            {"faculty": "الهندسة المدنية", "university": "جامعة إدلب", "type": "موازي", "min_score": 65.0},
+            {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "عام", "min_score": 72.0},
+            {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "موازي", "min_score": 68.0},
+            {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "عام", "min_score": 68.0},
+            {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "موازي", "min_score": 64.0},
+            {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "عام", "min_score": 68.0},
+            {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "عام", "min_score": 55.0}
+        ];
+
+        let selectedWishes = [];
+
+        function searchBranches() {
+            const score = parseFloat(document.getElementById('studentScore').value);
+            const type = document.getElementById('competitionType').value;
+            const container = document.getElementById('availableBranches');
+            container.innerHTML = '';
+
+            if (isNaN(score)) return;
+
+            let filtered = DATA.filter(branch => {
+                if (score < branch.min_score) return false;
+                if (type !== 'all' && type !== branch.type) return false;
+                if (selectedWishes.some(w => w.faculty === branch.faculty && w.type === branch.type && w.university === branch.university)) return false;
+                return true;
+            });
+
+            filtered.sort((a, b) => b.min_score - a.min_score);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="text-align:center; font-size:12px; color:#666; padding:10px;">لا توجد أفرع متاحة للمجموع الحالي.</p>`;
+                return;
+            }
+
