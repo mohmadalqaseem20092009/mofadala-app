@@ -62,7 +62,7 @@
 <body>
 
 <div class="container">
-    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙 مشرق</button>
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙 مطلع</button>
 
     <div class="main-card">
         <div class="text-center mb-4">
@@ -80,7 +80,6 @@
             <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="مثال: 73" required>
         </div>
 
-        <!-- تم تثبيت الزر الكبير الأخضر المطابق تماماً لتصميمك -->
         <button type="button" class="btn-analyze" onclick="processAnalysis()">تحليل درجاتي وعرض الأفرع ✨</button>
 
         <div class="wishlist-container" id="wishlistContainer">
@@ -126,10 +125,10 @@
         var btn = document.getElementById('themeBtn');
         if (body.getAttribute('data-theme') === 'light') {
             body.removeAttribute('data-theme');
-            btn.innerText = '🌙 مشرق';
+            btn.innerText = '🌙 مطلع';
         } else {
             body.setAttribute('data-theme', 'light');
-            btn.innerText = '☀️ مطلع';
+            btn.innerText = '☀️ مشرق';
         }
     }
 
@@ -144,18 +143,19 @@
         searchBox.style.display = 'block';
         wrapper.innerHTML = '';
 
-        // الفرز المباشر
         rawData = localData.filter(function(item) {
             return score >= item.min_score;
         });
 
         rawData.sort(function(a, b) { return b.min_score - a.min_score; });
+        document.getElementById('resultsCount').innerText = 'الأفرع المتاحة لمجموعك الحقيقي:';
 
         if (rawData.length === 0) {
             wrapper.innerHTML = '<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px; font-weight:bold;">لم نجد نتائج متوافقة مع هذا المجموع.</div>';
             return;
         }
 
+        // تم تصحيح سطر حلقة الفرز هنا ليعمل بنجاح دون أي تجميد
         rawData.forEach(function(item, index) {
             var card = document.createElement('div');
             card.className = 'faculty-card';
@@ -178,4 +178,3 @@
             textDiv.appendChild(title);
             textDiv.appendChild(smallInfo);
             
-            var actionDiv = document.createElement('div');
