@@ -5,151 +5,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاضلة القبول الجامعي</title>
     <style>
-        :root {
-            --primary-color: #1e7e34;
-            --secondary-color: #28a745;
-            --bg-body: #e9ecef;
-            --bg-card: #ffffff;
-            --text-main: #333333;
-            --text-title: #111111;
-            --border-color: #dee2e6;
-        }
-        [data-theme="dark"] {
-            --bg-body: #121212;
-            --bg-card: #1e1e1e;
-            --text-main: #dddddd;
-            --text-title: #ffffff;
-            --border-color: #333333;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s ease, color 0.2s ease; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            padding: 20px;
-        }
-        .container { max-width: 800px; margin: 0 auto; position: relative; }
-        .theme-toggle-btn {
-            position: absolute; top: 20px; left: 15px;
-            background: var(--bg-card); border: 2px solid var(--border-color);
-            color: var(--text-main); width: 42px; height: 42px; border-radius: 50%;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .main-card { border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: var(--bg-card); padding: 30px; margin-top: 45px; }
-        .text-center { text-align: center; }
-        .mb-4 { margin-bottom: 1.5rem; }
-        .mb-3 { margin-bottom: 1rem; }
-        .form-label { display: block; margin-bottom: .5rem; font-weight: bold; text-align: right; }
-        .form-control, .form-select { display: block; width: 100%; padding: .6rem; font-size: 1.1rem; background-color: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); border-radius: .25rem; text-align: center; outline: none; }
-        .btn-analyze { display: block; width: 100%; background-color: var(--primary-color); color: white; border: none; padding: 14px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; }
-        .btn-analyze:hover { background-color: #155d27; }
-        .faculty-card { background: var(--bg-card); border-right: 5px solid var(--secondary-color); border-left: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .btn-add-wish { background-color: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn-add-wish:hover { background-color: #0056b3; }
-        .loader-container { display: none; text-align: center; margin: 20px 0; }
-        .spinner { display: inline-block; width: 2rem; height: 2rem; border: .25em solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .75s linear infinite; color: var(--primary-color); }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .search-box { display: none; margin-top: 20px; border-top: 2px solid var(--border-color); padding-top: 20px; }
-        .wishlist-container { display: none; margin-top: 30px; margin-bottom: 20px; background-color: rgba(0, 123, 255, 0.05); border: 2px dashed #007bff; border-radius: 10px; padding: 20px; text-align: right; }
-        .wish-item { background: var(--bg-card); padding: 10px; border-radius: 5px; margin-bottom: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .btn-remove-wish { background: #dc3545; color: white; border: none; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
-        .btn-submit-excel { background-color: #28a745; color: white; border: none; padding: 12px 25px; font-size: 1.1rem; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; }
-        .engineer-title { color: var(--text-title); font-weight: 800; font-size: 1.5rem; margin-top: 10px; }
+        :root { --bg-body: #e9ecef; --bg-card: #ffffff; --text-main: #333333; --primary: #1e7e34; }
+        [data-theme="dark"] { --bg-body: #121212; --bg-card: #1e1e1e; --text-main: #dddddd; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background-color: var(--bg-body); color: var(--text-main); padding: 20px; text-align: center; }
+        .container { max-width: 600px; margin: 0 auto; background: var(--bg-card); padding: 30px; border-radius: 12px; position: relative; margin-top: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .theme-btn { position: absolute; top: 15px; left: 15px; padding: 8px 12px; border-radius: 20px; cursor: pointer; border: 1px solid #ccc; background: var(--bg-card); color: var(--text-main); font-weight: bold; }
+        .form-group { margin-bottom: 15px; text-align: right; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-control { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; text-align: center; font-size: 1.1rem; }
+        .btn-go { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .wishlist { display: none; margin-top: 20px; padding: 15px; border: 2px dashed #007bff; background: rgba(0,123,255,0.05); border-radius: 8px; text-align: right; }
+        .wish-item { display: flex; justify-content: space-between; background: var(--bg-body); padding: 8px; margin-bottom: 5px; border-radius: 4px; }
+        .btn-del { background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
+        .card { background: var(--bg-body); padding: 15px; margin-top: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; text-align: right; }
+        .btn-add { background: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 مظلم</button>
+    
+    <h2 style="color: var(--primary); margin-bottom: 5px;">مفاضلة القبول الجامعي</h2>
+    <h4 style="margin-bottom: 20px;">المهندس محمد القاسم</h4>
 
-    <div class="main-card">
-        <div class="text-center mb-4">
-            <h2 style="color: var(--primary-color); padding: 0 10px;" class="mb-2">مفاضلة القبول الجامعي</h2>
-            <h6 style="color: #6c757d; margin-bottom: 5px;">العام الدراسي: 2026 / 2027</h6>
-            <div class="engineer-title">المهندس محمد القاسم</div>
-        </div>
-
-        <div class="mb-3" style="border-bottom: 2px solid var(--border-color); padding-bottom: 20px;">
-            <label class="form-label">اسم الطالب الثلاثي (لتثبيت الطلب وتسجيل الرغبات):</label>
-            <input type="text" id="studentNameInput" class="form-control" placeholder="اكتب اسم الطالب هنا..." style="text-align: right;">
-        </div>
-
-        <form onsubmit="processAnalysis(event)">
-            <div class="mb-3">
-                <label class="form-label">أدخل مجموعك المئوي الصافي (%):</label>
-                <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="مثال: 80" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="form-label">نوع المفاضلة:</label>
-                <select id="typeSelect" class="form-select">
-                    <option value="all">كل الأنواع (عام + موازي)</option>
-                    <option value="عام">مفاضلة عامة</option>
-                    <option value="موازي">مفاضلة التعليم الموازي</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn-analyze">تحليل درجاتي وعرض الأفرع المتاحة ✨</button>
-        </form>
-
-        <div class="loader-container" id="loader">
-            <div class="spinner"></div>
-            <p style="margin-top: 10px;">جاري فرز النتائج المتوافقة...</p>
-        </div>
-
-        <div class="wishlist-container" id="wishlistContainer">
-            <h3 style="color: #007bff; margin-bottom: 15px;">📋 قائمة رغباتك المختارة للتثبيت:</h3>
-            <div id="wishlistWrapper"></div>
-            <button class="btn-submit-excel" onclick="submitWishesToExcel()">تثبيت الرغبات وإرسال ملف Excel 🚀</button>
-        </div>
-
-        <div class="search-box" id="searchBoxContainer">
-            <input type="text" id="innerSearch" class="form-control" placeholder="تصفية فورية بالجامعة أو الكلية..." onkeyup="filterResults()" style="margin-bottom: 15px; text-align: right; padding: 10px;">
-            <div id="resultsCount" style="font-weight: bold; margin-bottom: 15px; color: var(--primary-color); text-align: right;"></div>
-            <div id="resultsWrapper"></div>
-        </div>
+    <div class="form-group">
+        <label>اسم الطالب الثلاثي:</label>
+        <input type="text" id="studentName" class="form-control" placeholder="اكتب اسم الطالب هنا...">
     </div>
+
+    <div class="form-group">
+        <label>أدخل مجموعك المئوي (%):</label>
+        <input type="number" step="0.1" id="studentScore" class="form-control" placeholder="مثال: 80">
+    </div>
+
+    <button class="btn-go" onclick="runAnalysis()">تحليل درجاتي وعرض الأفرع ✨</button>
+
+    <div class="wishlist" id="wishlistSection">
+        <h4 style="color: #007bff; margin-bottom: 10px;">📋 رغباتك المختارة:</h4>
+        <div id="wishlistItems"></div>
+        <button class="btn-go" style="background: #28a745;" onclick="sendToExcel()">تثبيت وإرسال ملف Excel 🚀</button>
+    </div>
+
+    <div id="resultsWrapper" style="margin-top: 20px;"></div>
 </div>
 
 <script>
-    // قاعدة البيانات مدمجة محلياً هنا لتفادي أي حظر من المتصفحات وتعمل فوراً
-    var localData = [
-        {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 94.5},
-        {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "مفاضلة التعليم الموازي", "min_score": 92.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 85.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 80.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "مفاضلة عامة", "min_score": 84.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "مفاضلة التعليم الموازي", "min_score": 79.0},
-        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 80.0},
-        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 77.0},
-        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 75.0},
-        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 72.0},
-        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 80.0},
-        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 74.0},
-        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "مفاضلة عامة", "min_score": 72.0},
-        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "مفاضلة التعليم الموازي", "min_score": 68.0},
-        {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 68.0},
-        {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "مفاضلة التعليم الموازي", "min_score": 64.0},
-        {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 68.0},
-        {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 55.0}
+    var db = [
+        {"faculty": "السنة التحضيرية الطبية", "university": "جميع الجامعات", "min": 94.5, "type": "عام"},
+        {"faculty": "السنة التحضيرية الطبية", "university": "جميع الجامعات", "min": 92.0, "type": "موازي"},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "min": 85.0, "type": "عام"},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "min": 80.0, "type": "موازي"},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "min": 84.0, "type": "عام"},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "min": 79.0, "type": "موازي"},
+        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "min": 80.0, "type": "عام"},
+        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "min": 77.0, "type": "موازي"},
+        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "min": 75.0, "type": "عام"},
+        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "min": 72.0, "type": "موازي"},
+        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "min": 80.0, "type": "عام"},
+        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "min": 74.0, "type": "موازي"},
+        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "min": 72.0, "type": "عام"},
+        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "min": 68.0, "type": "موازي"},
+        {"faculty": "هندسة الهمك (ميكانيك/كهرباء)", "university": "جميع الجامعات", "min": 68.0, "type": "عام"},
+        {"faculty": "هندسة الهمك (ميكانيك/كهرباء)", "university": "جميع الجامعات", "min": 64.0, "type": "موازي"},
+        {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "min": 68.0, "type": "عام"},
+        {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "min": 55.0, "type": "عام"}
     ];
 
-    var rawData = [];
-    var selectedWishes = []; 
+    var currentResults = [];
+    var wishes = [];
 
     function toggleTheme() {
-        var body = document.documentElement;
+        var el = document.documentElement;
         var btn = document.getElementById('themeBtn');
-        if (body.getAttribute('data-theme') === 'dark') {
-            body.removeAttribute('data-theme');
-            btn.innerText = '🌙';
+        if (el.getAttribute('data-theme') === 'dark') {
+            el.removeAttribute('data-theme');
+            btn.innerHTML = '🌙 مظلم';
         } else {
-            body.setAttribute('data-theme', 'dark');
-            btn.innerText = '☀️';
+            el.setAttribute('data-theme', 'dark');
+            btn.innerHTML = '☀️ مشرق';
         }
     }
 
-    function processAnalysis(e) {
-        e.preventDefault();
-        var score = parseFloat(document.getElementById('scoreInput').value);
+    function runAnalysis() {
+        var score = parseFloat(document.getElementById('studentScore').value) || 0;
+        var wrapper = document.getElementById('resultsWrapper');
+        wrapper.innerHTML = '';
+
+        currentResults = db.filter(function(item) { return score >= item.min; });
+        currentResults.sort(function(a,b) { return b.min - a.min; });
+
+        if (currentResults.length === 0) {
+            wrapper.innerHTML = '<div style="padding:10px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة.</div>';
+            return;
+        }
+
+        currentResults.forEach(function(item, idx) {
+            var div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = '<div><strong>' + item.faculty + '</strong><br><small>' + item.university + ' | ' + item.type + '</small></div>' +
+                            '<div style="display:flex; align-items:center; gap:10px;"><span style="font-weight:bold; color:#1e7e34;">%' + item.min + '</span>' +
+                            '<button class="btn-add" onclick="addWish(' + idx + ')">+ إضافة</button></div>';
+            wrapper.appendChild(div);
+        });
+    }
+
+    function addWish(idx) {
+        var item = currentResults[idx];
+        if (wishes.some(function(w) { return w.faculty === item.faculty && w.type === item.type; })) {
+            alert('مضاف مسبقاً!');
+            return;
+        }
+        wishes.push(item);
+        drawWishlist();
+    }
+
+    function delWish(idx) {
+        wishes.splice(idx, 1);
+        drawWishlist();
+    }
+
+    function drawWishlist() {
+        var sec = document.getElementById('wishlistSection');
+        var wrap = document.getElementById('wishlistItems');
+        wrap.innerHTML = '';
+        if (wishes.length > 0) {
+            sec.style.display = 'block';
+            wishes.forEach(function(item, idx) {
+                var div = document.createElement('div');
+                div.className = 'wish-item';
+                div.innerHTML = '<div>' + item.faculty + ' (' + item.type + ')</div><button class="btn-del" onclick="delWish(' + idx + ')">حذف</button>';
+                wrap.appendChild(div);
+            });
+        } else {
+            sec.style.display = 'none';
+        }
+    }
+
+    function sendToExcel() {
+        var name = document.getElementById('studentName').value.trim();
+        if (!name) { alert('ادخل اسم الطالب أولاً!'); return; }
+        if (wishes.length === 0) { alert('السلة فارغة!'); return; }
+
+        fetch('/api/submit_wishes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ student_name: name, wishes: wishes })
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data.status === 'success') {
+                alert('تم الحفظ وتوليد ملف Excel بنجاح يا م/محمد!');
+                wishes = []; drawWishlist();
+            } else { alert('خطأ في الحفظ'); }
+        }).catch(function() { alert('خطأ في الاتصال بالخادم'); });
+    }
+</script>
+</body>
+</html>
