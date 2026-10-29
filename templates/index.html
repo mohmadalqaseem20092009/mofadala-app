@@ -168,10 +168,18 @@
             var card = document.createElement('div');
             card.className = 'faculty-card';
             
-            card.innerHTML = '\
-                <div style="text-align: right; flex: 1;">\
-                    <h3 style="color:var(--text-title); font-size:1.1rem; font-weight: bold; margin-bottom: 5px;">' + item.faculty + '</h3>\
-                    <small style="color:#6c757d;">🏢 ' + item.university + ' | 📋 ' + item.type + '</small>\
-                </div>\
-                <div style="display: flex; align-items: center; gap: 15px;">\
-                    <div style="font-weight:bold; color:var(--primary-color); font-size:1.3rem;">%' + item.min_score + '</div>\
+            var textDiv = document.createElement('div');
+            textDiv.style.textAlign = 'right';
+            textDiv.style.flex = '1';
+            
+            var title = document.createElement('h3');
+            title.style.color = 'var(--text-title)';
+            title.style.fontSize = '1.1rem';
+            title.style.fontWeight = 'bold';
+            title.style.marginBottom = '5px';
+            title.innerText = item.faculty;
+            
+            var smallInfo = document.createElement('small');
+            smallInfo.style.color = '#6c757d';
+            smallInfo.innerText = '🏢 ' + item.university + ' | 📋 ' + item.type;
+            
