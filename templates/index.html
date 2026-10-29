@@ -5,9 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاضلة القبول الجامعي</title>
     <style>
+        /* تعريف متغيرات الألوان للوضع الداكن والفاتح */
+        :root {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-title: #ffffff;
+            --border-color: #2d2d2d;
+            --input-bg: #121212;
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-title: #111827;
+            --border-color: #e5e7eb;
+            --input-bg: #f9fafb;
+        }
+
         body {
-            background-color: #121212;
-            color: #e0e0e0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
             font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 20px;
@@ -15,66 +34,85 @@
             justify-content: center;
             align-items: start;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
+
         .container {
             width: 100%;
             max-width: 500px;
-            background-color: #1e1e1e;
-            border: 1px solid #2d2d2d;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, border-color 0.3s;
         }
+
         .header {
             text-align: center;
             position: relative;
             margin-bottom: 24px;
         }
-        .badge-top {
+
+        .theme-toggle-btn {
             position: absolute;
             left: 0;
             top: 0;
             background-color: rgba(245, 158, 11, 0.1);
             color: #f59e0b;
             font-size: 11px;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
             border: 1px solid rgba(245, 158, 11, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: bold;
         }
+
         .header h1 {
             color: #10b981;
             font-size: 20px;
             margin: 0;
         }
+
         .header p {
-            color: #a0a0a0;
+            color: #888;
             font-size: 13px;
             margin: 4px 0 0 0;
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: left;
         }
+
         .form-group input, .form-group select {
             width: 100%;
             box-sizing: border-box;
-            background-color: #121212;
-            border: 1px solid #404040;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 12px;
-            color: #ffffff;
+            color: var(--text-main);
             font-size: 16px;
             text-align: center;
             outline: none;
+            transition: border-color 0.2s;
         }
+
         .form-group input:focus, .form-group select:focus {
             border-color: #10b981;
         }
+
         .wishes-container {
             border: 1px dashed #0284c7;
             background-color: rgba(2, 132, 199, 0.05);
@@ -82,15 +120,17 @@
             padding: 16px;
             margin-bottom: 20px;
         }
+
         .wishes-header {
             color: #38bdf8;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: bold;
             margin-bottom: 12px;
             text-align: right;
         }
+
         .wish-row {
-            background-color: #121212;
+            background-color: var(--input-bg);
             padding: 12px;
             border-radius: 6px;
             display: flex;
@@ -98,7 +138,9 @@
             align-items: center;
             font-size: 13px;
             margin-bottom: 12px;
+            border: 1px solid var(--border-color);
         }
+
         .delete-btn {
             background-color: #dc2626;
             color: white;
@@ -108,6 +150,7 @@
             font-size: 11px;
             cursor: pointer;
         }
+
         .action-btn {
             width: 100%;
             background-color: #10b981;
@@ -120,51 +163,61 @@
             cursor: pointer;
             transition: background 0.2s;
         }
+
         .action-btn:hover {
             background-color: #059669;
         }
+
         .available-title {
             font-size: 13px;
             color: #888;
             margin: 20px 0 10px 0;
             text-align: right;
         }
+
         .branch-list {
-            max-height: 240px;
+            max-height: 280px;
             overflow-y: auto;
         }
+
         .branch-item {
-            background-color: #121212;
-            border: 1px solid #2d2d2d;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 12px;
+            padding: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
             font-size: 13px;
         }
+
         .branch-details {
             text-align: right;
         }
+
         .branch-name {
             font-weight: bold;
-            color: #e0e0e0;
+            color: var(--text-title);
         }
+
         .branch-sub {
             color: #888;
             font-size: 11px;
             margin-top: 2px;
         }
+
         .branch-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
+
         .min-score {
             color: #10b981;
             font-weight: bold;
         }
+
         .add-btn {
             background-color: #2563eb;
             color: white;
@@ -173,13 +226,17 @@
             border-radius: 6px;
             font-size: 12px;
             cursor: pointer;
+            transition: background 0.2s;
         }
+
         .add-btn:hover {
             background-color: #1d4ed8;
         }
+
         .hidden {
             display: none !important;
         }
+
         .download-btn {
             display: inline-block;
             background-color: #0284c7;
@@ -197,18 +254,19 @@
     <div class="container">
         
         <div class="header">
-            <div class="badge-top">☀️ مشرق</div>
+            <!-- زر تبديل الثيم المطور ليعمل يدوياً بشكل فوري ومستقر -->
+            <button onclick="toggleTheme()" id="themeBtn" class="theme-toggle-btn">☀️ مشرق</button>
             <h1>مفاضلة القبول الجامعي</h1>
             <p>المهندس محمد القاسم</p>
         </div>
 
         <div class="form-group">
-            <label>أدخل مجموعك المئوي (%):</label>
+            <label style="text-align: right;">أدخل مجموعك المئوي (%):</label>
             <input type="number" id="studentScore" value="73" step="0.1" oninput="searchBranches()">
         </div>
 
         <div class="form-group">
-            <label>نوع المفاضلة:</label>
+            <label style="text-align: right;">نوع المفاضلة:</label>
             <select id="competitionType" onchange="searchBranches()">
                 <option value="all">كل المفاضلات (عام وموازي)</option>
                 <option value="عام">عام</option>
@@ -224,7 +282,7 @@
             <div id="downloadArea" class="hidden" style="text-align: center;"></div>
         </div>
 
-        <!-- الأفرع المتاحة -->
+        <!-- الأفرع المتاحة لمجموعك -->
         <div class="available-title">الأفرع المتاحة لمجموعك:</div>
         <div id="availableBranches" class="branch-list"></div>
 
@@ -249,31 +307,3 @@
             {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "موازي", "min_score": 68.0},
             {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "عام", "min_score": 68.0},
             {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "موازي", "min_score": 64.0},
-            {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "عام", "min_score": 68.0},
-            {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "عام", "min_score": 55.0}
-        ];
-
-        let selectedWishes = [];
-
-        function searchBranches() {
-            const score = parseFloat(document.getElementById('studentScore').value);
-            const type = document.getElementById('competitionType').value;
-            const container = document.getElementById('availableBranches');
-            container.innerHTML = '';
-
-            if (isNaN(score)) return;
-
-            let filtered = DATA.filter(branch => {
-                if (score < branch.min_score) return false;
-                if (type !== 'all' && type !== branch.type) return false;
-                if (selectedWishes.some(w => w.faculty === branch.faculty && w.type === branch.type && w.university === branch.university)) return false;
-                return true;
-            });
-
-            filtered.sort((a, b) => b.min_score - a.min_score);
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<p style="text-align:center; font-size:12px; color:#666; padding:10px;">لا توجد أفرع متاحة للمجموع الحالي.</p>`;
-                return;
-            }
-
