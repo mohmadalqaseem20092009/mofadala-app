@@ -113,12 +113,12 @@
 </div>
 
 <script>
-    let rawData = [];
-    let selectedWishes = []; 
+    var rawData = [];
+    var selectedWishes = []; 
 
     function toggleTheme() {
-        const body = document.documentElement;
-        const btn = document.getElementById('themeBtn');
+        var body = document.documentElement;
+        var btn = document.getElementById('themeBtn');
         if (body.getAttribute('data-theme') === 'dark') {
             body.removeAttribute('data-theme');
             btn.innerText = '🌙';
@@ -130,11 +130,11 @@
 
     function processAnalysis(e) {
         e.preventDefault();
-        const score = document.getElementById('scoreInput').value;
-        const type = document.getElementById('typeSelect').value;
-        const loader = document.getElementById('loader');
-        const searchBox = document.getElementById('searchBoxContainer');
-        const wrapper = document.getElementById('resultsWrapper');
+        var score = document.getElementById('scoreInput').value;
+        var type = document.getElementById('typeSelect').value;
+        var loader = document.getElementById('loader');
+        var searchBox = document.getElementById('searchBoxContainer');
+        var wrapper = document.getElementById('resultsWrapper');
         
         loader.style.display = 'block';
         searchBox.style.display = 'none';
@@ -160,19 +160,18 @@
     }
 
     function renderCards(data) {
-        const wrapper = document.getElementById('resultsWrapper');
+        var wrapper = document.getElementById('resultsWrapper');
         wrapper.innerHTML = '';
         document.getElementById('resultsCount').innerText = 'عدد الأفرع المتاحة لك: ' + data.length;
         
         data.forEach(function(item, index) {
-            const card = document.createElement('div');
+            var card = document.createElement('div');
             card.className = 'faculty-card';
             
-            card.innerHTML = `
-                <div style="text-align: right; flex: 1;">
-                    <h3 style="color:var(--text-title); font-size:1.1rem; font-weight: bold; margin-bottom: 5px;">${item.faculty}</h3>
-                    <small style="color:#6c757d;">🏢 ${item.university} | 📋 ${item.type}</small>
-                </div>
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="font-weight:bold; color:var(--primary-color); font-size:1.3rem;">%${item.min_score}</div>
-                    <button class="btn-add-wish" onclick="addToWishlist(${index})"> + إضافة </button>
+            card.innerHTML = '\
+                <div style="text-align: right; flex: 1;">\
+                    <h3 style="color:var(--text-title); font-size:1.1rem; font-weight: bold; margin-bottom: 5px;">' + item.faculty + '</h3>\
+                    <small style="color:#6c757d;">🏢 ' + item.university + ' | 📋 ' + item.type + '</small>\
+                </div>\
+                <div style="display: flex; align-items: center; gap: 15px;">\
+                    <div style="font-weight:bold; color:var(--primary-color); font-size:1.3rem;">%' + item.min_score + '</div>\
