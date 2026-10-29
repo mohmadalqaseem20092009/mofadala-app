@@ -4,50 +4,248 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدارة الرغبات - مفاضلة القبول</title>
-    <script src="https://tailwindcss.com"></script>
     <style>
+        /* التنسيقات الأساسية للوضع الداكن المماثل لموقع الوزارة */
         body {
             background-color: #121212;
             color: #e0e0e0;
             font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            min-height: screen;
         }
-        .custom-card {
+        .container {
+            width: 100%;
+            max-width: 650px;
             background-color: #1e1e1e;
             border: 1px solid #2d2d2d;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2d2d2d;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+        .header-title h1 {
+            margin: 0;
+            font-size: 22px;
+            color: #ffffff;
+        }
+        .header-title p {
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+        .cancel-btn {
+            background-color: rgba(127, 29, 29, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .filter-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            background-color: #151515;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #2d2d2d;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 480px) {
+            .filter-box { grid-template-columns: 1fr; }
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+        .form-group input, .form-group select {
+            background-color: #1e1e1e;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            padding: 10px;
+            color: #ffffff;
+            font-size: 15px;
+            text-align: center;
+            outline: none;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #06b6d4;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #2d2d2d;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #a0a0a0;
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
         }
         .tab-btn.active {
             border-bottom: 3px solid #06b6d4;
             color: #06b6d4;
         }
+        .badge {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 6px;
+        }
+        .branch-card {
+            background-color: #1a1a1a;
+            border: 1px solid #2d2d2d;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .branch-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .branch-title {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        .branch-meta {
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+        .branch-score {
+            font-size: 12px;
+            color: #f59e0b;
+            font-weight: 500;
+        }
+        .add-btn {
+            background-color: #0e7490;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .add-btn:hover { background-color: #0891b2; }
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #f87171;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .wish-item {
+            background-color: #1a1a1a;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .wish-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .wish-number {
+            background-color: #0f172a;
+            color: #38bdf8;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 13px;
+            border: 1px solid #1e3a8a;
+        }
+        .submit-section {
+            border-top: 1px solid #2d2d2d;
+            padding-top: 16px;
+            margin-top: 20px;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #b91c1c;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .submit-btn:hover { background-color: #dc2626; }
+        .hidden { display: none !important; }
+        .scroll-container { max-height: 380px; overflow-y: auto; padding-right: 4px; }
+        .download-link {
+            display: inline-block;
+            background-color: #059669;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-top: 12px;
+        }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen flex justify-center items-start">
+<body>
 
-    <div class="w-full max-w-2xl custom-card rounded-xl p-6 shadow-2xl space-y-6">
+    <div class="container">
         
-        <!-- الهيدر العلوي بنمط الوزارة الجديد -->
-        <div class="flex justify-between items-center border-b border-gray-800 pb-4">
-            <div>
-                <h1 class="text-2xl font-bold text-white">إدارة الرغبات</h1>
-                <p class="text-xs text-gray-400 mt-1">أضف رغباتك، رتّبها حسب أولويتك، ثم ثبّتها عند الانتهاء.</p>
+        <!-- الهيدر العلوي -->
+        <div class="header-section">
+            <div class="header-title">
+                <h1>إدارة الرغبات</h1>
+                <p>أضف رغباتك، رتّبها حسب أولويتك، ثم ثبّتها عند الانتهاء.</p>
             </div>
-            <!-- زر إلغاء التثبيت البرمجي الأحمر اللطيف في الأعلى -->
-            <button id="lockStatusBtn" class="bg-red-950/30 border border-red-500/30 text-red-400 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1">
-                🔓 طلب إلغاء التثبيت
-            </button>
+            <button class="cancel-btn">🔓 طلب إلغاء التثبيت</button>
         </div>
 
-        <!-- حقول الاختيارات والتصفية الأساسية -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#151515] p-4 rounded-lg border border-gray-800">
-            <div class="space-y-1">
-                <label class="block text-xs text-gray-400">أدخل مجموعك المئوي (%):</label>
-                <input type="number" id="studentScore" value="73" step="0.1" oninput="searchBranches()"
-                       class="w-full bg-[#1e1e1e] border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-cyan-500 text-base font-bold text-center">
+        <!-- حقول الاختيارات والتصفية -->
+        <div class="filter-box">
+            <div class="form-group">
+                <label>أدخل مجموعك المئوي (%):</label>
+                <input type="number" id="studentScore" value="73" step="0.1" oninput="searchBranches()">
             </div>
-            <div class="space-y-1">
-                <label class="block text-xs text-gray-400">تحديد نوع المفاضلة:</label>
-                <select id="competitionType" onchange="searchBranches()"
-                        class="w-full bg-[#1e1e1e] border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-cyan-500 text-sm">
+            <div class="form-group">
+                <label>تحديد نوع المفاضلة:</label>
+                <select id="competitionType" onchange="searchBranches()">
                     <option value="all">كل المفاضلات (عام وموازي)</option>
                     <option value="عام">علمي عام</option>
                     <option value="موازي">علمي موازي</option>
@@ -55,36 +253,28 @@
             </div>
         </div>
 
-        <!-- أزرار التنقل بين الصفحات الداخلية (إضافة رغبة / رغباتي) -->
-        <div class="flex border-b border-gray-800 text-sm font-medium">
-            <button onclick="switchTab('search')" id="tabSearch" class="tab-btn active flex-1 py-3 text-center">➕ إضافة رغبة</button>
-            <button onclick="switchTab('wishes')" id="tabWishes" class="tab-btn flex-1 py-3 text-center flex items-center justify-center gap-2">
-                📋 رغباتي <span id="wishesBadge" class="bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded-full">0</span>
-            </button>
+        <!-- أزرار التنقل -->
+        <div class="tabs">
+            <button onclick="switchTab('search')" id="tabSearch" class="tab-btn active">➕ إضافة رغبة</button>
+            <button onclick="switchTab('wishes')" id="tabWishes" class="tab-btn">📋 رغباتي <span id="wishesBadge" class="badge">0</span></button>
         </div>
 
-        <!-- صفحة 1: إضافة رغبة (البحث والخيارات المتاحة) -->
-        <div id="pageSearch" class="space-y-3">
-            <div id="availableBranches" class="space-y-3 max-h-[400px] overflow-y-auto pr-1">
-                <!-- الفروع تظهر هنا تلقائياً -->
-            </div>
+        <!-- صفحة 1: إضافة رغبة -->
+        <div id="pageSearch">
+            <div id="availableBranches" class="scroll-container"></div>
         </div>
 
-        <!-- صفحة 2: رغباتي (الرغبات التي تم اختيارها وترتيبها مع زر التثبيت) -->
-        <div id="pageWishes" class="space-y-4 hidden">
-            <div id="selectedWishesList" class="space-y-3">
-                <!-- الرغبات المضافة تظهر هنا بتصميم الوزارة -->
-            </div>
+        <!-- صفحة 2: رغباتي -->
+        <div id="pageWishes" class="hidden">
+            <div id="selectedWishesList"></div>
 
-            <!-- زر التثبيت النهائي المقفل الأحمر -->
-            <div class="pt-4 border-t border-gray-800">
-                <button onclick="submitWishes()" id="submitBtn"
-                        class="w-full bg-red-700 hover:bg-red-600 text-white font-medium p-3 rounded-lg transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-red-900/20">
+            <div class="submit-section">
+                <button onclick="submitWishes()" id="submitBtn" class="submit-btn">
                     🔒 تثبيت الرغبات (إرسال إكسل)
                 </button>
             </div>
             
-            <div id="downloadArea" class="hidden text-center pt-2"></div>
+            <div id="downloadArea" class="hidden" style="text-align: center;"></div>
         </div>
 
     </div>
@@ -92,7 +282,6 @@
     <script>
         let selectedWishes = [];
 
-        // التحميل التلقائي الأول للفروع المتاحة عند فتح الصفحة
         window.onload = function() {
             searchBranches();
         };
@@ -124,85 +313,3 @@
                     renderAvailableBranches(result.data);
                 }
             } catch (error) {
-                console.error(error);
-            }
-        }
-
-        function renderAvailableBranches(branches) {
-            const container = document.getElementById('availableBranches');
-            container.innerHTML = '';
-
-            // تصفية الفروع المضافة مسبقاً
-            const filtered = branches.filter(b => !selectedWishes.some(w => w.faculty === b.faculty && w.type === b.type && w.university === b.university));
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<p class="text-xs text-gray-500 text-center py-8">لا توجد خيارات متاحة مطابقة لمجموعك ونوع المفاضلة.</p>`;
-                return;
-            }
-
-            filtered.forEach(branch => {
-                const div = document.createElement('div');
-                div.className = 'bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 flex justify-between items-center transition hover:border-gray-700';
-                div.innerHTML = `
-                    <div class="space-y-1">
-                        <div class="font-bold text-gray-100 text-sm">${branch.faculty} (${branch.university})</div>
-                        <div class="text-xs text-gray-400">علمي ${branch.type} - شهادات سورية</div>
-                        <div class="text-xs text-amber-500 font-medium">الحد الأدنى: %${branch.min_score}</div>
-                    </div>
-                    <button onclick='addWish(${JSON.stringify(branch)})' 
-                            class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-medium px-4 py-2 rounded-lg transition">
-                        + إضافة رغبة
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function addWish(branch) {
-            selectedWishes.push(branch);
-            document.getElementById('wishesBadge').innerText = selectedWishes.length;
-            updateWishesUI();
-            searchBranches();
-            switchTab('wishes'); // الذهاب تلقائياً لصفحة رغباتي عند الضغط على إضافة
-        }
-
-        function removeWish(index) {
-            selectedWishes.splice(index, 1);
-            document.getElementById('wishesBadge').innerText = selectedWishes.length;
-            updateWishesUI();
-            searchBranches();
-        }
-
-        function updateWishesUI() {
-            const container = document.getElementById('selectedWishesList');
-            container.innerHTML = '';
-
-            if (selectedWishes.length === 0) {
-                container.innerHTML = `<p class="text-xs text-gray-500 text-center py-8">لم تقم بإضافة أي رغبة حتى الآن.</p>`;
-                return;
-            }
-
-            selectedWishes.forEach((wish, index) => {
-                const div = document.createElement('div');
-                div.className = 'bg-[#1a1a1a] border border-cyan-950 rounded-xl p-4 flex justify-between items-center relative';
-                div.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <div class="bg-cyan-950 text-cyan-400 w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm border border-cyan-800">
-                            ${index + 1}
-                        </div>
-                        <div class="space-y-0.5">
-                            <div class="font-bold text-white text-sm">${wish.faculty}</div>
-                            <div class="text-xs text-gray-400">📍 ${wish.university}</div>
-                            <div class="text-xs text-gray-400">علمي ${wish.type} - العام الحالي - شهادات سورية</div>
-                        </div>
-                    </div>
-                    <button onclick="removeWish(${index})" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded">
-                        حذف
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        async function submitWishes() {
-            const downloadArea = document.getElementById('downloadArea');
