@@ -243,14 +243,14 @@
         <div class="filter-box">
             <div class="form-group">
                 <label>أدخل مجموعك المئوي (%):</label>
-                <input type="number" id="studentScore" value="70" step="0.1" oninput="searchBranches()">
+                <input type="number" id="studentScore" value="85" step="0.1" oninput="searchBranches()">
             </div>
             <div class="form-group">
                 <label>تحديد نوع المفاضلة:</label>
                 <select id="competitionType" onchange="searchBranches()">
                     <option value="all">كل المفاضلات (عام وموازي)</option>
-                    <option value="عام">علمي عام</option>
-                    <option value="موازي" selected>علمي موازي</option>
+                    <option value="عام" selected>علمي عام</option>
+                    <option value="موازي">علمي موازي</option>
                 </select>
             </div>
         </div>
@@ -282,7 +282,6 @@
     </div>
 
     <script>
-        // قاعدة البيانات مدمجة برمجياً هنا بالكامل لضمان السرعة والعمل المستقر الفوري
         const DATA = [
             {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "عام", "min_score": 94.5},
             {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "موازي", "min_score": 92.0},
@@ -295,3 +294,4 @@
             {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "عام", "min_score": 75.0},
             {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "موازي", "min_score": 72.0},
             {"faculty": "الهندسة المدنية", "university": "جامعة إدلب", "type": "عام", "min_score": 72.0},
+            {"faculty": "الهندسة المدنية", "university": "جامعة حلب", "type": "موازي", "min_score": 67.0},
