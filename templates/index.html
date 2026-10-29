@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاضلة القبول الجامعي</title>
     <style>
-        /* تعريف متغيرات الألوان للوضع الداكن والفاتح */
         :root {
             --bg-body: #121212;
             --bg-card: #1e1e1e;
@@ -92,7 +91,7 @@
             margin-bottom: 8px;
             font-size: 13px;
             font-weight: bold;
-            text-align: left;
+            text-align: right;
         }
 
         .form-group input, .form-group select {
@@ -254,19 +253,18 @@
     <div class="container">
         
         <div class="header">
-            <!-- زر تبديل الثيم المطور ليعمل يدوياً بشكل فوري ومستقر -->
             <button onclick="toggleTheme()" id="themeBtn" class="theme-toggle-btn">☀️ مشرق</button>
             <h1>مفاضلة القبول الجامعي</h1>
             <p>المهندس محمد القاسم</p>
         </div>
 
         <div class="form-group">
-            <label style="text-align: right;">أدخل مجموعك المئوي (%):</label>
-            <input type="number" id="studentScore" value="73" step="0.1" oninput="searchBranches()">
+            <label>أدخل مجموعك المئوي (%):</label>
+            <input type="number" id="studentScore" value="80" step="0.1" oninput="searchBranches()">
         </div>
 
         <div class="form-group">
-            <label style="text-align: right;">نوع المفاضلة:</label>
+            <label>نوع المفاضلة:</label>
             <select id="competitionType" onchange="searchBranches()">
                 <option value="all">كل المفاضلات (عام وموازي)</option>
                 <option value="عام">عام</option>
@@ -307,3 +305,7 @@
             {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "موازي", "min_score": 68.0},
             {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "عام", "min_score": 68.0},
             {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "موازي", "min_score": 64.0},
+            {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "عام", "min_score": 68.0},
+            {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "عام", "min_score": 55.0}
+        ];
+
