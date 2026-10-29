@@ -3,164 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مفاضلة القبول الجامعي</title>
+    <title>إدارة الرغبات - مفاضلة القبول</title>
+    <script src="https://tailwindcss.com"></script>
     <style>
-        :root { --bg-body: #e9ecef; --bg-card: #ffffff; --text-main: #333333; --primary: #1e7e34; }
-        [data-theme="dark"] { --bg-body: #121212; --bg-card: #1e1e1e; --text-main: #dddddd; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: sans-serif; background-color: var(--bg-body); color: var(--text-main); padding: 20px; text-align: center; }
-        .container { max-width: 600px; margin: 0 auto; background: var(--bg-card); padding: 30px; border-radius: 12px; position: relative; margin-top: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .theme-btn { position: absolute; top: 15px; left: 15px; padding: 8px 12px; border-radius: 20px; cursor: pointer; border: 1px solid #ccc; background: var(--bg-card); color: var(--text-main); font-weight: bold; }
-        .form-group { margin-bottom: 15px; text-align: right; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-control { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; text-align: center; font-size: 1.1rem; }
-        .btn-go { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .wishlist { display: none; margin-top: 20px; padding: 15px; border: 2px dashed #007bff; background: rgba(0,123,255,0.05); border-radius: 8px; text-align: right; }
-        .wish-item { display: flex; justify-content: space-between; background: var(--bg-body); padding: 8px; margin-bottom: 5px; border-radius: 4px; }
-        .btn-del { background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
-        .card { background: var(--bg-body); padding: 15px; margin-top: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; text-align: right; }
-        .btn-add { background: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .custom-card {
+            background-color: #1e1e1e;
+            border: 1px solid #2d2d2d;
+        }
+        .tab-btn.active {
+            border-bottom: 3px solid #06b6d4;
+            color: #06b6d4;
+        }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8 min-h-screen flex justify-center items-start">
 
-<div class="container">
-    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 مظلم</button>
-    
-    <h2 style="color: var(--primary); margin-bottom: 5px;">مفاضلة القبول الجامعي</h2>
-    <h4 style="margin-bottom: 20px;">المهندس محمد القاسم</h4>
+    <div class="w-full max-w-2xl custom-card rounded-xl p-6 shadow-2xl space-y-6">
+        
+        <!-- الهيدر العلوي بنمط الوزارة الجديد -->
+        <div class="flex justify-between items-center border-b border-gray-800 pb-4">
+            <div>
+                <h1 class="text-2xl font-bold text-white">إدارة الرغبات</h1>
+                <p class="text-xs text-gray-400 mt-1">أضف رغباتك، رتّبها حسب أولويتك، ثم ثبّتها عند الانتهاء.</p>
+            </div>
+            <!-- زر إلغاء التثبيت البرمجي الأحمر اللطيف في الأعلى -->
+            <button id="lockStatusBtn" class="bg-red-950/30 border border-red-500/30 text-red-400 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1">
+                🔓 طلب إلغاء التثبيت
+            </button>
+        </div>
 
-    <div class="form-group">
-        <label>اسم الطالب الثلاثي:</label>
-        <input type="text" id="studentName" class="form-control" placeholder="اكتب اسم الطالب هنا...">
+        <!-- حقول الاختيارات والتصفية الأساسية -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#151515] p-4 rounded-lg border border-gray-800">
+            <div class="space-y-1">
+                <label class="block text-xs text-gray-400">أدخل مجموعك المئوي (%):</label>
+                <input type="number" id="studentScore" value="73" step="0.1" oninput="searchBranches()"
+                       class="w-full bg-[#1e1e1e] border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-cyan-500 text-base font-bold text-center">
+            </div>
+            <div class="space-y-1">
+                <label class="block text-xs text-gray-400">تحديد نوع المفاضلة:</label>
+                <select id="competitionType" onchange="searchBranches()"
+                        class="w-full bg-[#1e1e1e] border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-cyan-500 text-sm">
+                    <option value="all">كل المفاضلات (عام وموازي)</option>
+                    <option value="عام">علمي عام</option>
+                    <option value="موازي">علمي موازي</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- أزرار التنقل بين الصفحات الداخلية (إضافة رغبة / رغباتي) -->
+        <div class="flex border-b border-gray-800 text-sm font-medium">
+            <button onclick="switchTab('search')" id="tabSearch" class="tab-btn active flex-1 py-3 text-center">➕ إضافة رغبة</button>
+            <button onclick="switchTab('wishes')" id="tabWishes" class="tab-btn flex-1 py-3 text-center flex items-center justify-center gap-2">
+                📋 رغباتي <span id="wishesBadge" class="bg-gray-800 text-gray-300 text-xs px-2 py-0.5 rounded-full">0</span>
+            </button>
+        </div>
+
+        <!-- صفحة 1: إضافة رغبة (البحث والخيارات المتاحة) -->
+        <div id="pageSearch" class="space-y-3">
+            <div id="availableBranches" class="space-y-3 max-h-[400px] overflow-y-auto pr-1">
+                <!-- الفروع تظهر هنا تلقائياً -->
+            </div>
+        </div>
+
+        <!-- صفحة 2: رغباتي (الرغبات التي تم اختيارها وترتيبها مع زر التثبيت) -->
+        <div id="pageWishes" class="space-y-4 hidden">
+            <div id="selectedWishesList" class="space-y-3">
+                <!-- الرغبات المضافة تظهر هنا بتصميم الوزارة -->
+            </div>
+
+            <!-- زر التثبيت النهائي المقفل الأحمر -->
+            <div class="pt-4 border-t border-gray-800">
+                <button onclick="submitWishes()" id="submitBtn"
+                        class="w-full bg-red-700 hover:bg-red-600 text-white font-medium p-3 rounded-lg transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-red-900/20">
+                    🔒 تثبيت الرغبات (إرسال إكسل)
+                </button>
+            </div>
+            
+            <div id="downloadArea" class="hidden text-center pt-2"></div>
+        </div>
+
     </div>
 
-    <div class="form-group">
-        <label>أدخل مجموعك المئوي (%):</label>
-        <input type="number" step="0.1" id="studentScore" class="form-control" placeholder="مثال: 80">
-    </div>
+    <script>
+        let selectedWishes = [];
 
-    <button class="btn-go" onclick="runAnalysis()">تحليل درجاتي وعرض الأفرع ✨</button>
+        // التحميل التلقائي الأول للفروع المتاحة عند فتح الصفحة
+        window.onload = function() {
+            searchBranches();
+        };
 
-    <div class="wishlist" id="wishlistSection">
-        <h4 style="color: #007bff; margin-bottom: 10px;">📋 رغباتك المختارة:</h4>
-        <div id="wishlistItems"></div>
-        <button class="btn-go" style="background: #28a745;" onclick="sendToExcel()"> تثبيت </button>
-    </div>
-
-    <div id="resultsWrapper" style="margin-top: 20px;"></div>
-</div>
-
-<script>
-    var db = [
-        {"faculty": "السنة التحضيرية الطبية", "university": "جميع الجامعات", "min": 94.5, "type": "عام"},
-        {"faculty": "السنة التحضيرية الطبية", "university": "جميع الجامعات", "min": 92.0, "type": "موازي"},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "min": 85.0, "type": "عام"},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "min": 80.0, "type": "موازي"},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "min": 84.0, "type": "عام"},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "min": 79.0, "type": "موازي"},
-        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "min": 80.0, "type": "عام"},
-        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "min": 77.0, "type": "موازي"},
-        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "min": 75.0, "type": "عام"},
-        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "min": 72.0, "type": "موازي"},
-        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "min": 80.0, "type": "عام"},
-        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "min": 74.0, "type": "موازي"},
-        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "min": 72.0, "type": "عام"},
-        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "min": 68.0, "type": "موازي"},
-        {"faculty": "هندسة الهمك (ميكانيك/كهرباء)", "university": "جميع الجامعات", "min": 68.0, "type": "عام"},
-        {"faculty": "هندسة الهمك (ميكانيك/كهرباء)", "university": "جميع الجامعات", "min": 64.0, "type": "موازي"},
-        {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "min": 68.0, "type": "عام"},
-        {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "min": 55.0, "type": "عام"}
-    ];
-
-    var currentResults = [];
-    var wishes = [];
-
-    function toggleTheme() {
-        var el = document.documentElement;
-        var btn = document.getElementById('themeBtn');
-        if (el.getAttribute('data-theme') === 'dark') {
-            el.removeAttribute('data-theme');
-            btn.innerHTML = '🌙 مظلم';
-        } else {
-            el.setAttribute('data-theme', 'dark');
-            btn.innerHTML = '☀️ مشرق';
-        }
-    }
-
-    function runAnalysis() {
-        var score = parseFloat(document.getElementById('studentScore').value) || 0;
-        var wrapper = document.getElementById('resultsWrapper');
-        wrapper.innerHTML = '';
-
-        currentResults = db.filter(function(item) { return score >= item.min; });
-        currentResults.sort(function(a,b) { return b.min - a.min; });
-
-        if (currentResults.length === 0) {
-            wrapper.innerHTML = '<div style="padding:10px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة.</div>';
-            return;
+        function switchTab(tab) {
+            if (tab === 'search') {
+                document.getElementById('pageSearch').classList.remove('hidden');
+                document.getElementById('pageWishes').classList.add('hidden');
+                document.getElementById('tabSearch').classList.add('active');
+                document.getElementById('tabWishes').classList.remove('active');
+            } else {
+                document.getElementById('pageSearch').classList.add('hidden');
+                document.getElementById('pageWishes').classList.remove('hidden');
+                document.getElementById('tabSearch').classList.remove('active');
+                document.getElementById('tabWishes').classList.add('active');
+            }
         }
 
-        currentResults.forEach(function(item, idx) {
-            var div = document.createElement('div');
-            div.className = 'card';
-            div.innerHTML = '<div><strong>' + item.faculty + '</strong><br><small>' + item.university + ' | ' + item.type + '</small></div>' +
-                            '<div style="display:flex; align-items:center; gap:10px;"><span style="font-weight:bold; color:#1e7e34;">%' + item.min + '</span>' +
-                            '<button class="btn-add" onclick="addWish(' + idx + ')">+ إضافة</button></div>';
-            wrapper.appendChild(div);
-        });
-    }
+        async function searchBranches() {
+            const score = document.getElementById('studentScore').value;
+            const type = document.getElementById('competitionType').value;
+            if (!score) return;
 
-    function addWish(idx) {
-        var item = currentResults[idx];
-        if (wishes.some(function(w) { return w.faculty === item.faculty && w.type === item.type; })) {
-            alert('مضاف مسبقاً!');
-            return;
+            try {
+                const response = await fetch(`/api/search?score=${score}&type=${type}`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    renderAvailableBranches(result.data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
-        wishes.push(item);
-        drawWishlist();
-    }
 
-    function delWish(idx) {
-        wishes.splice(idx, 1);
-        drawWishlist();
-    }
+        function renderAvailableBranches(branches) {
+            const container = document.getElementById('availableBranches');
+            container.innerHTML = '';
 
-    function drawWishlist() {
-        var sec = document.getElementById('wishlistSection');
-        var wrap = document.getElementById('wishlistItems');
-        wrap.innerHTML = '';
-        if (wishes.length > 0) {
-            sec.style.display = 'block';
-            wishes.forEach(function(item, idx) {
-                var div = document.createElement('div');
-                div.className = 'wish-item';
-                div.innerHTML = '<div>' + item.faculty + ' (' + item.type + ')</div><button class="btn-del" onclick="delWish(' + idx + ')">حذف</button>';
-                wrap.appendChild(div);
+            // تصفية الفروع المضافة مسبقاً
+            const filtered = branches.filter(b => !selectedWishes.some(w => w.faculty === b.faculty && w.type === b.type && w.university === b.university));
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 text-center py-8">لا توجد خيارات متاحة مطابقة لمجموعك ونوع المفاضلة.</p>`;
+                return;
+            }
+
+            filtered.forEach(branch => {
+                const div = document.createElement('div');
+                div.className = 'bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 flex justify-between items-center transition hover:border-gray-700';
+                div.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="font-bold text-gray-100 text-sm">${branch.faculty} (${branch.university})</div>
+                        <div class="text-xs text-gray-400">علمي ${branch.type} - شهادات سورية</div>
+                        <div class="text-xs text-amber-500 font-medium">الحد الأدنى: %${branch.min_score}</div>
+                    </div>
+                    <button onclick='addWish(${JSON.stringify(branch)})' 
+                            class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-medium px-4 py-2 rounded-lg transition">
+                        + إضافة رغبة
+                    </button>
+                `;
+                container.appendChild(div);
             });
-        } else {
-            sec.style.display = 'none';
         }
-    }
 
-    function sendToExcel() {
-        var name = document.getElementById('studentName').value.trim();
-        if (!name) { alert('ادخل اسم الطالب أولاً!'); return; }
-        if (wishes.length === 0) { alert('السلة فارغة!'); return; }
+        function addWish(branch) {
+            selectedWishes.push(branch);
+            document.getElementById('wishesBadge').innerText = selectedWishes.length;
+            updateWishesUI();
+            searchBranches();
+            switchTab('wishes'); // الذهاب تلقائياً لصفحة رغباتي عند الضغط على إضافة
+        }
 
-        fetch('/api/submit_wishes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ student_name: name, wishes: wishes })
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data.status === 'success') {
-                alert('تم الحفظ وتوليد ملف Excel بنجاح يا م/محمد!');
-                wishes = []; drawWishlist();
-            } else { alert('خطأ في الحفظ'); }
-        }).catch(function() { alert('خطأ في الاتصال بالخادم'); });
-    }
-</script>
-</body>
-</html>
+        function removeWish(index) {
+            selectedWishes.splice(index, 1);
+            document.getElementById('wishesBadge').innerText = selectedWishes.length;
+            updateWishesUI();
+            searchBranches();
+        }
+
+        function updateWishesUI() {
+            const container = document.getElementById('selectedWishesList');
+            container.innerHTML = '';
+
+            if (selectedWishes.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 text-center py-8">لم تقم بإضافة أي رغبة حتى الآن.</p>`;
+                return;
+            }
+
+            selectedWishes.forEach((wish, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-[#1a1a1a] border border-cyan-950 rounded-xl p-4 flex justify-between items-center relative';
+                div.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="bg-cyan-950 text-cyan-400 w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm border border-cyan-800">
+                            ${index + 1}
+                        </div>
+                        <div class="space-y-0.5">
+                            <div class="font-bold text-white text-sm">${wish.faculty}</div>
+                            <div class="text-xs text-gray-400">📍 ${wish.university}</div>
+                            <div class="text-xs text-gray-400">علمي ${wish.type} - العام الحالي - شهادات سورية</div>
+                        </div>
+                    </div>
+                    <button onclick="removeWish(${index})" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded">
+                        حذف
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function submitWishes() {
+            const downloadArea = document.getElementById('downloadArea');
