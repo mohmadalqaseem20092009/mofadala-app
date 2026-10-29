@@ -113,6 +113,28 @@
 </div>
 
 <script>
+    // قاعدة البيانات مدمجة محلياً هنا لتفادي أي حظر من المتصفحات وتعمل فوراً
+    var localData = [
+        {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 94.5},
+        {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "مفاضلة التعليم الموازي", "min_score": 92.0},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 85.0},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 80.0},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "مفاضلة عامة", "min_score": 84.0},
+        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "مفاضلة التعليم الموازي", "min_score": 79.0},
+        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 80.0},
+        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 77.0},
+        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 75.0},
+        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 72.0},
+        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 80.0},
+        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "type": "مفاضلة التعليم الموازي", "min_score": 74.0},
+        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "مفاضلة عامة", "min_score": 72.0},
+        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "مفاضلة التعليم الموازي", "min_score": 68.0},
+        {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "مفاضلة عامة", "min_score": 68.0},
+        {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "مفاضلة التعليم الموازي", "min_score": 64.0},
+        {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 68.0},
+        {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "مفاضلة عامة", "min_score": 55.0}
+    ];
+
     var rawData = [];
     var selectedWishes = []; 
 
@@ -130,56 +152,4 @@
 
     function processAnalysis(e) {
         e.preventDefault();
-        var score = document.getElementById('scoreInput').value;
-        var type = document.getElementById('typeSelect').value;
-        var loader = document.getElementById('loader');
-        var searchBox = document.getElementById('searchBoxContainer');
-        var wrapper = document.getElementById('resultsWrapper');
-        
-        loader.style.display = 'block';
-        searchBox.style.display = 'none';
-        wrapper.innerHTML = '';
-
-        fetch('/api/search?score=' + score + '&type=' + type)
-            .then(function(res) { return res.json(); })
-            .then(function(response) {
-                loader.style.display = 'none';
-                searchBox.style.display = 'block';
-                if (response.status === 'success' && response.data.length > 0) {
-                    rawData = response.data;
-                    renderCards(rawData);
-                } else {
-                    document.getElementById('resultsCount').innerText = '';
-                    wrapper.innerHTML = '<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px;">لم نجد نتائج متوافقة مع هذا المجموع.</div>';
-                }
-            })
-            .catch(function(err) {
-                loader.style.display = 'none';
-                alert('حدث خطأ في الاتصال بالخادم.');
-            });
-    }
-
-    function renderCards(data) {
-        var wrapper = document.getElementById('resultsWrapper');
-        wrapper.innerHTML = '';
-        document.getElementById('resultsCount').innerText = 'عدد الأفرع المتاحة لك: ' + data.length;
-        
-        data.forEach(function(item, index) {
-            var card = document.createElement('div');
-            card.className = 'faculty-card';
-            
-            var textDiv = document.createElement('div');
-            textDiv.style.textAlign = 'right';
-            textDiv.style.flex = '1';
-            
-            var title = document.createElement('h3');
-            title.style.color = 'var(--text-title)';
-            title.style.fontSize = '1.1rem';
-            title.style.fontWeight = 'bold';
-            title.style.marginBottom = '5px';
-            title.innerText = item.faculty;
-            
-            var smallInfo = document.createElement('small');
-            smallInfo.style.color = '#6c757d';
-            smallInfo.innerText = '🏢 ' + item.university + ' | 📋 ' + item.type;
-            
+        var score = parseFloat(document.getElementById('scoreInput').value);
