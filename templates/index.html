@@ -6,39 +6,11 @@
     <title>مفاضلة القبول الجامعي | المهندس محمد القاسم</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        /* تعريف متغيرات الألوان للوضعين المشرق والمظلم */
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #333333;
-            --input-bg: #ffffff;
-            --input-text: #000000;
-            --input-border: #cccccc;
-            --sub-text: #666666;
-            --card-bg: #fcfdfa;
-            --card-border: #3b5323;
-            --wish-bg: #f1f5ee;
-            --wish-border: #d0debb;
-            --item-border: #eeeeee;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #121212;
-            --text-color: #ffffff;
-            --input-bg: #ffffff;
-            --input-text: #000000;
-            --input-border: #444444;
-            --sub-text: #a8a29e;
-            --card-bg: #1e1e1e;
-            --card-border: #10b981;
-            --wish-bg: #161616;
-            --wish-border: #2e2e2e;
-            --item-border: #2e2e2e;
-        }
-
+        /* تصميم هيكلي بسيط جداً متموضع في المنتصف */
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: #ffffff;
+            color: #333333;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -46,43 +18,15 @@
             align-items: center;
             justify-content: center;
             min-height: 80vh;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* زر التبديل شمس وقمر في الزاوية العلوية اليمنى */
-        .theme-toggle-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: 1px solid var(--input-border);
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 22px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: 0.2s;
-            background-color: var(--card-bg);
-        }
-        .theme-toggle-btn:hover {
-            transform: scale(1.1);
         }
 
         .section-title {
-            color: #3b5323;
+            color: #3b5323; /* لون زيتي للعنوان */
             margin-bottom: 5px;
-            transition: color 0.3s;
-        }
-        [data-theme="dark"] .section-title {
-            color: #10b981; /* لون أخضر مضيء في الوضع المظلم */
         }
 
         .subtitle {
-            color: var(--sub-text);
+            color: #666666;
             margin-top: 0;
             margin-bottom: 25px;
         }
@@ -98,18 +42,16 @@
             padding: 10px;
             margin-top: 5px;
             margin-bottom: 15px;
-            border: 1px solid var(--input-border);
+            border: 1px solid #cccccc;
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 16px;
             text-align: center;
-            background-color: var(--input-bg);
-            color: var(--input-text);
         }
 
         .btn-submit {
             width: 100%;
-            background-color: #3b5323;
+            background-color: #3b5323; /* أزرار زيتية */
             color: white;
             padding: 12px;
             border: none;
@@ -117,27 +59,22 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
+
         .btn-submit:hover {
             background-color: #283818;
         }
-        [data-theme="dark"] .btn-submit {
-            background-color: #059669;
-        }
-        [data-theme="dark"] .btn-submit:hover {
-            background-color: #047857;
-        }
 
+        /* صندوق الرغبات المضاف حديثاً كجزء من الهيكل البسيط */
         .raghabat-container {
             width: 100%;
             max-width: 400px;
             margin-top: 20px;
             text-align: right;
-            border: 1px dashed var(--card-border);
+            border: 1px dashed #3b5323;
             padding: 15px;
             border-radius: 4px;
-            background-color: var(--card-bg);
+            background-color: #fcfdfa;
         }
 
         .raghabat-box {
@@ -147,8 +84,8 @@
 
         .raghabat-item {
             padding: 8px;
-            background-color: var(--wish-bg);
-            border: 1px solid var(--wish-border);
+            background-color: #f1f5ee;
+            border: 1px solid #d0debb;
             border-radius: 4px;
             margin-bottom: 8px;
             display: flex;
@@ -188,7 +125,7 @@
 
         .result-item {
             padding: 10px;
-            border-bottom: 1px solid var(--item-border);
+            border-bottom: 1px solid #eeeeee;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -207,13 +144,11 @@
 </head>
 <body>
 
-    <!-- زر التبديل شمس وقمر علوي -->
-    <button class="theme-toggle-btn" id="themeToggle" title="تبديل الوضع">🌙</button>
-
     <div class="form-container">
         <h1 class="section-title">مفاضلة القبول الجامعي</h1>
         <p class="subtitle">المهندس محمد القاسم</p>
 
+        <!-- استمارات الإدخال الهيكلية العادية -->
         <form id="mofadhalaForm">
             <div style="text-align: right;">
                 <label>اسم الطالب الثلاثي:</label>
@@ -229,44 +164,25 @@
         </form>
     </div>
 
+    <!-- صندوق قائمة رغبات الطالب (يظهر فقط عند إضافة رغبة) -->
     <div id="raghabatSection" class="raghabat-container" style="display: none;">
-        <h4 style="margin: 0; color: var(--card-border);">📋 رغباتك المختارة:</h4>
-        <div id="raghabatBox" class="raghabat-box"></div>
+        <h4 style="margin: 0; color: #3b5323;">📋 رغباتك المختارة:</h4>
+        <div id="raghabatBox" class="raghabat-box">
+            <!-- تضاف الرغبات هنا عبر السكريبت -->
+        </div>
         <button id="btnConfirm" class="btn-confirm" onclick="confirmChoices()">تثبيت الرغبات</button>
     </div>
 
+    <!-- صندوق عرض النتائج البسيط تحت الاستمارة مباشرة -->
     <div class="results-box">
-        <h3 style="border-bottom: 2px solid var(--card-border); padding-bottom: 5px; color: var(--card-border);">الأفرع المتوافقة:</h3>
-        <div id="branchesContainer"></div>
+        <h3 style="border-bottom: 2px solid #3b5323; padding-bottom: 5px; color: #3b5323;">الأفرع المتوافقة:</h3>
+        <div id="branchesContainer">
+            <!-- سيتم تعبئة البيانات هنا تلقائياً -->
+        </div>
     </div>
 
     <script>
-        // إعدادات تبديل الوضع (شمس وقمر) وحفظها بالمتصفح
-        const themeToggleBtn = document.getElementById('themeToggle');
-        const currentTheme = localStorage.getItem('theme') || 'light';
-
-        if (currentTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            themeToggleBtn.textContent = '☀️';
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-            themeToggleBtn.textContent = '🌙';
-        }
-
-        themeToggleBtn.addEventListener('click', () => {
-            let theme = document.documentElement.getAttribute('data-theme');
-            if (theme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'light');
-                themeToggleBtn.textContent = '🌙';
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggleBtn.textContent = '☀️';
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-
-        // نظام إدارة الأفرع والرغبات
+        // مصفوفة لتخزين رغبات الطالب الحالية لمنع التكرار وحفظ البيانات
         let selectedWishlist = [];
 
         document.getElementById('mofadhalaForm').addEventListener('submit', function(e) {
@@ -284,14 +200,78 @@
                 
                 if (res.status === 'success' && res.data.length > 0) {
                     res.data.forEach((branch, index) => {
+                        // تحويل الكائن لنص مرمز لسهولة نقله عبر الزر
                         const branchData = encodeURIComponent(JSON.stringify(branch));
                         const item = `
                             <div class="result-item">
                                 <button class="btn-add" onclick="addToWishlist('${branchData}')">+ إضافة</button>
-                                <span style="font-weight:bold; color:var(--card-border);">%${branch.min_score}</span>
+                                <span style="font-weight:bold; color:#3b5323;">%${branch.min_score}</span>
                                 <div>
                                     <strong style="font-size:14px;">${branch.name}</strong><br>
-                                    <span style="font-size:12px; color:var(--sub-text);">${branch.university} | ${branch.type}</span>
+                                    <span style="font-size:12px; color:#666;">${branch.university} | ${branch.type}</span>
                                 </div>
                             </div>
                         `;
+                        container.innerHTML += item;
+                    });
+                } else {
+                    container.innerHTML = '<p style="color:red; text-align:center; font-size:14px;">لا توجد أفرع متوافقة.</p>';
+                }
+            });
+        });
+
+        // دالة إضافة الفرع إلى قائمة الرغبات المختارة
+        function addToWishlist(encodedData) {
+            const branch = JSON.parse(decodeURIComponent(encodedData));
+            
+            // التحقق من عدم إضافة نفس الفرع مرتين
+            const isExist = selectedWishlist.some(item => item.name === branch.name && item.type === branch.type && item.university === branch.university);
+            
+            if (isExist) {
+                alert("هذا الفرع مضاف بالفعل إلى قائمة رغباتك!");
+                return;
+            }
+
+            // إضافة الفرع للمصفوفة وتحديث الواجهة
+            selectedWishlist.push(branch);
+            renderWishlist();
+        }
+
+        // دالة حذف رغبة معينة من القائمة
+        function removeFromWishlist(index) {
+            selectedWishlist.splice(index, 1);
+            renderWishlist();
+        }
+
+        // دالة لتحديث وعرض صندوق الرغبات في الواجهة
+        function renderWishlist() {
+            const section = document.getElementById('raghabatSection');
+            const box = document.getElementById('raghabatBox');
+            
+            box.innerHTML = '';
+            
+            if (selectedWishlist.length > 0) {
+                section.style.display = 'block'; // إظهار الصندوق
+                selectedWishlist.forEach((branch, index) => {
+                    const item = `
+                        <div class="raghabat-item">
+                            <button class="btn-delete" onclick="removeFromWishlist(${index})">حذف</button>
+                            <strong>${index + 1}. ${branch.name} (${branch.type})</strong>
+                        </div>
+                    `;
+                    box.innerHTML += item;
+                });
+            } else {
+                section.style.display = 'none'; // إخفاء الصندوق إذا كانت القائمة فارغة
+            }
+        }
+
+        // دالة عند ضغط زر تثبيت الرغبات
+        function confirmChoices() {
+            const studentName = document.getElementById('studentName').value || "الطالب";
+            alert(`شكراً لك يا ${studentName}! تم حفظ وتثبيت رغباتك بنجاح.`);
+        }
+    </script>
+
+</body>
+</html>
