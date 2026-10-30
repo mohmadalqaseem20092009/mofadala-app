@@ -13,7 +13,7 @@
             --input-bg: #ffffff;
             --input-text: #000000;
             --input-border: #cccccc;
-            --sub-text: #555555; /* جعل اللون أوضح قليلاً عند التكبير */
+            --sub-text: #555555;
             --card-bg: #fcfdfa;
             --card-border: #3b5323;
             --wish-bg: #f1f5ee;
@@ -45,7 +45,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 80vh;
+            min-height: 100vh; /* تم تصحيح الخطأ هنا من screen إلى 100vh */
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -82,13 +82,12 @@
             color: #10b981;
         }
 
-        /* تعديل حجم وخصائص جملة المهندس محمد القاسم لتصبح أكبر وأوضح */
         .subtitle {
             color: var(--sub-text);
             margin-top: 5px;
             margin-bottom: 30px;
-            font-size: 20px; /* تم تكبير الخط هنا */
-            font-weight: bold; /* جعل الخط عريضاً */
+            font-size: 20px;
+            font-weight: bold;
             letter-spacing: 0.5px;
         }
 
@@ -295,3 +294,4 @@
                                 <button class="btn-add" onclick="addToWishlist('${branchData}')">+ إضافة</button>
                                 <span style="font-weight:bold; color:var(--card-border);">%${branch.min_score}</span>
                                 <div>
+                                    <strong style="font-size:14px;">${branch.name}</strong><br>
