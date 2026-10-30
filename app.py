@@ -1,81 +1,352 @@
-import os
-from flask import Flask, render_template, request, jsonify, send_file
-import pandas as pd # ستحتاج لإضافة pandas في ملف requirements.txt
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاضلة القبول الجامعي</title>
+    <style>
+        /* تعريف متغيرات الألوان للوضع الداكن والفاتح */
+        :root {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-title: #ffffff;
+            --text-gray: #a0a0a0;
+            --border-color: #2d2d2d;
+            --input-bg: #121212;
+        }
 
-app = Flask(__name__)
+        [data-theme="light"] {
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-title: #111827;
+            --text-gray: #4b5563;
+            --border-color: #e5e7eb;
+            --input-bg: #f9fafb;
+        }
 
-# قاعدة البيانات المحدثة لتشمل التخصصات والجامعات الأساسية
-DATA = [
-    {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "عام", "min_score": 94.5},
-    {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "موازي", "min_score": 92.0},
-    {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "عام", "min_score": 85.0},
-    {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "موازي", "min_score": 80.0},
-    {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "عام", "min_score": 84.0},
-    {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "موازي", "min_score": 79.0},
-    {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "عام", "min_score": 80.0},
-    {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "موازي", "min_score": 77.0},
-    {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "عام", "min_score": 75.0},
-    {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "موازي", "min_score": 72.0},
-    {"faculty": "الهندسة المدنية", "university": "جامعة إدلب", "type": "عام", "min_score": 72.0},
-    {"faculty": "الهندسة المدنية", "university": "جامعة حلب", "type": "موازي", "min_score": 67.0},
-    {"faculty": "الهندسة المدنية", "university": "جامعة إدلب", "type": "موازي", "min_score": 65.0},
-    {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "عام", "min_score": 68.0},
-    {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "عام", "min_score": 55.0}
-]
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
 
-@app.route('/api/search', methods=['GET'])
-def search_faculty():
-    user_score = request.args.get('score', type=float)
-    selected_type = request.args.get('type', type=str, default='all')
-    accepted_branches = []
-    
-    for branch in DATA:
-        if user_score is not None and user_score < branch['min_score']:
-            continue
-        if selected_type and selected_type != 'all':
-            if selected_type != branch['type']:
-                continue
-        accepted_branches.append(branch)
+        .header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .theme-toggle-btn {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: bold;
+        }
+
+        .header h1 {
+            color: #10b981;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .header p {
+            color: var(--text-gray);
+            font-size: 13px;
+            margin: 4px 0 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #10b981;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            background-color: #059669;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .analyze-btn:hover {
+            background-color: #047857;
+        }
+
+        .wishes-container {
+            border: 1px dashed #0284c7;
+            background-color: rgba(2, 132, 199, 0.05);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .wishes-header {
+            color: #38bdf8;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+
+        .wish-row {
+            background-color: var(--input-bg);
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .delete-btn {
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #059669;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #047857;
+        }
+
+        .available-title {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin: 20px 0 10px 0;
+            text-align: right;
+        }
+
+        .branch-list {
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .branch-item {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .branch-details {
+            text-align: right;
+        }
+
+        .branch-name {
+            font-weight: bold;
+            color: var(--text-title);
+        }
+
+        .branch-sub {
+            color: var(--text-gray);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .branch-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .min-score {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background-color: #0284c7;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
         
-    accepted_branches = sorted(accepted_branches, key=lambda x: x['min_score'], reverse=True)
-    return jsonify({"status": "success", "data": accepted_branches})
+        <div class="header">
+            <button onclick="toggleTheme()" id="themeBtn" class="theme-toggle-btn">☀️ مشرق</button>
+            <h1>مفاضلة القبول الجامعي</h1>
+            <p>المهندس محمد القاسم</p>
+        </div>
 
-@app.route('/api/submit_wishes', methods=['POST'])
-def submit_wishes():
-    post_data = request.get_json() or {}
-    wishes_list = post_data.get('wishes', [])
-    
-    file_name = "student_wishes.xlsx"
-    
-    try:
-        # بناء جدول البيانات لتصديره إلى ملف إكسل نظيف ومحترف
-        rows = []
-        for index, wish in enumerate(wishes_list):
-            rows.append({
-                "ترتيب الرغبة": index + 1,
-                "الكلية / المعهد": wish.get('faculty', ''),
-                "الجامعة": wish.get('university', ''),
-                "نوع القبول": wish.get('type', '')
-            })
-        
-        df = pd.DataFrame(rows)
-        df.to_excel(file_name, index=False)
-        
-        return jsonify({"status": "success", "file_created": file_name})
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)})
+        <div class="form-group">
+            <label>اسم الطالب الثلاثي:</label>
+            <input type="text" id="studentName" value="محمد">
+        </div>
 
-@app.route('/download/<filename>')
-def download_file(filename):
-    try:
-        return send_file(filename, as_attachment=True)
-    except Exception as e:
-        return f"<h3>File not found!</h3>", 404
+        <div class="form-group">
+            <label>أدخل مجموعك المئوي (%):</label>
+            <input type="text" id="studentScore" value="73">
+        </div>
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+        <button onclick="searchBranches()" class="analyze-btn">
+            ✨ تحليل درجاتي وعرض الأفرع
+        </button>
+
+        <!-- صندوق الرغبات المختارة المنقط -->
+        <div id="wishesBox" class="wishes-container hidden">
+            <div class="wishes-header">📋 رغباتك المختارة:</div>
+            <div id="selectedWishesList"></div>
+            <button onclick="submitWishes()" class="submit-btn">تثبيت</button>
+            <div id="downloadArea" class="hidden" style="text-align: center;"></div>
+        </div>
+
+        <div class="available-title">الأفرع المتاحة لمجموعك:</div>
+        <div id="availableBranches" class="branch-list"></div>
+
+    </div>
+
+    <script>
+        let selectedWishes = [];
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const btn = document.getElementById('themeBtn');
+            
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                btn.innerHTML = '☀️ مشرق';
+                btn.style.color = '#f59e0b';
+                btn.style.backgroundColor = 'rgba(245, 158, 11, 0.1)';
+                btn.style.borderColor = 'rgba(245, 158, 11, 0.2)';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                btn.innerHTML = '🌙 مظلم';
+                btn.style.color = 'var(--text-main)';
+                btn.style.backgroundColor = 'var(--border-color)';
+                btn.style.borderColor = 'var(--border-color)';
+            }
+        }
+
+        function convertArabicNumbers(str) {
+            return str.replace(/[٠-٩]/g, function(d) {
+                return d.charCodeAt(0) - 1632;
+            });
+        }
+
+        async function searchBranches() {
+            let scoreInput = document.getElementById('studentScore').value;
+            scoreInput = convertArabicNumbers(scoreInput);
+            
+            const score = parseFloat(scoreInput);
+            const container = document.getElementById('availableBranches');
+            container.innerHTML = '';
+
+            if (isNaN(score)) {
+                alert('الرجاء إدخال مجموع صحيح أولاً');
+                return;
+            }
+
+            try {
+                // الاتصال بملف السيرفر الحقيقي app.py دون المساس به
+                const response = await fetch(`/api/search?score=${score}&type=all`);
