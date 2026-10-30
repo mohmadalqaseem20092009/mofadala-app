@@ -3,20 +3,110 @@ import os
 
 app = Flask(__name__)
 
-# قاعدة البيانات المهيأة خصيصاً لتتوافق مع نظام الفلترة المطور لديك
+# قاعدة البيانات الكاملة والشاملة لجميع الأفرع والمعاهد من ملف المفاضلة الرسمي
 DATA = [
-    {"name": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات", "type": "عامة", "min_score": 94.5},
-    {"name": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات", "type": "موازي", "min_score": 92.0},
+    # --- الكليات الطبية والهندسية الكبرى ---
+    {"name": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات السورية", "type": "عامة", "min_score": 94.5},
+    {"name": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات السورية", "type": "موازي", "min_score": 92.0},
+    {"name": "السنة التحضيرية (لأبناء المحافظات الشرقية)", "university": "دير الزور - الحسكة - الرقة", "type": "عامة", "min_score": 90.0},
+    {"name": "السنة التحضيرية (لأبناء المحافظات الشرقية)", "university": "دير الزور - الحسكة - الرقة", "type": "موازي", "min_score": 85.0},
+    
+    # الهندسة المعلوماتية
     {"name": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "عامة", "min_score": 85.0},
     {"name": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "موازي", "min_score": 80.0},
     {"name": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "عامة", "min_score": 84.0},
     {"name": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "موازي", "min_score": 79.0},
+    {"name": "الهندسة المعلوماتية", "university": "جامعة اللاذقية", "type": "عامة", "min_score": 84.0},
+    {"name": "الهندسة المعلوماتية", "university": "جامعة اللاذقية", "type": "موازي", "min_score": 79.0},
+    {"name": "الهندسة المعلوماتية", "university": "جامعة إدلب", "type": "عامة", "min_score": 80.0},
+    {"name": "الهندسة المعلوماتية", "university": "جامعة إدلب", "type": "موازي", "min_score": 75.0},
+    {"name": "الهندسة المعلوماتية", "university": "جامعة حماة", "type": "عامة", "min_score": 80.0},
+    {"name": "الهندسة المعلوماتية", "university": "جامعة حماة", "type": "موازي", "min_score": 75.0},
+    {"name": "الهندسة المعلوماتية (برمجيات)", "university": "جامعة حمص", "type": "عامة", "min_score": 84.0},
+    {"name": "الهندسة المعلوماتية (برمجيات)", "university": "جامعة حمص", "type": "موازي", "min_score": 80.0},
+    {"name": "الهندسة المعلوماتية (الذكاء الاصطناعي)", "university": "جامعة حمص", "type": "عامة", "min_score": 84.0},
+    {"name": "الهندسة المعلوماتية (الذكاء الاصطناعي)", "university": "جامعة حمص", "type": "موازي", "min_score": 80.0},
+    {"name": "الهندسة المعلوماتية (الشبكات والنظم)", "university": "جامعة حمص", "type": "عامة", "min_score": 84.0},
+    {"name": "الهندسة المعلوماتية (الشبكات والنظم)", "university": "جامعة حمص", "type": "موازي", "min_score": 80.0},
+
+    # الهندسة الطبية والمدنية والمعمارية
     {"name": "الهندسة الطبية", "university": "جامعة دمشق", "type": "عامة", "min_score": 80.0},
     {"name": "الهندسة الطبية", "university": "جامعة دمشق", "type": "موازي", "min_score": 75.0},
+    {"name": "الهندسة الطبية", "university": "جامعة اللاذقية", "type": "عامة", "min_score": 80.0},
+    {"name": "الهندسة الطبية", "university": "جامعة اللاذقية", "type": "موازي", "min_score": 75.0},
+    {"name": "الهندسة المدنية", "university": "جامعة دمشق", "type": "عامة", "min_score": 80.0},
+    {"name": "الهندسة المدنية", "university": "جامعة دمشق", "type": "موازي", "min_score": 75.0},
+    {"name": "الهندسة المدنية", "university": "جامعة حلب", "type": "عامة", "min_score": 78.0},
+    {"name": "الهندسة المدنية", "university": "جامعة حلب", "type": "موازي", "min_score": 67.0},
+    {"name": "الهندسة المدنية", "university": "جامعة اللاذقية", "type": "عامة", "min_score": 78.0},
+    {"name": "الهندسة المدنية", "university": "جامعة اللاذقية", "type": "موازي", "min_score": 67.0},
+    {"name": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "عامة", "min_score": 75.0},
+    {"name": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "موازي", "min_score": 70.0},
+    {"name": "الهندسة المعمارية", "university": "جامعة حلب", "type": "عامة", "min_score": 75.0},
+    {"name": "الهندسة المعمارية", "university": "جامعة حلب", "type": "موازي", "min_score": 70.0},
+    {"name": "الهندسة المعمارية", "university": "جامعة اللاذقية", "type": "عامة", "min_score": 75.0},
+    {"name": "الهندسة المعمارية", "university": "جامعة اللاذقية", "type": "موازي", "min_score": 70.0},
+    
+    # --- كليات الطب البيطري والعلوم الزراعية ---
+    {"name": "الطب البيطري", "university": "جامعة حماة", "type": "عامة", "min_score": 68.0},
+    {"name": "الطب البيطري", "university": "جامعة حماة", "type": "موازي", "min_score": 63.0},
+    {"name": "الطب البيطري", "university": "جامعة إدلب", "type": "عامة", "min_score": 65.0},
+    {"name": "الطب البيطري", "university": "جامعة إدلب", "type": "موازي", "min_score": 60.0},
+    {"name": "الهندسة الزراعية", "university": "جامعة دمشق", "type": "عامة", "min_score": 70.0},
+    {"name": "الهندسة الزراعية", "university": "جامعة دمشق", "type": "موازي", "min_score": 62.0},
+    {"name": "الهندسة الزراعية", "university": "جامعة حلب", "type": "عامة", "min_score": 70.0},
+    {"name": "الهندسة الزراعية", "university": "جامعة حلب", "type": "موازي", "min_score": 62.0},
+    {"name": "الهندسة الزراعية", "university": "جامعة اللاذقية", "type": "عامة", "min_score": 70.0},
+    {"name": "الهندسة الزراعية", "university": "جامعة اللاذقية", "type": "موازي", "min_score": 62.0},
+
+    # --- كليات الاقتصاد والحقوق والإعلام ---
+    {"name": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "عامة", "min_score": 75.0},
+    {"name": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "موازي", "min_score": 62.0},
+    {"name": "كلية الاقتصاد", "university": "جامعة حلب", "type": "عامة", "min_score": 68.0},
+    {"name": "كلية الاقتصاد", "university": "جامعة حلب", "type": "موازي", "min_score": 60.0},
+    {"name": "كلية الاقتصاد والإدارة", "university": "جامعة إدلب / الدانا", "type": "عامة", "min_score": 55.0},
+    {"name": "كلية الاقتصاد والإدارة", "university": "جامعة إدلب / الدانا", "type": "موازي", "min_score": 50.0},
     {"name": "كلية الحقوق", "university": "جامعة دمشق", "type": "عامة", "min_score": 65.0},
     {"name": "كلية الحقوق", "university": "جامعة دمشق", "type": "موازي", "min_score": 55.0},
+    {"name": "كلية الحقوق", "university": "جامعة حلب", "type": "عامة", "min_score": 55.0},
+    {"name": "كلية الحقوق", "university": "جامعة حلب", "type": "موازي", "min_score": 50.0},
+    {"name": "كلية الحقوق", "university": "جامعة إدلب", "type": "عامة", "min_score": 55.0},
+    {"name": "كلية الحقوق", "university": "جامعة إدلب", "type": "موازي", "min_score": 50.0},
+    {"name": "كلية الإعلام", "university": "جامعة دمشق", "type": "عامة", "min_score": 65.0},
+    {"name": "كلية الإعلام", "university": "جامعة دمشق", "type": "موازي", "min_score": 60.0},
+
+    # --- المعاهد التقانية لطب الأسنان والمعاهد الطبية والصحية ---
+    {"name": "المعهد التقاني لطب الأسنان (تعويضات)", "university": "جامعة دمشق", "type": "عامة", "min_score": 70.0},
+    {"name": "المعهد التقاني لطب الأسنان (تعويضات)", "university": "جامعة دمشق", "type": "موازي", "min_score": 60.0},
+    {"name": "المعهد التقاني لطب الأسنان (تعويضات)", "university": "جامعة حلب", "type": "عامة", "min_score": 70.0},
+    {"name": "المعهد التقاني لطب الأسنان (تعويضات)", "university": "جامعة حلب", "type": "موازي", "min_score": 60.0},
+    
+    # المعاهد الطبية والصحية (التخدير، الأشعة، المخابر، الصيدلة)
     {"name": "المعهد التقاني الطبي (تخدير)", "university": "جامعة دمشق", "type": "عامة", "min_score": 65.0},
-    {"name": "المعهد التقاني الطبي (تخدير)", "university": "جامعة دمشق", "type": "موازي", "min_score": 60.0}
+    {"name": "المعهد التقاني الطبي (تخدير)", "university": "جامعة دمشق", "type": "موازي", "min_score": 60.0},
+    {"name": "المعهد التقاني الطبي (تخدير)", "university": "جامعة حلب", "type": "عامة", "min_score": 65.0},
+    {"name": "المعهد التقاني الطبي (تخدير)", "university": "جامعة حلب", "type": "موازي", "min_score": 60.0},
+    {"name": "المعهد التقاني الطبي (تخدير)", "university": "جامعة اللاذقية", "type": "عامة", "min_score": 65.0},
+    {"name": "المعهد التقاني الطبي (تخدير)", "university": "جامعة اللاذقية", "type": "موازي", "min_score": 55.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة حمص", "type": "عامة", "min_score": 60.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة حمص", "type": "موازي", "min_score": 55.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة طرطوس", "type": "عامة", "min_score": 60.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة طرطوس", "type": "موازي", "min_score": 55.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة دير الزور", "type": "عامة", "min_score": 60.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة دير الزور", "type": "موازي", "min_score": 55.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة الحسكة", "type": "عامة", "min_score": 60.0},
+    {"name": "المعهد التقاني الصحي (تخدير)", "university": "جامعة الحسكة", "type": "موازي", "min_score": 55.0},
+    
+    {"name": "المعهد التقاني الطبي (مخابر)", "university": "جامعة دمشق", "type": "عامة", "min_score": 65.0},
+    {"name": "المعهد التقاني الطبي (مخابر)", "university": "جامعة دمشق", "type": "موازي", "min_score": 60.0},
+    {"name": "المعهد التقاني الطبي (مخابر)", "university": "جامعة حلب", "type": "عامة", "min_score": 65.0},
+    {"name": "المعهد التقاني الطبي (مخابر)", "university": "جامعة حلب", "type": "موازي", "min_score": 60.0},
+    {"name": "المعهد التقاني الطبي (صيدلة)", "university": "جامعة حلب", "type": "عامة", "min_score": 62.0},
+    {"name": "المعهد التقاني الطبي (صيدلة)", "university": "جامعة حلب", "type": "موازي", "min_score": 58.0},
+    {"name": "المعهد التقاني الطبي (أشعة)", "university": "جامعة دمشق", "type": "عامة", "min_score": 65.0},
+    {"name": "المعهد التقاني الطبي (أشعة)", "university": "جامعة دمشق", "type": "موازي", "min_score": 60.0},
+    {"name": "المعهد التقاني الطبي (أشعة)", "university": "جامعة حلب", "type": "عامة", "min_score": 65.0},
+    {"name": "المعهد التقاني الطبي (أشعة)", "university": "جامعة حلب", "type": "موازي", "min_score": 60.0}
 ]
 
 @app.route("/")
@@ -26,21 +116,3 @@ def home():
 @app.route("/analyze", methods=["POST"])
 def analyze():
     try:
-        user_score = float(request.form.get("score", 0))
-        selected_type = request.form.get("type", "كل الأنواع")
-        
-        accepted_branches = []
-        for branch in DATA:
-            if user_score >= branch["min_score"]:
-                if selected_type == "كل الأنواع" or branch["type"] == selected_type:
-                    accepted_branches.append(branch)
-                    
-        # ترتيب الأفرع من الأعلى للأقل بناءً على الحد الأدنى
-        accepted_branches = sorted(accepted_branches, key=lambda x: x["min_score"], reverse=True)
-        return jsonify({"status": "success", "data": accepted_branches})
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)})
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
