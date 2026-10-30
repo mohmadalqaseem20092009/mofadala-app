@@ -4,68 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاضلة القبول الجامعي | د. محمد القاسم</title>
-    <!-- استدعاء Tailwind CSS -->
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            background-color: #f5f5f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-col: column;
+            align-items: center;
+            min-height: screen;
+        }
+        .main-header {
+            background-color: #3b5323 !important; /* اللون الزيتي الثابت */
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            width: 100%;
+            border-b: 4px solid #283818;
+        }
+        .custom-container {
+            max-width: 768px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .btn-olive {
+            background-color: #3b5323 !important;
+            color: white !important;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-olive:hover {
+            background-color: #283818 !important;
+        }
     </style>
 </head>
-<body class="bg-stone-100 text-stone-800 min-h-screen flex flex-col justify-between items-center">
+<body class="flex flex-col items-center w-full">
 
     <!-- الهيدر الزيتي الرئيسي -->
-    <header class="bg-[#3b5323] text-white py-8 shadow-lg w-full text-center border-b-4 border-[#283818]">
-        <h1 class="text-3xl md:text-4xl font-bold tracking-wide">مفاضلة القبول الجامعي 2025 - 2026</h1>
+    <header class="main-header shadow-lg">
+        <h1 class="text-3xl font-bold">مفاضلة القبول الجامعي 2025 - 2026</h1>
         <p class="text-stone-200 mt-2 text-xl font-medium">برعاية دكتور التخدير محمد القاسم</p>
     </header>
 
-    <!-- محتوى الصفحة الرئيسي متمركز تماماً في المنتصف -->
-    <main class="flex-grow container mx-auto px-4 py-12 max-w-3xl flex flex-col justify-center items-center w-full">
+    <!-- محتوى الصفحة المتمركز في المنتصف -->
+    <main class="custom-container">
         
-        <!-- صندوق إدخال البيانات الزيتي -->
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-stone-200 w-full text-center">
+        <!-- صندوق إدخال البيانات -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-stone-200 text-center">
             <h2 class="text-2xl font-bold text-stone-700 mb-6">احسب خياراتك الجامعية المتاحة</h2>
             
             <form id="mofadhalaForm" class="flex flex-col gap-5 justify-center items-center max-w-md mx-auto">
                 <div class="w-full">
                     <label for="score" class="block text-base font-medium text-stone-600 mb-2">أدخل معدلك المئوي في الشهادة الثانوية:</label>
                     <input type="number" step="0.01" id="score" name="score" placeholder="مثال: 85.5" required
-                           class="w-full px-4 py-3 border-2 border-stone-300 rounded-xl focus:ring-2 focus:ring-[#3b5323] focus:border-[#3b5323] text-center text-xl font-bold bg-stone-50">
+                           class="w-full px-4 py-3 border-2 border-stone-300 rounded-xl text-center text-xl font-bold bg-stone-50 focus:outline-none focus:border-[#3b5323]">
                 </div>
 
                 <div class="w-full">
                     <label for="type" class="block text-base font-medium text-stone-600 mb-2">نوع المفاضلة:</label>
-                    <select id="type" name="type" class="w-full px-4 py-3 border-2 border-stone-300 rounded-xl focus:ring-2 focus:ring-[#3b5323] focus:border-[#3b5323] text-center text-base font-bold bg-stone-50">
+                    <select id="type" name="type" class="w-full px-4 py-3 border-2 border-stone-300 rounded-xl text-center text-base font-bold bg-stone-50 focus:outline-none focus:border-[#3b5323]">
                         <option value="كل الأنواع">كل الأنواع</option>
                         <option value="عامة">مفاضلة عامة</option>
                         <option value="موازي">مفاضلة التعليم الموازي</option>
                     </select>
                 </div>
 
-                <button type="submit" class="w-full bg-[#3b5323] hover:bg-[#283818] text-white font-bold py-3.5 px-6 rounded-xl transition duration-300 text-lg shadow-md transform hover:scale-[1.02]">
+                <button type="submit" class="w-full btn-olive py-3.5 px-6 rounded-xl text-lg shadow-md hover:scale-[1.02] transition transform">
                     عرض الأفرع المتاحة
                 </button>
             </form>
         </div>
 
-        <!-- عرض النتائج متمركزة في المنتصف (تظهر وتختفي ديناميكياً) -->
+        <!-- عرض النتائج -->
         <div id="resultsCard" class="bg-white rounded-2xl shadow-xl p-8 border border-stone-200 w-full hidden">
             <h3 class="text-xl font-bold text-stone-800 mb-6 border-b-2 border-stone-100 pb-3 text-center">
                 النتائج المتوافقة مع خياراتك:
             </h3>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-center border-collapse">
+                <table class="w-full border-collapse">
                     <thead>
                         <tr class="bg-stone-100 text-stone-700 text-base font-bold border-b-2 border-stone-200">
-                            <th class="p-4 text-right md:text-center">الكلية / القسم</th>
-                            <th class="p-4">الجامعة</th>
-                            <th class="p-4">نوع المفاضلة</th>
-                            <th class="p-4">الحد الأدنى</th>
+                            <th class="p-4 text-center">الكلية / القسم</th>
+                            <th class="p-4 text-center">الجامعة</th>
+                            <th class="p-4 text-center">نوع المفاضلة</th>
+                            <th class="p-4 text-center">الحد الأدنى</th>
                         </tr>
                     </thead>
                     <tbody id="resultsTableBody" class="divide-y divide-stone-100 text-stone-700">
-                        <!-- البيانات سيتم إدراجها هنا عبر الجافا سكريبت -->
+                        <!-- تظهر النتائج هنا -->
                     </tbody>
                 </table>
             </div>
@@ -75,12 +108,11 @@
 
     </main>
 
-    <!-- الفوتر السفلي الزيتي الداكن -->
-    <footer class="bg-stone-800 text-stone-400 text-center py-5 text-sm w-full border-t border-stone-700">
+    <!-- الفوتر السفلي -->
+    <footer class="bg-stone-800 text-stone-400 text-center py-5 text-sm w-full border-t border-stone-700 mt-auto">
         <p class="font-medium">حقوق النشر محفوظة © 2026 | تطبيق مفاضلة د. محمد القاسم</p>
     </footer>
 
-    <!-- جافا سكريبت للربط مع مسار analyze/ المطور الخاص بك -->
     <script>
         document.getElementById('mofadhalaForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -98,27 +130,28 @@
                 const noResults = document.getElementById('noResultsMessage');
                 
                 tableBody.innerHTML = '';
-                resultsCard.classList.remove('hidden');
                 
                 if (res.status === 'success' && res.data.length > 0) {
+                    resultsCard.classList.remove('hidden');
                     noResults.classList.add('hidden');
                     res.data.forEach(branch => {
                         const row = `
                             <tr class="hover:bg-stone-50 transition duration-150">
-                                <td class="p-4 font-bold text-stone-900 text-base text-right md:text-center">${branch.name || branch.branch_name || 'غير محدد'}</td>
-                                <td class="p-4 font-medium text-sm text-stone-600">${branch.university || branch.city || 'غير محدد'}</td>
-                                <td class="p-4"><span class="bg-stone-100 text-stone-700 px-3 py-1 rounded-full text-sm font-semibold">${branch.type || 'عامة'}</span></td>
-                                <td class="p-4 font-extrabold text-[#3b5323] text-lg">${branch.min_score}%</td>
+                                <td class="p-4 font-bold text-stone-900 text-base text-center">${branch.name}</td>
+                                <td class="p-4 font-medium text-sm text-stone-600 text-center">${branch.university}</td>
+                                <td class="p-4 text-center"><span class="bg-stone-100 text-stone-700 px-3 py-1 rounded-full text-sm font-semibold">${branch.type}</span></td>
+                                <td class="p-4 font-extrabold text-[#3b5323] text-lg text-center">${branch.min_score}%</td>
                             </tr>
                         `;
                         tableBody.innerHTML += row;
                     });
                 } else {
+                    resultsCard.classList.remove('hidden');
                     noResults.classList.remove('hidden');
                 }
             })
             .catch(err => {
-                console.error('حدث خطأ أثناء جلب البيانات:', err);
+                console.error('حدث خطأ:', err);
             });
         });
     </script>
