@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مفاضلة القبول الجامعي |  محمد القاسم</title>
+    <title>مفاضلة القبول الجامعي | د. محمد القاسم</title>
     <!-- استدعاء Tailwind CSS -->
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
@@ -19,65 +19,59 @@
         <p class="text-stone-200 mt-2 text-xl font-medium">برعاية دكتور التخدير محمد القاسم</p>
     </header>
 
-    <!-- محتوى الصفحة الرئيسي متموضع تماماً في المنتصف -->
+    <!-- محتوى الصفحة الرئيسي متمركز تماماً في المنتصف -->
     <main class="flex-grow container mx-auto px-4 py-12 max-w-3xl flex flex-col justify-center items-center w-full">
         
         <!-- صندوق إدخال البيانات الزيتي -->
         <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-stone-200 w-full text-center">
             <h2 class="text-2xl font-bold text-stone-700 mb-6">احسب خياراتك الجامعية المتاحة</h2>
-            <form method="POST" class="flex flex-col gap-5 justify-center items-center max-w-md mx-auto">
+            
+            <form id="mofadhalaForm" class="flex flex-col gap-5 justify-center items-center max-w-md mx-auto">
                 <div class="w-full">
                     <label for="score" class="block text-base font-medium text-stone-600 mb-2">أدخل معدلك المئوي في الشهادة الثانوية:</label>
-                    <input type="number" step="0.01" id="score" name="score" value="{{ score if score is not none else '' }}" placeholder="مثال: 85.5" required
+                    <input type="number" step="0.01" id="score" name="score" placeholder="مثال: 85.5" required
                            class="w-full px-4 py-3 border-2 border-stone-300 rounded-xl focus:ring-2 focus:ring-[#3b5323] focus:border-[#3b5323] text-center text-xl font-bold bg-stone-50">
                 </div>
+
+                <div class="w-full">
+                    <label for="type" class="block text-base font-medium text-stone-600 mb-2">نوع المفاضلة:</label>
+                    <select id="type" name="type" class="w-full px-4 py-3 border-2 border-stone-300 rounded-xl focus:ring-2 focus:ring-[#3b5323] focus:border-[#3b5323] text-center text-base font-bold bg-stone-50">
+                        <option value="كل الأنواع">كل الأنواع</option>
+                        <option value="عامة">مفاضلة عامة</option>
+                        <option value="موازي">مفاضلة التعليم الموازي</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="w-full bg-[#3b5323] hover:bg-[#283818] text-white font-bold py-3.5 px-6 rounded-xl transition duration-300 text-lg shadow-md transform hover:scale-[1.02]">
                     عرض الأفرع المتاحة
                 </button>
             </form>
         </div>
 
-        <!-- عرض النتائج متمركزة في المنتصف -->
-        {% if score is not none %}
-        <div class="bg-white rounded-2xl shadow-xl p-8 border border-stone-200 w-full">
+        <!-- عرض النتائج متمركزة في المنتصف (تظهر وتختفي ديناميكياً) -->
+        <div id="resultsCard" class="bg-white rounded-2xl shadow-xl p-8 border border-stone-200 w-full hidden">
             <h3 class="text-xl font-bold text-stone-800 mb-6 border-b-2 border-stone-100 pb-3 text-center">
-                النتائج المتوافقة مع معدلك (<span class="text-[#3b5323] text-2xl font-extrabold">{{ score }}%</span>):
+                النتائج المتوافقة مع خياراتك:
             </h3>
 
-            {% if eligible_branches %}
             <div class="overflow-x-auto">
                 <table class="w-full text-center border-collapse">
                     <thead>
                         <tr class="bg-stone-100 text-stone-700 text-base font-bold border-b-2 border-stone-200">
-                            <th class="p-4">الكلية / القسم</th>
+                            <th class="p-4 text-right md:text-center">الكلية / القسم</th>
                             <th class="p-4">الجامعة</th>
-                            <th class="p-4">المفاضلة العامة</th>
-                            <th class="p-4">التعليم الموازي</th>
+                            <th class="p-4">نوع المفاضلة</th>
+                            <th class="p-4">الحد الأدنى</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-stone-100 text-stone-700">
-                        {% for branch in eligible_branches %}
-                        <tr class="hover:bg-stone-50 transition duration-150">
-                            <td class="p-4 font-bold text-stone-900 text-base text-right md:text-center">{{ branch.name }}</td>
-                            <td class="p-4 font-medium text-sm text-stone-600">{{ branch.university }}</td>
-                            <td class="p-4">
-                                <span class="block font-bold text-base mb-1">{{ branch.status_general }}</span>
-                                <span class="text-xs bg-stone-100 text-stone-500 px-2 py-0.5 rounded-full">الحد: {{ branch.general_req }}%</span>
-                            </td>
-                            <td class="p-4">
-                                <span class="block font-bold text-base mb-1">{{ branch.status_parallel }}</span>
-                                <span class="text-xs bg-stone-100 text-stone-500 px-2 py-0.5 rounded-full">الحد: {{ branch.parallel_req }}%</span>
-                            </td>
-                        </tr>
-                        {% endfor %}
+                    <tbody id="resultsTableBody" class="divide-y divide-stone-100 text-stone-700">
+                        <!-- البيانات سيتم إدراجها هنا عبر الجافا سكريبت -->
                     </tbody>
                 </table>
             </div>
-            {% else %}
-            <p class="text-center text-red-500 font-bold py-6 text-lg">عذراً، هذا المعدل دون الحدود الدنيا للأفرع المتوفرة حالياً في النظام.</p>
-            {% endif %}
+            
+            <p id="noResultsMessage" class="text-center text-red-500 font-bold py-6 text-lg hidden">عذراً، هذا المعدل دون الحدود الدنيا للخيارات المحددة.</p>
         </div>
-        {% endif %}
 
     </main>
 
@@ -85,6 +79,49 @@
     <footer class="bg-stone-800 text-stone-400 text-center py-5 text-sm w-full border-t border-stone-700">
         <p class="font-medium">حقوق النشر محفوظة © 2026 | تطبيق مفاضلة د. محمد القاسم</p>
     </footer>
+
+    <!-- جافا سكريبت للربط مع مسار analyze/ المطور الخاص بك -->
+    <script>
+        document.getElementById('mofadhalaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(res => {
+                const resultsCard = document.getElementById('resultsCard');
+                const tableBody = document.getElementById('resultsTableBody');
+                const noResults = document.getElementById('noResultsMessage');
+                
+                tableBody.innerHTML = '';
+                resultsCard.classList.remove('hidden');
+                
+                if (res.status === 'success' && res.data.length > 0) {
+                    noResults.classList.add('hidden');
+                    res.data.forEach(branch => {
+                        const row = `
+                            <tr class="hover:bg-stone-50 transition duration-150">
+                                <td class="p-4 font-bold text-stone-900 text-base text-right md:text-center">${branch.name || branch.branch_name || 'غير محدد'}</td>
+                                <td class="p-4 font-medium text-sm text-stone-600">${branch.university || branch.city || 'غير محدد'}</td>
+                                <td class="p-4"><span class="bg-stone-100 text-stone-700 px-3 py-1 rounded-full text-sm font-semibold">${branch.type || 'عامة'}</span></td>
+                                <td class="p-4 font-extrabold text-[#3b5323] text-lg">${branch.min_score}%</td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+                } else {
+                    noResults.classList.remove('hidden');
+                }
+            })
+            .catch(err => {
+                console.error('حدث خطأ أثناء جلب البيانات:', err);
+            });
+        });
+    </script>
 
 </body>
 </html>
