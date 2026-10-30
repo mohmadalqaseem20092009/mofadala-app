@@ -4,79 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفاضلة القبول الجامعي</title>
-    <script src="https://tailwindcss.com"></script>
     <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: system-ui, -apple-system, sans-serif;
+        :root {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-title: #ffffff;
+            --border-color: #2d2d2d;
+            --input-bg: #121212;
         }
-        .custom-card {
-            background-color: #1e1e1e;
-            border: 1px solid #2d2d2d;
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .theme-toggle-btn {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .header h1 {
+            color: #10b981;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 13px;
+            margin: 4px 0 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #10b981;
+        }
+
+        .analyze-btn {
+            width: 100%;
+            background-color: #059669;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .analyze-btn:hover {
+            background-color: #047857;
+        }
+
+        .wishes-container {
+            border: 1px dashed #0284c7;
+            background-color: rgba(2, 132, 199, 0.05);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .wishes-header {
+            color: #38bdf8;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+
+        .wish-row {
+            background-color: var(--input-bg);
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .delete-btn {
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #059669;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .available-title {
+            font-size: 14px;
+            color: #888;
+            margin: 20px 0 10px 0;
+            text-align: right;
+        }
+
+        .branch-list {
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .branch-item {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .branch-details {
+            text-align: right;
+        }
+
+        .branch-name {
+            font-weight: bold;
+            color: var(--text-title);
+        }
+
+        .branch-sub {
+            color: #888;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .branch-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .min-score {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .hidden { display: none !important; }
+
+        .download-btn {
+            display: inline-block;
+            background-color: #0284c7;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-top: 10px;
         }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen flex justify-center items-start">
+<body>
 
-    <div class="w-full max-w-xl custom-card rounded-xl p-6 shadow-2xl space-y-6">
+    <div class="container">
         
-        <!-- الهيدر والعنوان الرئيسي -->
-        <div class="text-center relative">
-            <button onclick="toggleTheme()" id="themeBtn" class="absolute left-0 top-0 bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-full border border-amber-500/20 flex items-center gap-1 font-bold">
-                <span>☀️</span> <span id="themeText">مشرق</span>
-            </button>
-            <h1 class="text-xl font-bold text-emerald-400">مفاضلة القبول الجامعي</h1>
-            <p class="text-sm text-gray-400 mt-1">المهندس محمد القاسم</p>
+        <div class="header">
+            <button onclick="toggleTheme()" id="themeBtn" class="theme-toggle-btn">☀️ مشرق</button>
+            <h1>مفاضلة القبول الجامعي</h1>
+            <p>المهندس محمد القاسم</p>
         </div>
 
-        <!-- 1. حقل المعدل (المجموع المئوي) -->
-        <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-300 text-right">أدخل مجموعك المئوي (%):</label>
-            <input type="text" id="studentScore" value="73"
-                   class="w-full bg-[#121212] border border-gray-700 rounded-lg p-3 text-center text-white focus:outline-none focus:border-emerald-500 text-xl font-bold">
+        <div class="form-group">
+            <label>أدخل مجموعك المئوي (%):</label>
+            <input type="text" id="studentScore" value="73">
         </div>
 
-        <!-- 2. حقل نوع المفاضلة -->
-        <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-300 text-right">نوع المفاضلة:</label>
-            <select id="competitionType"
-                    class="w-full bg-[#121212] border border-gray-700 rounded-lg p-3 text-center text-white focus:outline-none focus:border-emerald-500 text-base">
-                <option value="all">كل المفاضلات (عام وموازي)</option>
+        <div class="form-group">
+            <label>نوع المفاضلة:</label>
+            <select id="competitionType">
+                <option value="all">كل المفاضلات</option>
                 <option value="عام">علمي عام</option>
                 <option value="موازي" selected>علمي موازي</option>
             </select>
         </div>
 
-        <!-- 3. زر تحليل الدرجات والبحث الأخضر الكبير -->
-        <button onclick="searchBranches()" 
-                class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium p-3 rounded-lg transition duration-200 flex items-center justify-center gap-2 text-base">
+        <button onclick="searchBranches()" class="analyze-btn">
             ✨ تحليل درجاتي وعرض الأفرع
         </button>
 
-        <!-- صندوق الرغبات المختارة الأزرق المنقط -->
-        <div id="wishesBox" class="border border-dashed border-sky-500/50 bg-sky-950/10 rounded-lg p-4 space-y-3 hidden">
-            <div class="flex justify-between items-center text-sm text-sky-400 font-medium">
-                <span>📋 رغباتك المختارة:</span>
-            </div>
-            
-            <div id="selectedWishesList" class="space-y-2"></div>
-
-            <button onclick="submitWishes()" 
-                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium p-3 rounded-lg transition duration-200 text-center">
-                تثبيت
-            </button>
-            
-            <div id="downloadArea" class="hidden text-center pt-2"></div>
+        <!-- صندوق الرغبات المختارة المنقط -->
+        <div id="wishesBox" class="wishes-container hidden">
+            <div class="wishes-header">📋 رغباتك المختارة:</div>
+            <div id="selectedWishesList"></div>
+            <button onclick="submitWishes()" class="submit-btn">تثبيت</button>
+            <div id="downloadArea" class="hidden" style="text-align: center;"></div>
         </div>
 
-        <!-- قسم الفروع المتاحة حسب المجموع المستوردة من السيرفر -->
-        <div class="space-y-3">
-            <h3 class="text-sm font-medium text-gray-500 text-right">الأفرع المتاحة لمجموعك:</h3>
-            <div id="availableBranches" class="space-y-2 max-h-60 overflow-y-auto pr-1">
-                <!-- الفروع تظهر هنا تلقائياً عند الضغط على تحليل -->
-            </div>
-        </div>
+        <div class="available-title">الأفرع المتاحة لمجموعك:</div>
+        <div id="availableBranches" class="branch-list"></div>
 
     </div>
 
@@ -86,18 +287,19 @@
 
         function toggleTheme() {
             const btn = document.getElementById('themeBtn');
-            const txt = document.getElementById('themeText');
             isLight = !isLight;
             if (isLight) {
                 document.body.style.backgroundColor = '#f3f4f6';
                 document.body.style.color = '#1f2937';
-                txt.innerText = 'مظلم';
-                btn.className = 'absolute left-0 top-0 bg-gray-200 text-gray-800 text-xs px-2.5 py-1 rounded-full border border-gray-300 flex items-center gap-1 font-bold';
+                btn.innerHTML = '🌙 مظلم';
+                document.querySelector('.container').style.backgroundColor = '#ffffff';
+                document.querySelector('.container').style.borderColor = '#e5e7eb';
             } else {
                 document.body.style.backgroundColor = '#121212';
                 document.body.style.color = '#e0e0e0';
-                txt.innerText = 'مشرق';
-                btn.className = 'absolute left-0 top-0 bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-full border border-amber-500/20 flex items-center gap-1 font-bold';
+                btn.innerHTML = '☀️ مشرق';
+                document.querySelector('.container').style.backgroundColor = '#1e1e1e';
+                document.querySelector('.container').style.borderColor = '#2d2d2d';
             }
         }
 
@@ -131,86 +333,8 @@
                     });
 
                     if (filtered.length === 0) {
-                        container.innerHTML = `<p class="text-xs text-amber-400 text-center py-4">لا توجد خيارات متاحة حالياً لمجموعك من السيرفر.</p>`;
+                        container.innerHTML = `<p style="text-align:center;font-size:12px;color:#888;padding:10px;">لا توجد خيارات متاحة حالياً.</p>`;
                         return;
                     }
 
                     filtered.forEach(branch => {
-                        const div = document.createElement('div');
-                        div.className = 'bg-[#121212] border border-gray-800 rounded-lg p-3 flex justify-between items-center text-xs';
-                        div.innerHTML = `
-                            <div class="flex items-center gap-3">
-                                <button onclick='addWish(${JSON.stringify(branch)})' 
-                                        class="bg-blue-600 hover:bg-blue-500 text-white font-medium px-3 py-1.5 rounded transition">
-                                    + إضافة
-                                </button>
-                                <span class="text-emerald-400 font-semibold">%${branch.min_score}</span>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-bold text-gray-200">${branch.faculty}</div>
-                                <div class="text-gray-400">${branch.university} | ${branch.type}</div>
-                            </div>
-                        `;
-                        container.appendChild(div);
-                    });
-                }
-            } catch (error) {
-                console.error("Error connecting to server:", error);
-            }
-        }
-
-        function addWish(branch) {
-            selectedWishes.push(branch);
-            updateWishesUI();
-            searchBranches();
-        }
-
-        function removeWish(index) {
-            selectedWishes.splice(index, 1);
-            updateWishesUI();
-            searchBranches();
-        }
-
-        function updateWishesUI() {
-            const wishesBox = document.getElementById('wishesBox');
-            const container = document.getElementById('selectedWishesList');
-            container.innerHTML = '';
-
-            if (selectedWishes.length > 0) {
-                wishesBox.classList.remove('hidden');
-            } else {
-                wishesBox.classList.add('hidden');
-                return;
-            }
-
-            selectedWishes.forEach((wish, index) => {
-                const div = document.createElement('div');
-                div.className = 'bg-[#121212] border border-gray-800 rounded p-3 flex justify-between items-center text-xs';
-                div.innerHTML = `
-                    <button onclick="removeWish(${index})" class="bg-red-600 hover:bg-red-500 text-white px-2 py-1 rounded text-[10px]">
-                        حذف
-                    </button>
-                    <div class="text-gray-200 text-right">
-                        ${wish.faculty} (${wish.type})
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        async function submitWishes() {
-            const downloadArea = document.getElementById('downloadArea');
-            if (selectedWishes.length === 0) return;
-
-            try {
-                const response = await fetch('/api/submit_wishes', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ student_name: "طالب_المفاضلة", wishes: selectedWishes })
-                });
-                const result = await response.json();
-                if (result.status === 'success') {
-                    downloadArea.classList.remove('hidden');
-                    downloadArea.innerHTML = `
-                        <a href="/download/${result.file_created}" class="inline-block bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium py-2 px-4 rounded transition mt-2">
-                            📥 تحميل ملف رغبات الطالب المصدّر
