@@ -6,175 +6,306 @@
     <title>مفاضلة القبول الجامعي</title>
     <style>
         :root {
-            --primary-color: #1e7e34;
-            --secondary-color: #28a745;
             --bg-body: #121212;
             --bg-card: #1e1e1e;
-            --text-main: #dddddd;
+            --text-main: #e0e0e0;
             --text-title: #ffffff;
-            --border-color: #333333;
+            --border-color: #2d2d2d;
+            --input-bg: #121212;
         }
+
         [data-theme="light"] {
-            --bg-body: #e9ecef;
+            --bg-body: #f3f4f6;
             --bg-card: #ffffff;
-            --text-main: #333333;
-            --text-title: #111111;
-            --border-color: #dee2e6;
+            --text-main: #1f2937;
+            --text-title: #111827;
+            --border-color: #e5e7eb;
+            --input-bg: #f9fafb;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s ease, color 0.2s ease; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .container { max-width: 800px; margin: 0 auto; position: relative; }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 24px;
+        }
+
         .theme-toggle-btn {
-            position: absolute; top: 20px; left: 15px;
-            background: var(--bg-card); border: 2px solid var(--border-color);
-            color: var(--text-main); padding: 6px 12px; border-radius: 20px;
-            cursor: pointer; font-weight: bold; z-index: 10; font-size: 0.9rem;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: bold;
         }
-        .main-card { border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: var(--bg-card); padding: 30px; margin-top: 45px; }
-        .text-center { text-align: center; }
-        .mb-4 { margin-bottom: 1.5rem; }
-        .mb-3 { margin-bottom: 1rem; }
-        .form-label { display: block; margin-bottom: .5rem; font-weight: bold; text-align: right; }
-        .form-control, .form-select { display: block; width: 100%; padding: .6rem; font-size: 1.1rem; background-color: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); border-radius: .25rem; text-align: center; outline: none; }
-        
-        .btn-analyze { display: block; width: 100%; background-color: var(--primary-color); color: white; border: none; padding: 14px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; margin-bottom: 20px; }
-        .btn-analyze:hover { background-color: #155d27; }
-        
-        .faculty-card { background: var(--bg-card); border-right: 5px solid var(--secondary-color); border-left: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .btn-add-wish { background-color: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn-add-wish:hover { background-color: #0056b3; }
-        .search-box { display: none; margin-top: 20px; border-top: 2px solid var(--border-color); padding-top: 20px; }
-        
-        .wishlist-container { display: none; margin-top: 30px; margin-bottom: 20px; border: 2px dashed #007bff; border-radius: 10px; padding: 20px; text-align: right; }
-        .wish-item { background: var(--bg-card); padding: 10px; border-radius: 5px; margin-bottom: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .btn-remove-wish { background: #dc3545; color: white; border: none; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-submit-excel { display: block; width: 100%; background-color: var(--secondary-color); color: white; border: none; padding: 14px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; }
-        .btn-submit-excel:hover { background-color: #1e7e34; }
-        
-        .engineer-title { color: #6c757d; font-weight: bold; font-size: 1.1rem; margin-top: 5px; }
+
+        .header h1 {
+            color: #10b981;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 13px;
+            margin: 4px 0 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #10b981;
+        }
+
+        .wishes-container {
+            border: 1px dashed #0284c7;
+            background-color: rgba(2, 132, 199, 0.05);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .wishes-header {
+            color: #38bdf8;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: right;
+        }
+
+        .wish-row {
+            background-color: var(--input-bg);
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .delete-btn {
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .action-btn {
+            width: 100%;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #059669;
+        }
+
+        .available-title {
+            font-size: 13px;
+            color: #888;
+            margin: 20px 0 10px 0;
+            text-align: right;
+        }
+
+        .branch-list {
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .branch-item {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .branch-details {
+            text-align: right;
+        }
+
+        .branch-name {
+            font-weight: bold;
+            color: var(--text-title);
+        }
+
+        .branch-sub {
+            color: #888;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .branch-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .min-score {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background-color: #0284c7;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">🌙 مطلع</button>
-
-    <div class="main-card">
-        <div class="text-center mb-4">
-            <h2 style="color: var(--primary-color);" class="mb-2">مفاضلة القبول الجامعي</h2>
-            <div class="engineer-title">المهندس محمد القاسم</div>
+    <div class="container">
+        
+        <div class="header">
+            <button onclick="toggleTheme()" id="themeBtn" class="theme-toggle-btn">☀️ مشرق</button>
+            <h1>مفاضلة القبول الجامعي</h1>
+            <p>المهندس محمد القاسم</p>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">اسم الطالب الثلاثي:</label>
-            <input type="text" id="studentNameInput" class="form-control" placeholder="اكتب اسم الطالب هنا..." style="text-align: center;">
+        <div class="form-group">
+            <label>أدخل مجموعك المئوي (%):</label>
+            <input type="number" id="studentScore" value="80" step="0.1" oninput="searchBranches()">
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">أدخل مجموعك المئوي (%):</label>
-            <input type="number" step="0.01" id="scoreInput" class="form-control" placeholder="مثال: 73" required>
+        <div class="form-group">
+            <label>نوع المفاضلة:</label>
+            <select id="competitionType" onchange="searchBranches()">
+                <option value="all">كل المفاضلات (عام وموازي)</option>
+                <option value="عام">عام</option>
+                <option value="موازي" selected>موازي</option>
+            </select>
         </div>
 
-        <button type="button" class="btn-analyze" onclick="processAnalysis()">تحليل درجاتي وعرض الأفرع ✨</button>
-
-        <div class="wishlist-container" id="wishlistContainer">
-            <h4 style="color: #007bff; margin-bottom: 15px; text-align: right;">📋 رغباتك المختارة:</h4>
-            <div id="wishlistWrapper"></div>
-            <button class="btn-submit-excel" onclick="submitWishesToExcel()">تثبيت</button>
+        <!-- صندوق الرغبات المختارة -->
+        <div id="wishesBox" class="wishes-container hidden">
+            <div class="wishes-header">📋 رغباتك المختارة:</div>
+            <div id="selectedWishesList"></div>
+            <button onclick="submitWishes()" class="action-btn">تثبيت</button>
+            <div id="downloadArea" class="hidden" style="text-align: center;"></div>
         </div>
 
-        <div class="search-box" id="searchBoxContainer">
-            <div id="resultsCount" style="font-weight: bold; margin-bottom: 15px; color: var(--primary-color); text-align: right;">الأفرع المتاحة لمجموعك:</div>
-            <div id="resultsWrapper"></div>
-        </div>
+        <!-- الأفرع المتاحة لمجموعك -->
+        <div class="available-title">الأفرع المتاحة لمجموعك:</div>
+        <div id="availableBranches" class="branch-list"></div>
+
     </div>
-</div>
 
-<script>
-    var localData = [
-        {"faculty": "السنة التحضيرية الطبية", "university": "جميع الجامعات", "type": "عام", "min_score": 94.5},
-        {"faculty": "السنة التحضيرية الطبية", "university": "جميع الجامعات", "type": "موازي", "min_score": 92.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "عام", "min_score": 85.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "موازي", "min_score": 80.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "عام", "min_score": 84.0},
-        {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "موازي", "min_score": 79.0},
-        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "عام", "min_score": 80.0},
-        {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "موازي", "min_score": 77.0},
-        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "عام", "min_score": 75.0},
-        {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "موازي", "min_score": 72.0},
-        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "type": "عام", "min_score": 80.0},
-        {"faculty": "الهندسة المدنية", "university": "جامعة دمشق", "type": "موازي", "min_score": 74.0},
-        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "عام", "min_score": 72.0},
-        {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "موازي", "min_score": 68.0},
-        {"faculty": "هندسة الهمك (ميكانيك/كهرباء)", "university": "جميع الجامعات", "type": "عام", "min_score": 68.0},
-        {"faculty": "هندسة الهمك (ميكانيك/كهرباء)", "university": "جميع الجامعات", "type": "موازي", "min_score": 64.0},
-        {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "عام", "min_score": 68.0},
-        {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "عام", "min_score": 55.0}
-    ];
+    <script>
+        const DATA = [
+            {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "عام", "min_score": 94.5},
+            {"faculty": "السنة التحضيرية للكليات الطبية", "university": "جميع الجامعات الحكومية", "type": "موازي", "min_score": 92.0},
+            {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "عام", "min_score": 85.0},
+            {"faculty": "الهندسة المعلوماتية", "university": "جامعة دمشق", "type": "موازي", "min_score": 80.0},
+            {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "عام", "min_score": 84.0},
+            {"faculty": "الهندسة المعلوماتية", "university": "جامعة حلب", "type": "موازي", "min_score": 79.0},
+            {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "عام", "min_score": 80.0},
+            {"faculty": "الهندسة الطبية", "university": "جامعة دمشق", "type": "موازي", "min_score": 77.0},
+            {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "عام", "min_score": 75.0},
+            {"faculty": "الهندسة المعمارية", "university": "جامعة دمشق", "type": "موازي", "min_score": 72.0},
+            {"faculty": "الهندسة المدنية", "university": "جامعة إدلب", "type": "عام", "min_score": 72.0},
+            {"faculty": "الهندسة المدنية", "university": "جامعة حلب", "type": "موازي", "min_score": 67.0},
+            {"faculty": "الهندسة المدنية", "university": "جامعة إدلب", "type": "موازي", "min_score": 65.0},
+            {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "عام", "min_score": 72.0},
+            {"faculty": "هندسة الميكاترونيك", "university": "جامعة حلب", "type": "موازي", "min_score": 68.0},
+            {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "عام", "min_score": 68.0},
+            {"faculty": "هندسة الهمك (ميكانيك عام / كهرباء)", "university": "جميع الجامعات الحكومية", "type": "موازي", "min_score": 64.0},
+            {"faculty": "كلية الاقتصاد", "university": "جامعة دمشق", "type": "عام", "min_score": 68.0},
+            {"faculty": "كلية الحقوق", "university": "جامعة دمشق", "type": "عام", "min_score": 55.0}
+        ];
 
-    var rawData = [];
-    var selectedWishes = []; 
-
-    function toggleTheme() {
-        var body = document.documentElement;
-        var btn = document.getElementById('themeBtn');
-        if (body.getAttribute('data-theme') === 'light') {
-            body.removeAttribute('data-theme');
-            btn.innerText = '🌙 مطلع';
-        } else {
-            body.setAttribute('data-theme', 'light');
-            btn.innerText = '☀️ مشرق';
-        }
-    }
-
-    function processAnalysis() {
-        var scoreVal = document.getElementById('scoreInput').value;
-        var searchBox = document.getElementById('searchBoxContainer');
-        var wrapper = document.getElementById('resultsWrapper');
-        
-        if (!scoreVal) { alert('الرجاء إدخال المجموع أولاً!'); return; }
-        
-        var score = parseFloat(scoreVal);
-        searchBox.style.display = 'block';
-        wrapper.innerHTML = '';
-
-        rawData = localData.filter(function(item) {
-            return score >= item.min_score;
-        });
-
-        rawData.sort(function(a, b) { return b.min_score - a.min_score; });
-        document.getElementById('resultsCount').innerText = 'الأفرع المتاحة لمجموعك الحقيقي:';
-
-        if (rawData.length === 0) {
-            wrapper.innerHTML = '<div style="text-align:center; color:#856404; padding:15px; background:#fff3cd; border-radius:5px; font-weight:bold;">لم نجد نتائج متوافقة مع هذا المجموع.</div>';
-            return;
-        }
-
-        // تم تصحيح سطر حلقة الفرز هنا ليعمل بنجاح دون أي تجميد
-        rawData.forEach(function(item, index) {
-            var card = document.createElement('div');
-            card.className = 'faculty-card';
-            
-            var textDiv = document.createElement('div');
-            textDiv.style.textAlign = 'right';
-            textDiv.style.flex = '1';
-            
-            var title = document.createElement('h3');
-            title.style.color = 'var(--text-title)';
-            title.style.fontSize = '1.1rem';
-            title.style.fontWeight = 'bold';
-            title.style.marginBottom = '5px';
-            title.innerText = item.faculty;
-            
-            var smallInfo = document.createElement('small');
-            smallInfo.style.color = '#6c757d';
-            smallInfo.innerText = item.university + ' | ' + item.type;
-            
-            textDiv.appendChild(title);
-            textDiv.appendChild(smallInfo);
-            
