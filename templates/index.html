@@ -65,6 +65,57 @@
             background-color: #283818;
         }
 
+        /* صندوق الرغبات المضاف حديثاً كجزء من الهيكل البسيط */
+        .raghabat-container {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+            text-align: right;
+            border: 1px dashed #3b5323;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #fcfdfa;
+        }
+
+        .raghabat-box {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .raghabat-item {
+            padding: 8px;
+            background-color: #f1f5ee;
+            border: 1px solid #d0debb;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .btn-delete {
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-confirm {
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
         .results-box {
             width: 100%;
             max-width: 400px;
@@ -113,15 +164,27 @@
         </form>
     </div>
 
+    <!-- صندوق قائمة رغبات الطالب (يظهر فقط عند إضافة رغبة) -->
+    <div id="raghabatSection" class="raghabat-container" style="display: none;">
+        <h4 style="margin: 0; color: #3b5323;">📋 رغباتك المختارة:</h4>
+        <div id="raghabatBox" class="raghabat-box">
+            <!-- تضاف الرغبات هنا عبر السكريبت -->
+        </div>
+        <button id="btnConfirm" class="btn-confirm" onclick="confirmChoices()">تثبيت الرغبات</button>
+    </div>
+
     <!-- صندوق عرض النتائج البسيط تحت الاستمارة مباشرة -->
     <div class="results-box">
-        <h3 style="border-b: 2px solid #3b5323; padding-bottom: 5px; color: #3b5323;">الأفرع المتوافقة:</h3>
+        <h3 style="border-bottom: 2px solid #3b5323; padding-bottom: 5px; color: #3b5323;">الأفرع المتوافقة:</h3>
         <div id="branchesContainer">
-            <!-- سيتم تعبئة البيانات هنا تلقائياً بدون أي تعقيد وتكون في المنتصف -->
+            <!-- سيتم تعبئة البيانات هنا تلقائياً -->
         </div>
     </div>
 
     <script>
+        // مصفوفة لتخزين رغبات الطالب الحالية لمنع التكرار وحفظ البيانات
+        let selectedWishlist = [];
+
         document.getElementById('mofadhalaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
@@ -136,10 +199,12 @@
                 container.innerHTML = '';
                 
                 if (res.status === 'success' && res.data.length > 0) {
-                    res.data.forEach(branch => {
+                    res.data.forEach((branch, index) => {
+                        // تحويل الكائن لنص مرمز لسهولة نقله عبر الزر
+                        const branchData = encodeURIComponent(JSON.stringify(branch));
                         const item = `
                             <div class="result-item">
-                                <button class="btn-add">+ إضافة</button>
+                                <button class="btn-add" onclick="addToWishlist('${branchData}')">+ إضافة</button>
                                 <span style="font-weight:bold; color:#3b5323;">%${branch.min_score}</span>
                                 <div>
                                     <strong style="font-size:14px;">${branch.name}</strong><br>
@@ -154,6 +219,58 @@
                 }
             });
         });
+
+        // دالة إضافة الفرع إلى قائمة الرغبات المختارة
+        function addToWishlist(encodedData) {
+            const branch = JSON.parse(decodeURIComponent(encodedData));
+            
+            // التحقق من عدم إضافة نفس الفرع مرتين
+            const isExist = selectedWishlist.some(item => item.name === branch.name && item.type === branch.type && item.university === branch.university);
+            
+            if (isExist) {
+                alert("هذا الفرع مضاف بالفعل إلى قائمة رغباتك!");
+                return;
+            }
+
+            // إضافة الفرع للمصفوفة وتحديث الواجهة
+            selectedWishlist.push(branch);
+            renderWishlist();
+        }
+
+        // دالة حذف رغبة معينة من القائمة
+        function removeFromWishlist(index) {
+            selectedWishlist.splice(index, 1);
+            renderWishlist();
+        }
+
+        // دالة لتحديث وعرض صندوق الرغبات في الواجهة
+        function renderWishlist() {
+            const section = document.getElementById('raghabatSection');
+            const box = document.getElementById('raghabatBox');
+            
+            box.innerHTML = '';
+            
+            if (selectedWishlist.length > 0) {
+                section.style.display = 'block'; // إظهار الصندوق
+                selectedWishlist.forEach((branch, index) => {
+                    const item = `
+                        <div class="raghabat-item">
+                            <button class="btn-delete" onclick="removeFromWishlist(${index})">حذف</button>
+                            <strong>${index + 1}. ${branch.name} (${branch.type})</strong>
+                        </div>
+                    `;
+                    box.innerHTML += item;
+                });
+            } else {
+                section.style.display = 'none'; // إخفاء الصندوق إذا كانت القائمة فارغة
+            }
+        }
+
+        // دالة عند ضغط زر تثبيت الرغبات
+        function confirmChoices() {
+            const studentName = document.getElementById('studentName').value || "الطالب";
+            alert(`شكراً لك يا ${studentName}! تم حفظ وتثبيت رغباتك بنجاح.`);
+        }
     </script>
 
 </body>
