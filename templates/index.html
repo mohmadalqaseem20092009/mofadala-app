@@ -6,292 +6,121 @@
     <title>مفاضلة القبول الجامعي | المهندس محمد القاسم</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        /* كود التصميم الكلاسيكي الإجباري لضمان المظهر الداكن والألوان */
+        /* تصميم هيكلي بسيط جداً متموضع في المنتصف */
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #121212 !important;
-            color: #ffffff !important;
+            background-color: #ffffff;
+            color: #333333;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 90vh;
+            min-height: 80vh;
         }
-        
-        .main-card {
-            background-color: #1e1e1e !important;
+
+        .section-title {
+            color: #3b5323; /* لون زيتي للعنوان */
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666666;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .form-container {
             width: 100%;
-            max-width: 480px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 1px solid #2e2e2e;
-            padding: 24px;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        .badge-mushriq {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background-color: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            font-size: 12px;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-weight: bold;
-        }
-
-        .header-title {
+            max-width: 400px;
             text-align: center;
-            margin-bottom: 24px;
-            margin-top: 15px;
         }
 
-        .header-title h1 {
-            color: #10b981 !important; /* الأخضر الزيتي المضيء */
-            font-size: 22px;
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .header-title p {
-            color: #a8a29e;
-            font-size: 14px;
-            margin: 4px 0 0 0;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-            text-align: right;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            color: #d6d3d1;
-            margin-bottom: 6px;
-        }
-
-        .form-group input {
+        .input-field {
             width: 100%;
-            background-color: #ffffff !important;
-            color: #000000 !important;
-            font-weight: bold;
             padding: 10px;
-            border-radius: 12px;
-            border: none;
-            text-align: center;
-            font-size: 18px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
             box-sizing: border-box;
-        }
-
-        .btn-analyze {
-            width: 100%;
-            background-color: #059669 !important; /* لون أخضر زيتي */
-            color: white !important;
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
             font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 10px;
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+            text-align: center;
         }
 
-        .btn-analyze:hover {
-            background-color: #047857 !important;
-        }
-
-        .raghabat-box {
-            border: 2px dashed rgba(30, 58, 138, 0.6);
-            background-color: rgba(30, 58, 138, 0.1);
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 24px;
-            text-align: right;
-        }
-
-        .raghabat-title {
-            color: #60a5fa;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .raghabat-item {
-            background-color: #161616;
-            padding: 10px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #2e2e2e;
-            margin-bottom: 12px;
-        }
-
-        .btn-delete {
-            background-color: rgba(220, 38, 38, 0.2);
-            color: #ef4444;
-            border: 1px solid rgba(220, 38, 38, 0.4);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-delete:hover {
-            background-color: #dc2626;
-            color: white;
-        }
-
-        .btn-confirm {
+        .btn-submit {
             width: 100%;
-            background-color: #059669 !important;
+            background-color: #3b5323; /* أزرار زيتية */
             color: white;
-            font-weight: bold;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 12px;
             border: none;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .results-section {
-            margin-top: 24px;
+        .btn-submit:hover {
+            background-color: #283818;
+        }
+
+        .results-box {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 30px;
             text-align: right;
         }
 
-        .results-title {
-            font-size: 14px;
-            color: #a8a29e;
-            border-bottom: 1px solid #2e2e2e;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-        }
-
-        .branch-card {
-            background-color: #242424;
-            padding: 12px;
-            border-radius: 12px;
+        .result-item {
+            padding: 10px;
+            border-bottom: 1px solid #eeeeee;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #2e2e2e;
-            margin-bottom: 10px;
         }
 
         .btn-add {
-            background-color: #2563eb !important; /* لون أزرق */
-            color: white !important;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 6px 12px;
-            border-radius: 8px;
+            background-color: #0066cc;
+            color: white;
             border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
             cursor: pointer;
-        }
-        .btn-add:hover {
-            background-color: #1d4ed8 !important;
-        }
-
-        .branch-score {
-            color: #10b981;
-            font-weight: bold;
-            font-size: 14px;
-            background-color: rgba(16, 185, 129, 0.1);
-            padding: 2px 8px;
-            border-radius: 6px;
-        }
-
-        .branch-info {
-            text-align: left;
-        }
-
-        .branch-name {
-            font-weight: bold;
-            font-size: 14px;
-            color: #e7e5e4;
-            margin: 0;
-        }
-
-        .branch-sub {
-            font-size: 11px;
-            color: #a8a29e;
-            margin: 2px 0 0 0;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
 
-    <!-- الكرت أو الحاوية الداكنة المخصصة المماثلة للصورة -->
-    <div class="main-card">
-        
-        <!-- علامة مشرق المضيئة -->
-        <div class="badge-mushriq">
-            <span style="color: #f59e0b;">●</span> مشرق
-        </div>
+    <div class="form-container">
+        <h1 class="section-title">مفاضلة القبول الجامعي</h1>
+        <p class="subtitle">المهندس محمد القاسم</p>
 
-        <!-- ترويسة العنوان -->
-        <div class="header-title">
-            <h1>مفاضلة القبول الجامعي</h1>
-            <p>المهندس محمد القاسم</p>
-        </div>
-
-        <!-- فورم إدخال البيانات للتحليل ومطابق للصورة الأصلية تماماً -->
+        <!-- استمارات الإدخال الهيكلية العادية -->
         <form id="mofadhalaForm">
-            <div class="form-group">
+            <div style="text-align: right;">
                 <label>اسم الطالب الثلاثي:</label>
-                <input type="text" id="studentName" name="student_name" placeholder="محمد">
+                <input type="text" id="studentName" name="student_name" class="input-field" placeholder="أدخل الاسم">
             </div>
 
-            <div class="form-group">
+            <div style="text-align: right;">
                 <label>أدخل مجموعك المئوي (%):</label>
-                <input type="number" step="0.01" id="score" name="score" placeholder="73" required>
+                <input type="number" step="0.01" id="score" name="score" class="input-field" placeholder="مثال: 73" required>
             </div>
 
-            <button type="submit" class="btn-analyze">
-                ✨ تحليل درجاتي وعرض الأفرع ✨
-            </button>
+            <button type="submit" class="btn-submit">تحليل درجاتي وعرض الأفرع</button>
         </form>
-
-        <!-- صندوق الرغبات المختارة ذو الإطار المنقط الأزرق -->
-        <div class="raghabat-box">
-            <div class="raghabat-title">📋 رغباتك المختارة:</div>
-            
-            <div class="raghabat-item">
-                <button class="btn-delete">حذف</button>
-                <span style="font-size: 13px; font-weight: 500;">الهندسة المعمارية (موازي)</span>
-            </div>
-
-            <button class="btn-confirm">تثبيت الرغبات</button>
-        </div>
-
-        <!-- قسم عرض نتائج الفرز في الأسفل مع زر الإضافة الأزرق -->
-        <div class="results-section">
-            <div class="results-title">الأفرع والخيارات المتوافقة:</div>
-            
-            <div id="branchesContainer">
-                <!-- عينة مسبقة للشكل الكلاسيكي للفرع قبل البحث لكي ترى الهيكل المماثل تماماً -->
-                <div class="branch-card">
-                    <button class="btn-add">+ إضافة</button>
-                    <span class="branch-score">%72</span>
-                    <div class="branch-info">
-                        <h4 class="branch-name">الهندسة المعمارية</h4>
-                        <p class="branch-sub">جامعة دمشق | موازي</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- كود الجافا سكريبت للربط مع الباك إند بايثون وتحليل البيانات ديناميكياً -->
+    <!-- صندوق عرض النتائج البسيط تحت الاستمارة مباشرة -->
+    <div class="results-box">
+        <h3 style="border-b: 2px solid #3b5323; padding-bottom: 5px; color: #3b5323;">الأفرع المتوافقة:</h3>
+        <div id="branchesContainer">
+            <!-- سيتم تعبئة البيانات هنا تلقائياً بدون أي تعقيد وتكون في المنتصف -->
+        </div>
+    </div>
+
     <script>
         document.getElementById('mofadhalaForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -308,15 +137,24 @@
                 
                 if (res.status === 'success' && res.data.length > 0) {
                     res.data.forEach(branch => {
-                        const card = `
-                            <div class="branch-card">
+                        const item = `
+                            <div class="result-item">
                                 <button class="btn-add">+ إضافة</button>
-                                <span class="branch-score">%${branch.min_score}</span>
-                                <div class="branch-info">
-                                    <h4 class="branch-name">${branch.name}</h4>
-                                    <p class="branch-sub">${branch.university} | ${branch.type}</p>
+                                <span style="font-weight:bold; color:#3b5323;">%${branch.min_score}</span>
+                                <div>
+                                    <strong style="font-size:14px;">${branch.name}</strong><br>
+                                    <span style="font-size:12px; color:#666;">${branch.university} | ${branch.type}</span>
                                 </div>
                             </div>
                         `;
-                        container.innerHTML += card;
+                        container.innerHTML += item;
                     });
+                } else {
+                    container.innerHTML = '<p style="color:red; text-align:center; font-size:14px;">لا توجد أفرع متوافقة.</p>';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
